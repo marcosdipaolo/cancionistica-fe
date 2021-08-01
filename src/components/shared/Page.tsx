@@ -1,18 +1,17 @@
-import {FC, MouseEventHandler} from "react";
+import {FC, ReactNode} from "react";
 import Footer from "../Footer";
-import Intro from "../Intro";
 import Header from "../Header";
 
-interface NavProps {
-    toggleMenu: MouseEventHandler
+interface Children {
+    children: (Element | ReactNode)[] | (Element | ReactNode);
 }
 
-const Page: FC<NavProps> = (props) => (
+const Page: FC<Children> = ({ children }: Children) => (
     <div id="fh5co-page">
-        <Header toggleMenu={props.toggleMenu}/>
-        { props.children }
+        <Header/>
+        {children}
         <Footer/>
     </div>
-)
+);
 
 export default Page;

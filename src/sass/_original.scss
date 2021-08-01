@@ -5,18 +5,18 @@ $grid-gutter-width: 40px !default;
 $border-radius-base:  4px !default;
 $padding-base-vertical: 14px !default;
 
-$brand-primary: #FF847C !default;
-$brand-secondary: #1fb5f6 !default;
+$primary: #FF847C !default;
+$secondary: #1fb5f6 !default;
 
-$brand-white: #fff;
-$brand-black: #000;
-$brand-lighter: #727272;
-$brand-selection-color: #b7c2c2;
-$brand-body-color: #fcfcfc;
-$brand-body-bg: #f9f7f7;
+$white: #fff;
+$black: #000;
+$lighter: #727272;
+$selection-color: #b7c2c2;
+$body-color: #fcfcfc;
+$body-bg: #f9f7f7;
 
 
-$input-border-focus: $brand-primary !default;
+$input-border-focus: $primary !default;
 $form-group-margin-bottom: 30px !default;
 
 
@@ -107,7 +107,7 @@ body {
     font-family: $font-primary;
     line-height: 1.8;
     font-size: 20px;
-    background: lighten($brand-black, 94%);
+    background: lighten($black, 94%);
     font-weight: 300;
     overflow-x: hidden;
 
@@ -129,11 +129,11 @@ body {
     }
 }
 a {
-    color: $brand-primary;
+    color: $primary;
     @include transition(.5s);
     &:hover{
         text-decoration: underline;
-        color: $brand-primary;
+        color: $primary;
     }
     &:focus, &:active {
         outline: none;
@@ -142,34 +142,34 @@ a {
 p, span {
     margin-bottom: 1.5em;
     font-size: 18px;
-    color: $brand-lighter;
+    color: $lighter;
     font-weight: 300;
     font-family: $font-primary;
 }
 span{
     font-size: 18px;
-    color: rgba($brand-lighter,.8);
+    color: rgba($lighter,.8);
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: rgba($brand-black,.8);
+    color: rgba($black,.8);
     font-family: $font-secondary;
     font-weight: 300;
     margin: 0 0 30px 0;
 }
 ::-webkit-selection {
-    color: $brand-body-color;
-    background: $brand-selection-color;
+    color: $body-color;
+    background: $selection-color;
 }
 
 ::-moz-selection {
-    color: $brand-body-color;
-    background: $brand-selection-color;
+    color: $body-color;
+    background: $selection-color;
 }
 
 ::selection {
-    color: $brand-body-color;
-    background: $brand-selection-color;
+    color: $body-color;
+    background: $selection-color;
 }
 
 #fh5co-page {
@@ -184,7 +184,7 @@ h1, h2, h3, h4, h5, h6 {
     -ms-transform: scale(1.0);
     -o-transform: scale(1.0);
     transform: scale(1.0);
-    background: $brand-white;
+    background: $white;
     .menu-show & {
         -webkit-transform: scale(0.9);
         -moz-transform: scale(0.9);
@@ -263,7 +263,7 @@ h1, h2, h3, h4, h5, h6 {
         text-align: center;
         padding: 50px 0 50px 0;
         margin: 0;
-        @media screen and (max-width: $screen-sm) {
+        @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
             padding: 20px 0 0 0;
         }
         li {
@@ -278,7 +278,7 @@ h1, h2, h3, h4, h5, h6 {
                 font-size: 30px;
                 padding: 10px 20px;
 
-                @media screen and (max-width: $screen-sm) {
+                @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
                     font-size: 30px;
                     padding: 10px 0;
                 }
@@ -288,7 +288,7 @@ h1, h2, h3, h4, h5, h6 {
                     text-decoration: none;
                 }
             }
-            @media screen and (max-width: $screen-sm) {
+            @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
                 display: block;
             }
         }
@@ -299,7 +299,7 @@ h1, h2, h3, h4, h5, h6 {
     display: table;
     width: 100%;
     height: 100%;
-    @media screen and (max-width: $screen-sm) {
+    @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
         display: block!important;
         height: inherit!important;
         width: inherit!important;
@@ -309,7 +309,7 @@ h1, h2, h3, h4, h5, h6 {
         height: 100%;
         display: table-cell;
         vertical-align: middle;
-        @media screen and (max-width: $screen-sm) {
+        @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
             display: block!important;
             height: inherit!important;
             width: inherit!important;
@@ -335,103 +335,103 @@ h1, h2, h3, h4, h5, h6 {
     &:hover, &:active, &:focus {
         box-shadow: none!important;
         outline: none!important;
-        color: $brand-white !important;
+        color: $white !important;
     }
 }
 .btn-primary {
-    background: $brand-primary;
-    color: $brand-white;
-    border: 2px solid $brand-primary;
+    background: $primary;
+    color: $white;
+    border: 2px solid $primary;
     &:hover, &:focus, &:active {
-        background: lighten($brand-primary, 5%)!important;
-        border-color: lighten($brand-primary, 5%)!important;
+        background: lighten($primary, 5%)!important;
+        border-color: lighten($primary, 5%)!important;
     }
     &.btn-outline {
         background: transparent;
-        color: $brand-primary;
-        border: 2px solid $brand-primary;
+        color: $primary;
+        border: 2px solid $primary;
         &:hover, &:focus, &:active {
-            background: $brand-primary;
-            color: $brand-white !important;
+            background: $primary;
+            color: $white !important;
         }
     }
 }
 .btn-success {
-    background: $brand-success;
-    color: $brand-white;
-    border: 2px solid $brand-success;
+    background: $success;
+    color: $white;
+    border: 2px solid $success;
     &:hover, &:focus, &:active {
-        background: darken($brand-success, 5%)!important;
-        border-color: darken($brand-success, 5%)!important;
+        background: darken($success, 5%)!important;
+        border-color: darken($success, 5%)!important;
     }
     &.btn-outline {
         background: transparent;
-        color: $brand-success;
-        border: 2px solid $brand-success;
+        color: $success;
+        border: 2px solid $success;
         &:hover, &:focus, &:active {
-            background: $brand-success;
-            color: $brand-white;
+            background: $success;
+            color: $white;
         }
     }
 }
 .btn-info {
-    background: $brand-info;
-    color: $brand-white;
-    border: 2px solid $brand-info;
+    background: $info;
+    color: $white;
+    border: 2px solid $info;
     &:hover, &:focus, &:active {
-        background: darken($brand-info, 5%)!important;
-        border-color: darken($brand-info, 5%)!important;
+        background: darken($info, 5%)!important;
+        border-color: darken($info, 5%)!important;
     }
     &.btn-outline {
         background: transparent;
-        color: $brand-info;
-        border: 2px solid $brand-info;
+        color: $info;
+        border: 2px solid $info;
         &:hover, &:focus, &:active {
-            background: $brand-info;
-            color: $brand-white;
+            background: $info;
+            color: $white;
         }
     }
 }
 .btn-warning {
-    background: $brand-warning;
-    color: $brand-white;
-    border: 2px solid $brand-warning;
+    background: $warning;
+    color: $white;
+    border: 2px solid $warning;
     &:hover, &:focus, &:active {
-        background: darken($brand-warning, 5%)!important;
-        border-color: darken($brand-warning, 5%)!important;
+        background: darken($warning, 5%)!important;
+        border-color: darken($warning, 5%)!important;
     }
     &.btn-outline {
         background: transparent;
-        color: $brand-warning;
-        border: 2px solid $brand-warning;
+        color: $warning;
+        border: 2px solid $warning;
         &:hover, &:focus, &:active {
-            background: $brand-warning;
-            color: $brand-white;
+            background: $warning;
+            color: $white;
         }
     }
 }
 .btn-danger {
-    background: $brand-danger;
-    color: $brand-white;
-    border: 2px solid $brand-danger;
+    background: $danger;
+    color: $white;
+    border: 2px solid $danger;
     &:hover, &:focus, &:active {
-        background: darken($brand-danger, 5%)!important;
-        border-color: darken($brand-danger, 5%)!important;
+        background: darken($danger, 5%)!important;
+        border-color: darken($danger, 5%)!important;
     }
     &.btn-outline {
         background: transparent;
-        color: $brand-danger;
-        border: 2px solid $brand-danger;
+        color: $danger;
+        border: 2px solid $danger;
         &:hover, &:focus, &:active {
-            background: $brand-danger;
-            color: $brand-white;
+            background: $danger;
+            color: $white;
         }
     }
 }
 
 .btn-outline {
     background: none;
-    border: 2px solid lighten($brand-black, 50%);
+    border: 2px solid lighten($black, 50%);
     font-size: 16px;
     @include transition(.3s);
     &:hover, &:focus, &:active {
@@ -454,7 +454,7 @@ h1, h2, h3, h4, h5, h6 {
     &:hover {
         padding-right: 50px;
         i {
-            color: $brand-white;
+            color: $white;
             right: 18px;
             visibility: visible;
             opacity: 1;
@@ -465,12 +465,12 @@ h1, h2, h3, h4, h5, h6 {
 .view-button{
     .btn-outline {
         background: transparent;
-        color: $brand-black;
-        border: 2px solid $brand-black;
+        color: $black;
+        border: 2px solid $black;
         &:hover, &:focus, &:active {
-            background: $brand-white !important;
-            color: $brand-black !important;
-            border: 2px solid $brand-black !important;
+            background: $white !important;
+            color: $black !important;
+            border: 2px solid $black !important;
         }
     }
 }
@@ -478,7 +478,7 @@ h1, h2, h3, h4, h5, h6 {
 // Header START
 header{
     padding: 3em 0;
-    @media screen and (max-width: $screen-sm) {
+    @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
         padding: 2em 0;
     }
     .fh5co-navbar-brand{
@@ -494,13 +494,13 @@ header{
         .fh5co-logo{
             font-size: 24px;
             text-transform: uppercase;
-            color: $brand-black;
+            color: $cyan;
             letter-spacing: 4px;
-            border: 2px solid $brand-black;
+            border: 2px solid $cyan;
             padding: 5px 20px;
             &:hover{
                 text-decoration: none !important;
-                color: $brand-black !important;
+                color: $black !important;
             }
             &:active, &:focus {
                 outline: none;
@@ -520,13 +520,13 @@ header{
     right: 0;
     &.active i {
         &::before, &::after {
-            background: $brand-white;
+            background: $white;
         }
     }
     &.dark {
         &.active i {
             &::before, &::after {
-                background: $brand-white;
+                background: $white;
             }
         }
     }
@@ -539,25 +539,25 @@ header{
         @include inline-block;
         width: 30px;
         height: 2px;
-        color: $brand-black;
+        color: $black;
         font:bold 14px/.4 Helvetica;
         text-transform: uppercase;
         text-indent:-55px;
-        background: $brand-black;
+        background: $black;
         transition: all .2s ease-out;
         .menu-show & {
-            background: $brand-white;
-            color: $brand-white;
+            background: $white;
+            color: $white;
         }
         &::before, &::after {
             content:'';
             width: 30px;
             height: 2px;
-            background: $brand-black;
+            background: $black;
             position: absolute;
             left:0;
             .menu-show & {
-                background: $brand-white;
+                background: $white;
             }
             @include transition(.2s);
         }
@@ -565,11 +565,11 @@ header{
     &.dark {
         i {
             position: relative;
-            color: $brand-black;
-            background: $brand-black;
+            color: $black;
+            background: $black;
             transition: all .2s ease-out;
             &::before, &::after {
-                background: $brand-black;
+                background: $black;
                 @include transition(.2s);
             }
         }
@@ -615,7 +615,7 @@ header{
     margin: 0 auto;
     cursor: pointer;
     margin-top: 0px;
-    @media screen and (max-width: $screen-sm) {
+    @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
         display: block;
         top: 0px;
         // margin-top: 2.5em;
@@ -657,7 +657,7 @@ header{
                     left: 0;
                     right: 0;
                     content: '';
-                    background: rgba($brand-black,.2);
+                    background: rgba($black,.2);
                     z-index: 1;
                 }
             }
@@ -666,10 +666,10 @@ header{
             position: absolute;
             bottom: 0;
             z-index: 1000;
-            @media screen and (max-width: $screen-sm) {
+            @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
                 bottom: -15em;
             }
-            @media screen and (max-width: $screen-xs) {
+            @media screen and (max-width: map.get($grid-breakpoints, "xs")) {
                 bottom: -10em;
             }
 
@@ -695,7 +695,7 @@ header{
             opacity: 0;
             height: 700px;
             z-index: 9;
-            @media screen and (max-width: $screen-sm) {
+            @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
                 text-align: center;
             }
             > .slider-text-inner {
@@ -705,20 +705,20 @@ header{
                 h2 {
                     font-size: 60px;
                     font-weight: 400;
-                    color: $brand-white;
-                    @media screen and (max-width: $screen-sm) {
+                    color: $white;
+                    @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
                         font-size: 40px;
                     }
                 }
                 p{
                     .btn{
                         &:hover{
-                            color: $brand-white !important;
+                            color: $white !important;
                         }
                     }
                 }
                 span{
-                    color: rgba($brand-white,.8);
+                    color: rgba($white,.8);
                     text-transform: uppercase;
                     letter-spacing: 5px;
                     font-size: 12px;
@@ -740,7 +740,7 @@ header{
 #fh5co-intro-section{
     margin-bottom: 2em;
     padding-bottom: 2em;
-    // border-bottom: 1px solid rgba($brand-black,.06);
+    // border-bottom: 1px solid rgba($black,.06);
 }
 
 // heading
@@ -750,7 +750,7 @@ header{
     line-height: 1.5;
     // margin-bottom: 10px;
     // text-transform: uppercase;
-    @media screen and (max-width: $screen-sm){
+    @media screen and (max-width: map.get($grid-breakpoints, "sm")){
         font-size: 30px;
     }
 }
@@ -767,14 +767,14 @@ header{
         width: 100%;
         height: 400px;
         display: table;
-        // border: 1px solid $brand-black;
+        // border: 1px solid $black;
         opacity: 0;
         padding: 0;
         margin: 0;
         text-decoration: none;
-        color: $brand-white;
-        background: rgba($brand-black,.5);
-        @media screen and (max-width: $screen-sm) {
+        color: $white;
+        background: rgba($black,.5);
+        @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
             opacity: 1;
         }
         span, i{
@@ -782,7 +782,7 @@ header{
             display: table-cell;
             vertical-align: middle;
             font-size: 12px;
-            color: $brand-white;
+            color: $white;
             text-transform: uppercase;
             letter-spacing: 4px;
 
@@ -791,7 +791,7 @@ header{
     h3{
         margin-top: 30px;
         a{
-            color: $brand-black;
+            color: $black;
         }
     }
     &:hover, &:focus{
@@ -815,20 +815,20 @@ header{
         margin-bottom: 10px;
         font-size: 20px;
         a{
-            color: $brand-black;
+            color: $black;
         }
     }
 }
 
 .fh5co-counters {
     padding: 3em 0;
-    background: lighten($brand-black, 90%);
+    background: lighten($black, 90%);
     background-size: cover;
     background-attachment: fixed;
     background-position: center center;
     .heading-section{
         h2{
-            color: $brand-white;
+            color: $white;
             font-weight: 400;
             font-size: 40px;
         }
@@ -836,14 +836,14 @@ header{
     .fh5co-counter {
         font-size: 60px;
         display: block;
-        color: $brand-white;
+        color: $white;
         font-family: $font-primary;
         width: 100%;
         font-weight: 700;
         margin-bottom: .3em;
     }
     .fh5co-counter-label {
-        color: $brand-white;
+        color: $white;
         text-transform: uppercase;
         font-size: 13px;
         letter-spacing: 5px;
@@ -857,8 +857,8 @@ header{
     position: relative;
     padding: 30px;
     margin-top: 60px;
-    background: rgba($brand-white,1);
-    border: 1px solid rgba($brand-black,.1);
+    background: rgba($white,1);
+    border: 1px solid rgba($black,.1);
     .icon{
         width: 100%;
         float: left;
@@ -878,11 +878,11 @@ header{
                 display: table-cell;
                 vertical-align: middle;
                 font-size: 40px;
-                color: $brand-black;
+                color: $black;
             }
         }
     }
-    @media screen and (max-width: $screen-sm){
+    @media screen and (max-width: map.get($grid-breakpoints, "sm")){
         margin-bottom: 5em;
     }
 }
@@ -908,7 +908,7 @@ header{
         margin-bottom: 30px;
     }
     .role {
-        color: lighten($brand-black, 75%);
+        color: lighten($black, 75%);
         margin-bottom: 30px;
         font-weight: normal;
         display: block;
@@ -924,7 +924,7 @@ header{
         @include inline-block;
         a {
             @include inline-block;
-            color: $brand-black;
+            color: $black;
             padding-left: 10px;
             padding-right: 10px;
             text-decoration: none;
@@ -945,17 +945,17 @@ header{
         margin: 0 0 20px 0;
         position: relative;
         padding-left: 40px;
-        color: $brand-lighter;
+        color: $lighter;
 
         i{
             position: absolute;
             top: .3em;
             left: 0;
             font-size: 22px;
-            color: $brand-lighter;
+            color: $lighter;
         }
         a{
-            color: $brand-lighter;
+            color: $lighter;
         }
 
     }
@@ -989,7 +989,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 // footerf
 #footer{
-    border-top: 1px solid rgba($brand-black,.1);
+    border-top: 1px solid rgba($black,.1);
     padding: 4em 0;
     h3{
         font-size: 18px;
@@ -1003,14 +1003,14 @@ input[type="text"], input[type="email"], input[type="password"] {
             list-style: none;
             margin-bottom: 0;
             a{
-                color: $brand-lighter;
+                color: $lighter;
             }
         }
     }
     .float{
         width: 50%;
         float: left;
-        @media screen and (max-width: $screen-sm) {
+        @media screen and (max-width: map.get($grid-breakpoints, "sm")) {
             width: 100%;
         }
     }
@@ -1018,10 +1018,10 @@ input[type="text"], input[type="email"], input[type="password"] {
         padding-top: 4em;
     }
     a{
-        color: rgba($brand-black,1);
+        color: rgba($black,1);
         &:hover, &:focus{
             text-decoration: none;
-            color: $brand-primary;
+            color: $primary;
         }
     }
 
@@ -1030,7 +1030,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     a{
         padding: 0 5px;
         i{
-            color: $brand-black;
+            color: $black;
         }
         &:hover, &:focus{
             text-decoration: none;

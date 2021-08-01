@@ -1,61 +1,67 @@
+@use "sass:map";
+@import "bootstrap/bootstrap.scss";
 @import "original";
+@import "slider";
 
-#app-slider {
-    margin-bottom: 7em;
-    .slick-slider {
-        .slick-dots {
-            bottom: 25px;
-            li {
-                margin: 0 3px;
-                button {
-                    &:before {
-                        font-size: 14px;
-                        color: white;
-                        opacity: .15;
-                    }
-                }
-                &.slick-active {
-                    button {
-                        &:before {
-                            opacity: .6;
-                        }
-                    }
-                }
-            }
-        }
-        .slick-list {
-            .slick-track {
-                .slick-slide {
-                    div.app-slide {
-                        height: 100vh;
-                        background-size: cover;
-                        background-repeat: no-repeat;
-                        .slider-text {
-                            .title {
-                                font-size: 54px;
-                                color: #fff;
-                            }
-                            .tag {
-                                color: #ddd;
-                            }
-                        }
-                        .overlay-gradient {
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            right: 0;
-                            left: 0;
-                            background: rgb(34,52,89);
-                            background:
-                                    linear-gradient(
-                                                    135deg,
-                                            rgba(34,52,89,0.7903536414565826) 0%,
-                                            rgba(57,10,94,0.5690651260504201) 100%
-                                    );
-                        }
-                    }
-                }
-            }
-        }
+a {
+  text-decoration: none;
+}
+
+input, textarea {
+  font-family: $font-primary;
+  font-size: 16px!important;
+  border-radius: 0;
+  &::placeholder {
+    color: #aaa!important;
+  }
+}
+
+button, input[type=submit] {
+  text-transform: uppercase;
+  border-radius: $border-radius-sm;
+}
+
+h1, h2 {
+  color: $h1-color;
+}
+
+header.app-header {
+  .user-tooltip {
+    right: 50px;
+    top: 50px;
+    width: 135px;
+    padding: 15px 0 5px 20px;
+    box-shadow: 1px 1px 4px rgb(0, 0, 0, .4);
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 300ms;
+    &.visible {
+      opacity: 1;
     }
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        font-family: Karla;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        font-size: 14px;
+        transition: transform 100ms;
+        &:hover {
+          transform: translateX(4px);
+          cursor: pointer;
+          font-style: italic;
+        }
+      }
+    }
+  }
+  i.icon-user {
+    position: absolute;
+    right: 80px;
+    top: 22px;
+    cursor: pointer;
+  }
+  a.fh5co-nav-toggle {
+    top: 10px;
+  }
 }
