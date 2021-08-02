@@ -26,11 +26,11 @@ const Register: FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <form onSubmit={onSubmit}>
         <SectionTitle title="Registro" />
         <div className="row">
-          <div className="col-md-2 offset-md-5 mb-5">
+          <div className="col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-5">
             <div className="form-group">
               <input
                 onChange={(e) => setName(e.target.value)}
