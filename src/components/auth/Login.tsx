@@ -9,8 +9,8 @@ import Noti from "../messages/Noti";
 import SectionTitle from "../shared/SectionTitle";
 
 const Login: FC = () => {
-  const [ password, setPassword ] = useState('');
-  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState("");
+  const [ email, setEmail ] = useState("");
   const [ calling, setCalling ] = useState(false);
   const [ unauthorized, setUnauthorized ] = useState(false);
   const { dataStore: { userStore } } = useStore();
@@ -21,14 +21,12 @@ const Login: FC = () => {
     AuthService.login(
       { email, password }
     ).then((res: AxiosResponse) => {
-      setCalling(false);
       const { data }: { data: UserRegistrationResponse; } = res;
       userStore.login(data);
     }).catch(err => {
       setUnauthorized(true);
       setCalling(false);
     });
-
     setCalling(true);
   };
 
@@ -42,7 +40,7 @@ const Login: FC = () => {
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <SectionTitle title="Iniciá Sesión" />
+        <SectionTitle title="Iniciá Sesión"/>
         <div className="container">
           <div className="row">
             <div className="col-md-4 offset-md-4">
@@ -57,7 +55,7 @@ const Login: FC = () => {
               </div>
               <div className="form-group">
 
-              <input
+                <input
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   type="password"
@@ -66,17 +64,18 @@ const Login: FC = () => {
                 />
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={{height: '45px'}} disabled={calling || unauthorized}>
-                  {calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : ""}
+                <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={{ height: "45px" }}
+                        disabled={calling || unauthorized}>
+                  {calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true"/>) : ""}
                   {calling ? "" : <Fragment>Login</Fragment>}
                 </button>
               </div>
-              <Noti message="Credenciales no válidas" colorClass="danger" visible={alertVisible()} />
+              <Noti message="Credenciales no válidas" colorClass="danger" visible={alertVisible()}/>
             </div>
           </div>
         </div>
       </form>
-      {userStore.loggedUser ? <Redirect to="/" /> : ''}
+      {userStore.loggedUser ? <Redirect to="/"/> : ""}
     </div>
   );
 };
