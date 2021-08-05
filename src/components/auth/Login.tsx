@@ -2,23 +2,28 @@ import { AxiosResponse } from "axios";
 import { observer } from "mobx-react-lite";
 import { FC, Fragment, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { AuthService } from "../../services/AuthService";
+import { useInjection } from "../../container/inversify-hook";
+import { IAuthService } from "../../services/AuthService";
 import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
 import { useStore } from "../../stores/helpers/useStore";
 import Noti from "../messages/Noti";
 import SectionTitle from "../shared/SectionTitle";
+import { TYPES } from "../../container/types";
 
 const Login: FC = () => {
   const [ password, setPassword ] = useState("");
   const [ email, setEmail ] = useState("");
   const [ calling, setCalling ] = useState(false);
   const [ unauthorized, setUnauthorized ] = useState(false);
+  
   const { dataStore: { userStore } } = useStore();
+
+  const authService = useInjection<IAuthService>(TYPES.authService);
 
   const onSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setUnauthorized(false);
-    AuthService.login(
+    authService.login(
       { email, password }
     ).then((res: AxiosResponse) => {
       const { data }: { data: UserRegistrationResponse; } = res;

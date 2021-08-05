@@ -1,10 +1,12 @@
 import { FC, useState } from "react";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
-import { AuthService } from "../../services/AuthService";
+import { AuthService, IAuthService } from "../../services/AuthService";
 import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
 import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { useInjection } from "../../container/inversify-hook";
+import { TYPES } from "../../container/types";
 
 const Register: FC = () => {
   const [ name, setName ] = useState('');
@@ -12,11 +14,14 @@ const Register: FC = () => {
   const [ password, setPassword ] = useState('');
   const [ passwordConfirmation, setPasswordConfirmation ] = useState('');
   const [ calling, setCalling ] = useState(false);
+
   const { dataStore: { userStore } } = useStore();
+  
+  const authService = useInjection<IAuthService>(TYPES.authService);
 
   const onSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    AuthService.register(
+    authService.register(
       { name, email, password, password_confirmation: passwordConfirmation }
     ).then((data: UserRegistrationResponse) => {
       setCalling(false);
