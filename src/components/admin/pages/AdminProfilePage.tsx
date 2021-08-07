@@ -1,7 +1,10 @@
 import { FC } from "react";
+import AdminPage from "../shared/AdminPage";
 
 const AdminProfilePage: FC = () => (
-  <div>AdminProfilePage</div>
+  <AdminPage>
+      <div>AdminProfilePage</div>
+  </AdminPage>
 );
 
 export default AdminProfilePage;

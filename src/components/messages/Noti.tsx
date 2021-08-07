@@ -32,7 +32,7 @@ const Noti: FC<NotiProps> = ({ message, visible, colorClass }) => {
         style={
           {
             fontSize: '16px',
-            padding: '10px',
+            padding: '10px 30px',
             transition: 'opacity 300ms',
             opacity: visible ? '1' : '0'
           }

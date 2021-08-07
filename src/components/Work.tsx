@@ -9,7 +9,7 @@ const Work: FC = () => (
         <div className="col-md-6 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-1.jpg)" }}
+            style={ { backgroundImage: "url(images/img-1.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>
@@ -19,7 +19,7 @@ const Work: FC = () => (
         <div className="col-md-6 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-2.jpg)" }}
+            style={ { backgroundImage: "url(images/img-2.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>
@@ -29,7 +29,7 @@ const Work: FC = () => (
         <div className="col-md-6 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-3.jpg)" }}
+            style={ { backgroundImage: "url(images/img-3.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>
@@ -39,7 +39,7 @@ const Work: FC = () => (
         <div className="col-md-6 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-4.jpg)" }}
+            style={ { backgroundImage: "url(images/img-4.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>

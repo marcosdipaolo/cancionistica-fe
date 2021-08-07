@@ -9,7 +9,7 @@ const Product: FC = () => (
         <div className="col-md-4 prod text-center animate-box">
           <div
             className="product"
-            style={{ backgroundImage: "url(images/img-9.jpg)" }}
+            style={ { backgroundImage: "url(images/img-9.jpg)" } }
           >
             <a href="#" className="view">
               <i className="icon-plus" />
@@ -23,7 +23,7 @@ const Product: FC = () => (
         <div className="col-md-4 prod text-center animate-box">
           <div
             className="product"
-            style={{ backgroundImage: "url(images/img-11.jpg" }}
+            style={ { backgroundImage: "url(images/img-11.jpg" } }
           >
             <a href="#" className="view">
               <i className="icon-plus" />
@@ -37,7 +37,7 @@ const Product: FC = () => (
         <div className="col-md-4 prod text-center animate-box">
           <div
             className="product"
-            style={{ backgroundImage: "url(images/img-12.jpg" }}
+            style={ { backgroundImage: "url(images/img-12.jpg" } }
           >
             <a href="#" className="view">
               <i className="icon-plus" />

@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 const Nav: FC = () => (
-  <div>Nav</div>
+  <nav>Nav</nav>
 );
 
 export default Nav;

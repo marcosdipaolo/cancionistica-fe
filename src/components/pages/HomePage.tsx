@@ -6,11 +6,8 @@ import Product from "../Product";
 import Services from "../services/Services";
 import Page from "../shared/Page";
 import Work from "../Work";
-import { useHistory } from "react-router-dom";
 
 const HomePage: FC = () => {
-  const history = useHistory();
-  console.log(history)
   return (
     <Page>
       <Intro

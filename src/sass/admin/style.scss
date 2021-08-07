@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap');
+#adminPanel {
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  display: grid;
+  grid-template-columns: 256px calc(100vw - 256px);
+  a {
+    text-decoration: none;
+  }
+  * {
+    font-family: inherit;
+  }
+  aside {
+    height: 100vh;
+    background-color: #3c4b64;
+    color: rgba(225, 225, 225, .8);
+    header {
+      height: 60px;
+      padding: 18px 20px;
+      background-color: rgba(0,0,21,.2);
+      font-family: 'Roboto Condensed', sans-serif;
+      h5 {
+        text-transform: uppercase;
+        font-weight: 400;
+        color: rgba(225, 225, 225, .8);
+        transition: color 300ms;
+        &:hover {
+          color: white;
+        }
+      }
+    }
+    ul {
+      list-style: none;
+      padding:  0 0 0 20px;
+      li {
+        padding: 7px 0;
+        i {
+          font-size: 16px;
+          margin-right: 10px;
+        }
+        a {
+          color: inherit;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  nav {
+    height: 60px;
+    background-color: rgb(232, 232, 232);
+  }
+}

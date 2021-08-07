@@ -1,4 +1,3 @@
-import "./sass/style.scss";
 import AppRouter from "./components/AppRouter";
 
 function App() {

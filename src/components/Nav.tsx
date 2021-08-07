@@ -2,51 +2,55 @@ import { Link, useHistory } from "react-router-dom";
 import { FC, Fragment } from "react";
 import { useStore } from "../stores/helpers/useStore";
 import { observer } from "mobx-react-lite";
+import { useInjection } from "../container/inversify-hook";
+import { IAuthService } from "../services/AuthService";
+import { TYPES } from "../container/types";
 
 const Nav: FC = () => {
   const history = useHistory();
+  const authService = useInjection<IAuthService>(TYPES.authService)
   const { uiStore, dataStore: { userStore } } = useStore();
 
   const logout = () => {
+    authService.logout();
     userStore.logout();
     uiStore.toggleMenu();
     history.push("/");
-  }
-  console.log(userStore.loggedUser);
-  
+  };
+
   return (
     <nav id="fh5co-main-nav" role="navigation">
       <a
-        onClick={uiStore.toggleMenu}
-        className={`js-fh5co-nav-toggle fh5co-nav-toggle active${uiStore.menuOpened ? " show" : ""
-          }`}
+        onClick={ uiStore.toggleMenu }
+        className={ `js-fh5co-nav-toggle fh5co-nav-toggle active${uiStore.menuOpened ? " show" : ""
+          }` }
       >
         <i />
       </a>
       <div className="js-fullheight fh5co-table">
         <div className="fh5co-table-cell js-fullheight">
           <ul>
-            <li onClick={uiStore.toggleMenu}>
+            <li onClick={ uiStore.toggleMenu }>
               <Link to="/">Inicio</Link>
             </li>
-            <li onClick={uiStore.toggleMenu}>
+            <li onClick={ uiStore.toggleMenu }>
               <Link to="/about">Yo</Link>
             </li>
-            <li onClick={uiStore.toggleMenu}>
+            <li onClick={ uiStore.toggleMenu }>
               <Link to="/contact">Contacto</Link>
             </li>
             {
-              userStore.loggedUser
+              userStore.getLoggedUser()
                 ? <Fragment>
-                  <li onClick={logout}>
+                  <li onClick={ logout }>
                     <a href="#">Logout</a>
                   </li>
                 </Fragment>
                 : <Fragment>
-                  <li onClick={uiStore.toggleMenu}>
+                  <li onClick={ uiStore.toggleMenu }>
                     <Link to="/login">Login</Link>
                   </li>
-                  <li onClick={uiStore.toggleMenu}>
+                  <li onClick={ uiStore.toggleMenu }>
                     <Link to="/register">Registrate</Link>
                   </li>
                 </Fragment>

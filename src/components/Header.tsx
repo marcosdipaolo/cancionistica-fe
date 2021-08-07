@@ -53,25 +53,25 @@ const Header: FC = () => {
             </Link>
           </h1>
           <div>
-            <div className={"position-absolute user-tooltip" + (showTooltip ? " visible" : "")}>
+            <div className={ "position-absolute user-tooltip" + (showTooltip ? " visible" : "") }>
               <ul>
-                {userStore.loggedUser ? <li>tu cuenta</li> : ""}
-                <li onClick={logout}>Logout</li>
+                { userStore.getLoggedUser() ? <li><Link to="/admin">tu cuenta</Link></li> : "" }
+                <li onClick={ logout }>Logout</li>
               </ul>
             </div>
             {
-              userStore.loggedUser
-                ? <i onClick={openTooltip} className="icon-user" />
+              userStore.getLoggedUser()
+                ? <i onClick={ openTooltip } className="icon-user" />
                 : ""
             }
             <a
-              onClick={uiStore.toggleMenu}
-              className={`js-fh5co-nav-toggle fh5co-nav-toggle`}
+              onClick={ uiStore.toggleMenu }
+              className={ `js-fh5co-nav-toggle fh5co-nav-toggle` }
             >
               <i />
             </a>
-            <div className="position-absolute" style={{ right: '100px' }}>
-              <Noti visible={alertVisible()} message="Cerraste sesión." colorClass="success" />
+            <div className="position-absolute" style={ { right: '100px' } }>
+              <Noti visible={ alertVisible() } message="Cerraste sesión." colorClass="success" />
             </div>
           </div>
         </div>

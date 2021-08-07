@@ -9,7 +9,7 @@ const Branding: FC = () => (
         <div className="col-md-4 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-5.jpg)" }}
+            style={ { backgroundImage: "url(images/img-5.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>
@@ -19,7 +19,7 @@ const Branding: FC = () => (
         <div className="col-md-8 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-6.jpg)" }}
+            style={ { backgroundImage: "url(images/img-6.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>
@@ -29,7 +29,7 @@ const Branding: FC = () => (
         <div className="col-md-7 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-7.jpg)" }}
+            style={ { backgroundImage: "url(images/img-7.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>
@@ -39,7 +39,7 @@ const Branding: FC = () => (
         <div className="col-md-5 text-center animate-box">
           <div
             className="work"
-            style={{ backgroundImage: "url(images/img-8.jpg)" }}
+            style={ { backgroundImage: "url(images/img-8.jpg)" } }
           >
             <a href="#" className="view">
               <span>View Demo</span>

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import { User } from "../domain/User";
 import { RootStore } from "../RootStore";
 
@@ -23,20 +23,35 @@ export interface UserRegistrationResponse {
 }
 
 export class UserStore {
-  loggedUser: User | null = null;
+  private loggedUser: User | null = null;
   rootStore: RootStore;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
+    autorun(() => console.log(this.loggedUser));
+  }
+
+  getLoggedUser(): User | null {
+    if (!this.loggedUser) {
+      const storedUser = window.localStorage.getItem("loggedUser");
+      if (!storedUser) {
+        return null;
+      }
+      const { id, name, email }: { id: string, name: string, email: string; } = JSON.parse(storedUser);
+      return { id, name, email };
+    }
+    return this.loggedUser;
   }
 
   login(data: UserRegistrationResponse): void {
     const { id, name, email } = data;
-    this.loggedUser = new User(id, name, email, this);
+    this.loggedUser = new User(id, name, email);
+    // document.cookie
   }
 
   logout() {
     this.loggedUser = null;
+    window.localStorage.removeItem("loggedUser");
   }
 }

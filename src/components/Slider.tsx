@@ -37,15 +37,15 @@ const Slider: FC = () => {
   };
   return (
     <aside id="app-slider" className="js-fullheight">
-      <Slick {...settings}>
-        {slideConfig.map((slide: SlideInterface, index) => (
+      <Slick { ...settings }>
+        { slideConfig.map((slide: SlideInterface, index) => (
           <Slide
-            tag={slide.tag}
-            title={slide.title}
-            imageUrl={slide.imageUrl}
-            key={index}
+            tag={ slide.tag }
+            title={ slide.title }
+            imageUrl={ slide.imageUrl }
+            key={ index }
           />
-        ))}
+        )) }
       </Slick>
     </aside>
   );
