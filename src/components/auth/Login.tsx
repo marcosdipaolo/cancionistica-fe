@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { observer } from "mobx-react-lite";
-import { FC, Fragment, useState } from "react";
+import { FC, useState } from "react";
 import { useInjection } from "../../container/inversify-hook";
 import { IAuthService } from "../../services/AuthService";
 import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
@@ -9,13 +9,14 @@ import Noti from "../messages/Noti";
 import SectionTitle from "../shared/SectionTitle";
 import { TYPES } from "../../container/types";
 import { useHistory } from "react-router-dom";
+import { INotificationService, NotificationType } from "../../services/NotificationService";
 
 const Login: FC = () => {
   const [ password, setPassword ] = useState("");
   const [ email, setEmail ] = useState("");
   const [ calling, setCalling ] = useState(false);
-  const [ unauthorized, setUnauthorized ] = useState(false);
   const history = useHistory();
+  const notiService = useInjection<INotificationService>(TYPES.notificationService);
 
   const { dataStore: { userStore } } = useStore();
 
@@ -24,32 +25,24 @@ const Login: FC = () => {
   const onSubmit = (e: { preventDefault: () => void; }) => {
     setCalling(true);
     e.preventDefault();
-    setUnauthorized(false);
     authService.login(
       { email, password }
     ).then((res: AxiosResponse) => {
+      notiService.createNotification(NotificationType.SUCCESS, "Has iniciado sesión exitosamente");
       const { data }: { data: UserRegistrationResponse; } = res;
       setCalling(false);
       userStore.login(data);
-      window.localStorage.setItem("loggedUser", JSON.stringify(data));
       history.push("/");
     }).catch(err => {
-      setUnauthorized(true);
+      notiService.createNotification(NotificationType.ERROR, "Credenciales incorrectas");
       setCalling(false);
     });
-  };
-
-  const alertVisible = () => {
-    setTimeout(() => {
-      setUnauthorized(false);
-    }, 5000);
-    return unauthorized;
   };
 
   return (
     <div>
       <form onSubmit={ onSubmit }>
-        <SectionTitle title="Iniciá Sesión" />
+        <SectionTitle title="Iniciá Sesión"/>
         <div className="container">
           <div className="row">
             <div className="col-md-4 offset-md-4">
@@ -74,12 +67,11 @@ const Login: FC = () => {
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={ { height: "45px" } }
-                  disabled={ calling || unauthorized }>
-                  { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
-                  { calling ? "" : <Fragment>Login</Fragment> }
+                        disabled={ calling }>
+                  { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true"/>) : "" }
+                  { calling ? "" : "Login" }
                 </button>
               </div>
-              <Noti message="Credenciales no válidas" colorClass="danger" visible={ alertVisible() } />
             </div>
           </div>
         </div>

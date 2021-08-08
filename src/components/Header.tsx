@@ -2,24 +2,21 @@ import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useStore } from "../stores/helpers/useStore";
-import Noti from "./messages/Noti";
 
 const Header: FC = () => {
   const history = useHistory();
   const { uiStore, dataStore: { userStore } } = useStore();
   const [ showTooltip, setShowTooltip ] = useState(false);
-  const [ loggedOut, setLoggedOut ] = useState(false);
 
   useEffect(() => {
     document.body.addEventListener("click", closeTooltip);
     return () => {
-      document.body.removeEventListener('click', closeTooltip);
+      document.body.removeEventListener("click", closeTooltip);
     };
   }, []);
 
   const logout = () => {
     userStore.logout();
-    setLoggedOut(true);
     history.push("/");
   };
 
@@ -34,13 +31,6 @@ const Header: FC = () => {
     setTimeout(() => {
       document.querySelector(".user-tooltip")?.classList.add("d-none");
     }, 300);
-  };
-
-  const alertVisible = () => {
-    setTimeout(() => {
-      setLoggedOut(false);
-    }, 3000);
-    return loggedOut;
   };
 
   return (
@@ -61,18 +51,15 @@ const Header: FC = () => {
             </div>
             {
               userStore.getLoggedUser()
-                ? <i onClick={ openTooltip } className="icon-user" />
+                ? <i onClick={ openTooltip } className="icon-user"/>
                 : ""
             }
             <a
               onClick={ uiStore.toggleMenu }
               className={ `js-fh5co-nav-toggle fh5co-nav-toggle` }
             >
-              <i />
+              <i/>
             </a>
-            <div className="position-absolute" style={ { right: '100px' } }>
-              <Noti visible={ alertVisible() } message="Cerraste sesión." colorClass="success" />
-            </div>
           </div>
         </div>
       </div>

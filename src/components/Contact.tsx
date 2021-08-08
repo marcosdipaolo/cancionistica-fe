@@ -2,7 +2,6 @@ import { FC, SyntheticEvent, useState } from "react";
 import { container } from "../container/inversify.config";
 import { TYPES } from "../container/types";
 import { IContactFormService } from "../services/ContactFormService";
-import Noti from "./messages/Noti";
 
 const Contact: FC = () => {
   const [ name, setName ] = useState("");

@@ -2,13 +2,9 @@ import { Link, useHistory } from "react-router-dom";
 import { FC, Fragment } from "react";
 import { useStore } from "../stores/helpers/useStore";
 import { observer } from "mobx-react-lite";
-import { useInjection } from "../container/inversify-hook";
-import { IAuthService } from "../services/AuthService";
-import { TYPES } from "../container/types";
 
 const Nav: FC = () => {
   const history = useHistory();
-  const authService = useInjection<IAuthService>(TYPES.authService);
   const { uiStore, dataStore: { userStore } } = useStore();
 
   const logout = () => {

@@ -1,6 +1,7 @@
 @use "sass:map";
 @import "bootstrap/bootstrap.scss";
 @import "original";
+@import "notifications";
 @import "slider";
 
 a {
@@ -38,10 +39,12 @@ header.app-header {
     z-index: 10;
     background-color: #fff;
     color: #222;
+
     a {
       text-decoration: none;
       color: inherit;
     }
+
     &.visible {
       opacity: 1;
     }
@@ -50,6 +53,7 @@ header.app-header {
       list-style: none;
       padding: 0;
       margin: 0;
+
       li {
         font-family: Karla, sans-serif;
         text-transform: uppercase;
@@ -57,9 +61,11 @@ header.app-header {
         padding: 11px 10px;
         transition: background-color 300ms, transform 100ms;
         text-align: center;
+
         a {
           transition: none;
         }
+
         &:hover {
           cursor: pointer;
           background-color: #444;

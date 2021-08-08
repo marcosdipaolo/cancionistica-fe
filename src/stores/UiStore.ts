@@ -14,7 +14,7 @@ export class UiStore {
   };
 
   private toggleMenuBodyClass(): void {
-    if (this.menuOpened) {
+    if ( this.menuOpened ) {
       document.body.classList.add("menu-show");
     } else {
       document.body.classList.remove("menu-show");

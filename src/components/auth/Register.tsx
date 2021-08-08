@@ -3,10 +3,10 @@ import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
 import { IAuthService } from "../../services/AuthService";
 import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
-import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useInjection } from "../../container/inversify-hook";
 import { TYPES } from "../../container/types";
+import { useHistory } from "react-router-dom";
 
 const Register: FC = () => {
   const [ name, setName ] = useState('');
@@ -14,6 +14,7 @@ const Register: FC = () => {
   const [ password, setPassword ] = useState('');
   const [ passwordConfirmation, setPasswordConfirmation ] = useState('');
   const [ calling, setCalling ] = useState(false);
+  const history = useHistory();
 
   const { dataStore: { userStore } } = useStore();
 
@@ -24,10 +25,9 @@ const Register: FC = () => {
     authService.register(
       { name, email, password, password_confirmation: passwordConfirmation }
     ).then(({ data }: { data: UserRegistrationResponse }) => {
-      console.log(data);
       setCalling(false);
       userStore.login(data);
-      window.localStorage.setItem("loggedUser", JSON.stringify(data));
+      history.push("/");
     }).catch(err => console.log(err));
     setCalling(true);
   };
@@ -35,7 +35,7 @@ const Register: FC = () => {
   return (
     <div className="container">
       <form onSubmit={ onSubmit }>
-        <SectionTitle title="Registro" />
+        <SectionTitle title="Registro"/>
         <div className="row">
           <div className="col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-5">
             <div className="form-group">
@@ -67,21 +67,17 @@ const Register: FC = () => {
                 placeholder="Confirmación de la contraseña"
                 className="form-control"
               />
-              <button type="submit" className="btn btn-primary mt-5 d-block w-100" disabled={ calling }>
-                {
-                  calling ?
-                    <span
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true">
-                    </span> : '' }
-                Registrate
-              </button>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={ { height: "45px" } }
+                        disabled={ calling }>
+                  { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
+                  { calling ? "" : "Register" }
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </form>
-      { userStore.getLoggedUser() ? <Redirect to="/" /> : '' }
     </div>
   );
 };

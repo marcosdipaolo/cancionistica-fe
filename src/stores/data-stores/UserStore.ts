@@ -14,6 +14,12 @@ export interface UserLoginRequest {
   password: string,
 }
 
+export interface UserAttributes {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export interface UserRegistrationResponse {
   name: string,
   email: string,
@@ -33,13 +39,13 @@ export class UserStore {
   }
 
   getLoggedUser(): User | null {
-    if (!this.loggedUser) {
+    if ( !this.loggedUser ) {
       const storedUser = window.localStorage.getItem("loggedUser");
-      if (!storedUser) {
+      if ( !storedUser ) {
         return null;
       }
-      const { id, name, email }: { id: string, name: string, email: string; } = JSON.parse(storedUser);
-      return { id, name, email };
+      const { id, name, email }: UserAttributes = JSON.parse(storedUser);
+      return new User(id, name, email);
     }
     return this.loggedUser;
   }
@@ -47,7 +53,7 @@ export class UserStore {
   login(data: UserRegistrationResponse): void {
     const { id, name, email } = data;
     this.loggedUser = new User(id, name, email);
-    // document.cookie
+    window.localStorage.setItem("loggedUser", JSON.stringify(data));
   }
 
   logout() {
