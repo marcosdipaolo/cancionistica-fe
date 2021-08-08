@@ -12,13 +12,17 @@ const Sidebar: FC = () => {
         </Link>
       </header>
       <main>
-        <ul>
+        <ul className="position-relative">
           { sidebarConfig.map(config => (
-            <li>
+            <li key={config.path}>
               <i className={ `icon-${config.icon}` }></i>
               <Link to={ config.path }>{ config.label }</Link>
             </li>
           )) }
+          <li className="position-absolute bottom-0">
+            <i className="icon-exit"></i>
+            <Link to="/logout">Logout</Link>
+          </li>
         </ul>
       </main>
     </aside>

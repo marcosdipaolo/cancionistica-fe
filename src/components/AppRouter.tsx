@@ -9,6 +9,7 @@ import AdminProfilePage from "./admin/pages/AdminProfilePage";
 import AdminPurchasesPage from "./admin/pages/AdminPurchasesPage";
 import AdminModulesPage from "./admin/pages/AdminModulesPage";
 import AdminHomePage from "./admin/pages/AdminHomePage";
+import Logout from "./auth/Logout";
 
 const AppRouter: FC = () => (
   <Router>
@@ -17,6 +18,7 @@ const AppRouter: FC = () => (
       <Route exact path="/about" component={ AboutPage } />
       <Route exact path="/contact" component={ ContactPage } />
       <Route exact path="/login" component={ LoginPage } />
+      <Route exact path="/logout" component={ Logout } />
       <Route exact path="/register" component={ RegisterPage } /><Route exact path="/admin" component={ AdminHomePage } />
       <Route exact path="/admin" component={ AdminHomePage } />
       <Route exact path="/admin/profile" component={ AdminProfilePage } />

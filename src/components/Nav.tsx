@@ -8,14 +8,12 @@ import { TYPES } from "../container/types";
 
 const Nav: FC = () => {
   const history = useHistory();
-  const authService = useInjection<IAuthService>(TYPES.authService)
+  const authService = useInjection<IAuthService>(TYPES.authService);
   const { uiStore, dataStore: { userStore } } = useStore();
 
   const logout = () => {
-    authService.logout();
-    userStore.logout();
     uiStore.toggleMenu();
-    history.push("/");
+    history.push("/logout");
   };
 
   return (
