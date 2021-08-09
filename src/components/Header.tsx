@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useStore } from "../stores/helpers/useStore";
 
 const Header: FC = () => {
-  const history = useHistory();
   const { uiStore, dataStore: { userStore } } = useStore();
   const [ showTooltip, setShowTooltip ] = useState(false);
 
@@ -14,11 +13,6 @@ const Header: FC = () => {
       document.body.removeEventListener("click", closeTooltip);
     };
   }, []);
-
-  const logout = () => {
-    userStore.logout();
-    history.push("/");
-  };
 
   const openTooltip = (e: { stopPropagation: () => void; }) => {
     e.stopPropagation();
@@ -46,7 +40,7 @@ const Header: FC = () => {
             <div className={ "position-absolute user-tooltip" + (showTooltip ? " visible" : "") }>
               <ul>
                 { userStore.getLoggedUser() ? <li><Link to="/admin">tu cuenta</Link></li> : "" }
-                <li onClick={ logout }>Logout</li>
+                <li><Link to="/logout">Logout</Link></li>
               </ul>
             </div>
             {

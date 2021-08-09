@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { useInjection } from "../../container/inversify-hook";
@@ -40,7 +40,7 @@ const Login: FC = () => {
             message = "El formato de las credenciales no es correcto";
             break;
           case 403:
-            message = "Las credenciales son incorrectas.";
+            message = "Credenciales inválidas.";
             break;
           default:
             message = `Ocurrió un error de tipo ${err.response.status}`;

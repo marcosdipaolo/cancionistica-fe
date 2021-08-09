@@ -35,11 +35,10 @@ const Nav: FC = () => {
             </li>
             {
               userStore.getLoggedUser()
-                ? <Fragment>
+                ?
                   <li onClick={ logout }>
                     <a href="#">Logout</a>
                   </li>
-                </Fragment>
                 : <Fragment>
                   <li onClick={ uiStore.toggleMenu }>
                     <Link to="/login">Login</Link>

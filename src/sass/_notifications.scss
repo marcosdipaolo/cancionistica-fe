@@ -10,16 +10,16 @@ $react-notifications-container-top-padding: 0px !default;
 $react-notifications-container-max-height: calc(100% - 30px) !default;
 $react-notifications-container-right-padding: 15px !default;
 
-$react-notifications-border-radius: 2px !default;
-$react-notifications-padding-top: 15px !default;
-$react-notifications-padding-right: 15px !default;
-$react-notifications-padding-bottom: 15px !default;
+$react-notifications-border-radius: 5px !default;
+$react-notifications-padding-top: 18px !default;
+$react-notifications-padding-right: 18px !default;
+$react-notifications-padding-bottom: 18px !default;
 $react-notifications-padding-left: 58px !default;
 $react-notifications-color: #fff !default;
 $react-notifications-background-color: #ccc !default;
 $react-notifications-box-shadow: 0 0 12px #999 !default;
 $react-notifications-cursor: pointer !default;
-$react-notifications-font-size: .9em !default;
+$react-notifications-font-size: .8em !default;
 $react-notifications-line-height: 1.2em !default;
 $react-notifications-opacity: 0.9 !default;
 $react-notifications-margin-top: 15px !default;
@@ -90,7 +90,14 @@ $react-notifications-error-content: "\f057" !default;
     font-size: $react-notifications-title-font-size;
     line-height: $react-notifications-title-line-height;
     font-weight: $react-notifications-title-font-weight;
+    font-family: 'Notification', sans-serif;
     margin: $react-notifications-title-margin;
+    color: white;
+  }
+  .message {
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    //font-size: 15px;
   }
   &:hover, &:focus {
     opacity: $react-notifications-hover-opacity;
