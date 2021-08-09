@@ -1,11 +1,10 @@
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { useInjection } from "../../container/inversify-hook";
 import { IAuthService } from "../../services/AuthService";
 import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
 import { useStore } from "../../stores/helpers/useStore";
-import Noti from "../messages/Noti";
 import SectionTitle from "../shared/SectionTitle";
 import { TYPES } from "../../container/types";
 import { useHistory } from "react-router-dom";
@@ -34,7 +33,22 @@ const Login: FC = () => {
       userStore.login(data);
       history.push("/");
     }).catch(err => {
-      notiService.createNotification(NotificationType.ERROR, "Credenciales incorrectas");
+      let message;
+      if (err.response) {
+        switch (err.response.status) {
+          case 422:
+            message = "El formato de las credenciales no es correcto";
+            break;
+          case 403:
+            message = "Las credenciales son incorrectas.";
+            break;
+          default:
+            message = `Ocurrió un error de tipo ${err.response.status}`;
+        }
+      } else {
+        message = "Ocurrió un error interno del servidor";
+      }
+      notiService.createNotification(NotificationType.ERROR, message);
       setCalling(false);
     });
   };
@@ -42,7 +56,7 @@ const Login: FC = () => {
   return (
     <div>
       <form onSubmit={ onSubmit }>
-        <SectionTitle title="Iniciá Sesión"/>
+        <SectionTitle title="Iniciá Sesión" />
         <div className="container">
           <div className="row">
             <div className="col-md-4 offset-md-4">
@@ -56,7 +70,6 @@ const Login: FC = () => {
                 />
               </div>
               <div className="form-group">
-
                 <input
                   onChange={ (e) => setPassword(e.target.value) }
                   value={ password }
@@ -67,8 +80,8 @@ const Login: FC = () => {
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={ { height: "45px" } }
-                        disabled={ calling }>
-                  { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true"/>) : "" }
+                  disabled={ calling }>
+                  { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
                   { calling ? "" : "Login" }
                 </button>
               </div>
