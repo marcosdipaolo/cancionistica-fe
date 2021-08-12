@@ -10,13 +10,9 @@ const Services: FC = () => (
     />
     <div className="container">
       <div className="row">
-        <Service iconClass="icon-mobile" title="Lorem ipsum dolor" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit
-          natus saepe voluptatibus."/>
-        <Service iconClass="icon-browser" title="Lorem ipsum dolor" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit
-          natus saepe voluptatibus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit
-          natus saepe voluptatibus."/>
-        <Service iconClass="icon-toolbox" title="Lorem ipsum dolor" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit
-          natus saepe voluptatibus."/>
+        <Service columns="4" iconClass="icon-mobile" title="Lorem ipsum dolor" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit natus saepe voluptatibus."/>
+        <Service columns="4" iconClass="icon-browser" title="Lorem ipsum dolor" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit natus saepe voluptatibus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit natus saepe voluptatibus."/>
+        <Service columns="4" iconClass="icon-toolbox" title="Lorem ipsum dolor" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit natus saepe voluptatibus."/>
       </div>
     </div>
   </div>

@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { injectable } from "inversify";
 import cancionistica from "../api/cancionistica";
 
@@ -8,12 +9,12 @@ export interface ContactFormData {
 }
 
 export interface IContactFormService {
-  sendContactFormEmail: (data: ContactFormData) => any;
+  sendContactFormEmail: (data: ContactFormData) => Promise<AxiosResponse>;
 }
 
 @injectable()
 export class ContactFormService implements IContactFormService {
-  sendContactFormEmail(data: ContactFormData): any {
-    return cancionistica.post("/api/contact-form", data)
+  sendContactFormEmail(data: ContactFormData) {
+    return cancionistica.post<{msg: string}>("/api/contact-form", data)
   }
 }

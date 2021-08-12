@@ -5,7 +5,7 @@ import Intro from "../Intro";
 import Product from "../Product";
 import Services from "../services/Services";
 import Page from "../shared/Page";
-import Work from "../Work";
+import Workshop from "../workshop/Workshop";
 
 const HomePage: FC = () => {
   return (
@@ -16,7 +16,7 @@ const HomePage: FC = () => {
       />
       <Slider />
       <Services />
-      <Work />
+      <Workshop />
       <Branding />
       <Product />
     </Page>

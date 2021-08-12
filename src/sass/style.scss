@@ -3,6 +3,7 @@
 @import "original";
 @import "notifications";
 @import "slider";
+@import "spinner";
 
 a {
   text-decoration: none;
@@ -91,4 +92,9 @@ header.app-header {
   .services {
     height: calc(100% - 60px);
   }
+}
+
+.single-module .image {
+  height: 500px;
+  background-position: center;
 }

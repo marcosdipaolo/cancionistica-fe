@@ -3,28 +3,17 @@ import Slide, { SlideInterface } from "./Slide";
 import Slick from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-const slideConfig: SlideInterface[] = [
-  {
-    title: "Create A Motivational Template",
-    tag: "Branding",
-    imageUrl: "/images/slide_1.jpg",
-  },
-  {
-    title: "Start Practicing Your Course",
-    tag: "Website",
-    imageUrl: "/images/slide_2.jpg",
-  },
-  {
-    title: "Start Practicing Your Course",
-    tag: "Products",
-    imageUrl: "/images/slide_3.jpg",
-  },
-];
-
-// https://react-slick.neostack.com/docs/api
+import { useStore } from "../stores/helpers/useStore";
 
 const Slider: FC = () => {
+  const { dataStore: { blogStore } } = useStore();
+  const slideConfig = blogStore.getPosts().map(post => {
+    return {
+      title: post.title,
+      tag: "cancionistica",
+      imageUrl: process.env.REACT_APP_BACKEND_URL + '/' +  post.image_url
+    }
+  });
   const settings = {
     dots: true,
     infinite: true,
