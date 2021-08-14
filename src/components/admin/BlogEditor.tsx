@@ -1,25 +1,26 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState, Dispatch, SetStateAction } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { useStore } from '../../stores/helpers/useStore';
+import { observer } from 'mobx-react-lite';
 
 interface BlogEditorProps {
+  content?: string;
   initialValue?: string;
+  setContent: Dispatch<SetStateAction<string>>
 }
 
-const BlogEditor: FC<BlogEditorProps> = ({ initialValue }) => {
+const BlogEditor: FC<BlogEditorProps> = ({ content, initialValue, setContent }) => {
   const [ showSpinner, setShowSpinner ] = useState(true);
-  const { dataStore: { blogStore } } = useStore();
-  useEffect(() => { blogStore.setEditorNewPostData({content: initialValue ?? blogStore.getEditorNewPostData().content}); }, [ initialValue, blogStore ]);
   const editorRef = useRef<{ getContent: Function; }>();
   return (
     <div className="position-relative">
       <Editor
         onInit={ (evt, editor) => { editorRef.current = editor; } }
         onPostRender={ () => setShowSpinner(false) }
-        initialValue={ blogStore.getEditorNewPostData().content || initialValue }
+        initialValue={ initialValue }
         apiKey="f7lgtlctu8kv23vmz0b4sqiet0g67wykosqruxl1ptysq300"
-        value={ blogStore.getEditorNewPostData().content }
-        onEditorChange={ (newValue, editor) => { blogStore.setEditorNewPostData({content: newValue}); } }
+        // onEditorChange={ (newValue, editor) => { blogStore.setEditorNewPostData({content: newValue}); } }
+        onEditorChange={(newValue, editor) => setContent(newValue)}
+        value={content}
         init={ {
           placeholder: "Escribí el contenido...",
           height: 425,
@@ -53,4 +54,4 @@ const BlogEditor: FC<BlogEditorProps> = ({ initialValue }) => {
   );
 };
 
-export default BlogEditor;
+export default observer(BlogEditor);
