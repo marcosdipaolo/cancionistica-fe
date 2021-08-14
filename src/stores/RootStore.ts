@@ -8,9 +8,9 @@ export class RootStore {
   uiStore: UiStore;
   adminUiStore: AdminUiStore;
   constructor() {
-    this.dataStore = new DataStore(this);
-    this.uiStore = new UiStore(this);
-    this.adminUiStore = new AdminUiStore(this);
+    this.dataStore = new DataStore();
+    this.uiStore = new UiStore();
+    this.adminUiStore = new AdminUiStore();
     makeAutoObservable(this);
   }
 }

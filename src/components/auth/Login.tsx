@@ -43,7 +43,7 @@ const Login: FC = () => {
             message = "Credenciales inválidas.";
             break;
           default:
-            message = `Ocurrió un error de tipo ${err.response.status}`;
+            message = `Ocurrió un error: de tipo ${err.response.status}`;
         }
       } else {
         message = "Ocurrió un error interno del servidor";

@@ -3,10 +3,15 @@
 @import "original";
 @import "notifications";
 @import "slider";
+@import "single-post";
 @import "spinner";
 
 a {
-  text-decoration: none;
+  text-decoration: none!important;
+  &:hover {
+    text-decoration: none!important;
+  }
+  color: inherit;
 }
 
 input, textarea {
@@ -40,11 +45,6 @@ header.app-header {
     z-index: 10;
     background-color: #fff;
     color: #222;
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
 
     &.visible {
       opacity: 1;

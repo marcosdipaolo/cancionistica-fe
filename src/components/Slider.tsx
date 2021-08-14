@@ -1,19 +1,26 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Slide, { SlideInterface } from "./Slide";
 import Slick from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useStore } from "../stores/helpers/useStore";
+import { observer } from "mobx-react-lite";
 
 const Slider: FC = () => {
   const { dataStore: { blogStore } } = useStore();
-  const slideConfig = blogStore.getPosts().map(post => {
-    return {
-      title: post.title,
-      tag: "cancionistica",
-      imageUrl: process.env.REACT_APP_BACKEND_URL + '/' +  post.image_url
-    }
-  });
+  const [posts, setPosts] = useState<SlideInterface[]>([]);
+  useEffect(() => {
+    const posts = blogStore.postList.map<SlideInterface>(post => {
+      return {
+        id: post.id,
+        title: post.title,
+        category: "cancionistica",
+        imageUrl: process.env.REACT_APP_BACKEND_URL + '/' +  post.image_url
+      }
+    });
+    setPosts(posts)
+  }, []);
+  
   const settings = {
     dots: true,
     infinite: true,
@@ -27,11 +34,12 @@ const Slider: FC = () => {
   return (
     <aside id="app-slider" className="js-fullheight">
       <Slick { ...settings }>
-        { slideConfig.map((slide: SlideInterface, index) => (
+        { posts.map((slideData: SlideInterface, index) => (
           <Slide
-            tag={ slide.tag }
-            title={ slide.title }
-            imageUrl={ slide.imageUrl }
+            id={slideData.id}
+            category={ slideData.category }
+            title={ slideData.title }
+            imageUrl={ slideData.imageUrl }
             key={ index }
           />
         )) }
@@ -40,4 +48,4 @@ const Slider: FC = () => {
   );
 };
 
-export default Slider;
+export default observer(Slider);

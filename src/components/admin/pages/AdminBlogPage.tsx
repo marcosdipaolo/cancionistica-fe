@@ -1,23 +1,46 @@
 import { observer } from "mobx-react-lite";
-import { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { useInjection } from "../../../container/inversify-hook";
 import { TYPES } from "../../../container/types";
 import { IBlogService } from "../../../services/BlogService";
 import { useStore } from "../../../stores/helpers/useStore";
 import AdminPage from "../shared/AdminPage";
+import Modal from 'react-modal';
+import { INotificationService, NotificationType } from "../../../services/NotificationService";
 
-const AdminBlogPage: FC = () => {
+const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
   const { dataStore: { blogStore } } = useStore();
   const blogService = useInjection<IBlogService>(TYPES.blogService);
   const imageBaseUrl = process.env.REACT_APP_BACKEND_URL;
-  useEffect(() => {
-    blogService.getPosts().then(res => {
-      
-      blogStore.setPosts(res.data);
-      console.log(blogStore.getPosts());
+  const notificationService = useInjection<INotificationService>(TYPES.notificationService);
+  const [ modalOpen, setModalOpen ] = useState(false);
+  const [ postToDeleteId, setPostToDeleteId ] = useState("");
+
+  const getPosts = () => {
+    blogService.getPosts().then(data => {
+      blogStore.setPosts(data);
+    }).catch(err => {
+      blogStore.setPosts([]);
+      if (history.action !== "POP") {
+        notificationService.createNotification(NotificationType.ERROR, err.message);
+      }
     });
+  };
+  useEffect(() => {
+    getPosts();
   }, []);
+
+  const deletePost = (id: string) => {
+    setModalOpen(false);
+    blogService.deletePost(id).then(() => {
+      notificationService.createNotification(NotificationType.SUCCESS, "Artículo borrado");
+      getPosts();
+    }).catch(err => {
+      notificationService.createNotification(NotificationType.ERROR, err.message);
+    });
+  };
+
   return (
     <AdminPage>
       <br />
@@ -31,23 +54,48 @@ const AdminBlogPage: FC = () => {
           </tr>
         </thead>
         <tbody>
-          { blogStore.getPosts().map(post => <tr key={post.id}>
+          { blogStore.postList.map(post => <tr key={ post.id }>
             <td className="image">
               <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.image_url})` } } />
             </td>
             <td className="title">{ post.title }<br /><span className="sub-title">{ post.sub_title }</span></td>
             <td className="position-relative">
-              { post.content.substring(0, 300) + ' ...' }
+              <div className="post-content" dangerouslySetInnerHTML={ { __html: post.content.substring(0, 200) + ' ...' } } />
               <br />
               <div className="position-absolute bottom-0">
-                <i className="icon-eye"></i>
-                <i className="icon-pencil"></i>
-                <i className="icon-bin"></i>
+                <Link to={ `/blog/${post.id}` }><i className="icon-eye"></i></Link>
+                <Link to={`/admin/blog/${post.id}/edit`}><i className="icon-pencil"></i></Link>
+                <i onClick={ () => { setPostToDeleteId(post.id); setModalOpen(true); } } className="icon-bin"></i>
               </div>
             </td>
           </tr>) }
         </tbody>
       </table>
+      <Modal
+        isOpen={ modalOpen }
+        style={ {
+          content:
+          {
+            border: 'none',
+            boxShadow: '1px 1px 2px rgba(0,0,0,.4)',
+            top: '50%',
+            left: '50%',
+            height: '200px',
+            width: '400px',
+            transform: 'translate(-50%, -50%)',
+            padding: '10px 10px 0'
+          }
+        } }
+      >
+        <div className="delete-post-modal">
+          <h4><i className="icon-cancel-circle"></i> Borrar</h4>
+          <p>Estás seguro? esta es una acción irreversible</p>
+          <div className="d-flex justify-content-between">
+            <button onClick={ () => deletePost(postToDeleteId) } className="btn btn-danger d-block">Si, borrar</button>
+            <button onClick={ () => { setPostToDeleteId(""); setModalOpen(false); } } className="btn btn-info d-block">Cancelar</button>
+          </div>
+        </div>
+      </Modal>
     </AdminPage>
   );
 };

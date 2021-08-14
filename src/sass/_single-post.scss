@@ -1,0 +1,12 @@
+////// single post //////
+.single-post {
+  .single-post-image {
+    height: 400px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  h5.back {
+    cursor: pointer;
+  }
+}

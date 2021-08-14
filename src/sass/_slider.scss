@@ -1,59 +1,62 @@
 #app-slider {
   margin-bottom: 7em;
   .slick-slider {
-      .slick-dots {
-          bottom: 25px;
-          li {
-              margin: 0 3px;
-              button {
-                  &:before {
-                      font-size: 14px;
-                      color: white;
-                      opacity: .15;
-                  }
-              }
-              &.slick-active {
-                  button {
-                      &:before {
-                          opacity: .6;
-                      }
-                  }
-              }
+    .slick-dots {
+      bottom: 25px;
+      li {
+        margin: 0 3px;
+        button {
+          &:before {
+            font-size: 14px;
+            color: white;
+            opacity: 0.15;
           }
-      }
-      .slick-list {
-          .slick-track {
-              .slick-slide {
-                  div.app-slide {
-                      height: 100vh;
-                      background-size: cover;
-                      background-repeat: no-repeat;
-                      .slider-text {
-                          .title {
-                              font-size: 54px;
-                              color: #fff;
-                          }
-                          .tag {
-                              color: #ddd;
-                          }
-                      }
-                      .overlay-gradient {
-                          position: absolute;
-                          top: 0;
-                          bottom: 0;
-                          right: 0;
-                          left: 0;
-                          background: rgb(34,52,89);
-                          background:
-                                  linear-gradient(
-                                                  135deg,
-                                          rgba(34,52,89,0.7903536414565826) 0%,
-                                          rgba(57,10,94,0.5690651260504201) 100%
-                                  );
-                      }
-                  }
-              }
+        }
+        &.slick-active {
+          button {
+            &:before {
+              opacity: 0.6;
+            }
           }
+        }
       }
+    }
+    .slick-list {
+      .slick-track {
+        .slick-slide {
+          visibility: hidden;
+          &.slick-active {
+            visibility: visible;
+          }
+          div.app-slide {
+            height: 100vh;
+            background-size: cover;
+            background-repeat: no-repeat;
+            .slider-text {
+              .title {
+                font-size: 54px;
+                color: #fff;
+              }
+              .category {
+                color: #ddd;
+              }
+            }
+            .overlay-gradient {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              right: 0;
+              left: 0;
+              background: rgb(34, 52, 89);
+              background: linear-gradient(
+                135deg,
+                rgba(34, 52, 89, 0.7903536414565826) 0%,
+                rgba(57, 10, 94, 0.5690651260504201) 100%
+              );
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -13,6 +13,8 @@ import SingleModulePage from "./pages/SingleModulePage";
 import AdminBlogPage from "./admin/pages/AdminBlogPage";
 import AdminNewPostPage from "./admin/pages/AdminNewPostPage";
 import Logout from "./auth/Logout";
+import SinglePostPage from "./pages/SinglePostPage";
+import AdminEditPost from "./admin/pages/AdminEditPost";
 
 const AppRouter: FC = () => (
   <Router>
@@ -24,12 +26,14 @@ const AppRouter: FC = () => (
       <Route exact path="/logout" component={ Logout } />
       <Route exact path="/register" component={ RegisterPage } />
       <Route exact path="/modules/:id" component={ SingleModulePage } />
+      <Route exact path="/blog/:id" component={ SinglePostPage } />
       <Route exact path="/admin" component={ AdminHomePage } />
       <Route exact path="/admin/profile" component={ AdminProfilePage } />
       <Route exact path="/admin/purchases" component={ AdminPurchasesPage } />
       <Route exact path="/admin/modules" component={ AdminModulesPage } />
       <Route exact path="/admin/blog" component={ AdminBlogPage } />
       <Route exact path="/admin/blog/new" component={ AdminNewPostPage } />
+      <Route exact path="/admin/blog/:id/edit" component={ AdminEditPost } />
     </Switch>
   </Router>
 );

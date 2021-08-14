@@ -1,10 +1,3 @@
-enum NotificationType {
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-  ERROR = "error"
-}
-
 declare module "react-notifications" {
   import { ReactNode } from "react";
   import { EventEmitter } from "events";

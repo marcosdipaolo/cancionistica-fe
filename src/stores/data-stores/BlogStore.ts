@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import { Post } from "../../models/Post";
-import { RootStore } from "../RootStore";
 
 export interface EditorNewPostData {
   title: string,
@@ -18,10 +17,14 @@ export class BlogStore {
     image: null
   };
 
-  private postList: Post[] = [];
+  postList: Post[] = [];
 
-  constructor(public rootStore: RootStore) {
+  constructor() {
     makeAutoObservable(this);
+  }
+
+  getPost(id: string) {
+    return this.postList.find((post) => post.id === id);
   }
 
 
@@ -46,14 +49,20 @@ export class BlogStore {
       subTitle: "",
       content: "",
       image: null
-    }
+    };
   }
 
   getPosts(): Post[] {
-    return this.postList;
+    return this.postList ?? [];
   }
 
   setPosts(posts: Post[]): void {
-    this.postList = posts;  
+    this.postList = posts;
+  }
+
+  addPostToList(post: Post) {
+    if(!this.postList.find((_post) => _post.id === post.id)) {
+      this.postList.push(post);
+    }
   }
 }

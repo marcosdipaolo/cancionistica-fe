@@ -1,11 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { RootStore } from "./RootStore";
-
 export class UiStore {
   menuOpened = false;
   adminSidebarOpened = true;
 
-  constructor(public rootStore: RootStore) {
+  constructor() {
     makeAutoObservable(this);
   }
 

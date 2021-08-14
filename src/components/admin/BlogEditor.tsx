@@ -16,7 +16,7 @@ const BlogEditor: FC<BlogEditorProps> = ({ initialValue }) => {
       <Editor
         onInit={ (evt, editor) => { editorRef.current = editor; } }
         onPostRender={ () => setShowSpinner(false) }
-        initialValue={ blogStore.getEditorNewPostData().content }
+        initialValue={ blogStore.getEditorNewPostData().content || initialValue }
         apiKey="f7lgtlctu8kv23vmz0b4sqiet0g67wykosqruxl1ptysq300"
         value={ blogStore.getEditorNewPostData().content }
         onEditorChange={ (newValue, editor) => { blogStore.setEditorNewPostData({content: newValue}); } }

@@ -1,6 +1,5 @@
-import { autorun, makeAutoObservable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { User } from "../domain/User";
-import { RootStore } from "../RootStore";
 
 export interface UserRegisterRequest {
   name: string,
@@ -30,12 +29,9 @@ export interface UserRegistrationResponse {
 
 export class UserStore {
   private loggedUser: User | null = null;
-  rootStore: RootStore;
 
-  constructor(rootStore: RootStore) {
-    this.rootStore = rootStore;
+  constructor() {
     makeAutoObservable(this);
-    autorun(() => console.log(this.loggedUser));
   }
 
   getLoggedUser(): User | null {
