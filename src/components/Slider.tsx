@@ -15,7 +15,7 @@ const Slider: FC = () => {
         id: post.id,
         title: post.title,
         category: "cancionistica",
-        imageUrl: process.env.REACT_APP_BACKEND_URL + '/' +  post.image_url
+        imageUrl: process.env.REACT_APP_BACKEND_URL + '/' +  post.image.path
       }
     });
     setPosts(posts)

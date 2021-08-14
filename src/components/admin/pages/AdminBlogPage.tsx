@@ -56,7 +56,7 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
         <tbody>
           { blogStore.postList.map(post => <tr key={ post.id }>
             <td className="image">
-              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.image_url})` } } />
+              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.image.path})` } } />
             </td>
             <td className="title">{ post.title }<br /><span className="sub-title">{ post.sub_title }</span></td>
             <td className="position-relative">

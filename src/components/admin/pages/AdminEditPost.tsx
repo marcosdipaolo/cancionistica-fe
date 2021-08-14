@@ -30,7 +30,7 @@ const AdminEditPostPage: FC = () => {
       setSubTitle(data.sub_title);
       setContent(data.content);
       setInitialValue(data.content);
-      setThumb(`${process.env.REACT_APP_BACKEND_URL}/${data.image_url}`);
+      setThumb(`${process.env.REACT_APP_BACKEND_URL}/${data.image.path}`);
     });
   }, []);
 

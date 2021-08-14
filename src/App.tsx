@@ -19,7 +19,7 @@ function App() {
       blogStore.setPosts([]);
       notificationService.createNotification(NotificationType.ERROR, err.message)
     });
-  }, [blogService, blogStore]);
+  }, []);
   return (
     <div>
       <NotificationContainer />

@@ -15,13 +15,13 @@ const PostComponent: FC<{ postId: string; }> = ({ postId }) => {
     blogService.getPost(postId).then(({ data }) => {
       setPost(data);
     });
-  }, [blogService, postId]);
+  }, []);
   if (!post) {
     return <div></div>;
   }
   return (
     <div className="single-post">
-      <div className="single-post-image" style={ { backgroundImage: `url(${backendBaseUrl}/${post.image_url})` } } />
+      <div className="single-post-image" style={ { backgroundImage: `url(${backendBaseUrl}/${post.image.path})` } } />
       <br />
       <br />
       <SectionTitle title={ post.title } sub={ post.sub_title } />
