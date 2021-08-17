@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { User } from "../domain/User";
+import { User } from "../../models/User";
 
 export interface UserRegisterRequest {
   name: string,
@@ -29,31 +29,32 @@ export interface UserRegistrationResponse {
 
 export class UserStore {
   private loggedUser: User | null = null;
+  private readonly cookieName = "loggedUser";
 
   constructor() {
     makeAutoObservable(this);
   }
 
   getLoggedUser(): User | null {
-    if ( !this.loggedUser ) {
-      const storedUser = window.localStorage.getItem("loggedUser");
-      if ( !storedUser ) {
+    if (!this.loggedUser) {
+      const storedUser = window.localStorage.getItem(this.cookieName);
+      if (!storedUser) {
         return null;
       }
       const { id, name, email }: UserAttributes = JSON.parse(storedUser);
-      return new User(id, name, email);
+      return { id, name, email };
     }
     return this.loggedUser;
   }
 
   login(data: UserRegistrationResponse): void {
     const { id, name, email } = data;
-    this.loggedUser = new User(id, name, email);
-    window.localStorage.setItem("loggedUser", JSON.stringify(data));
+    this.loggedUser = { id, name, email };
+    window.localStorage.setItem(this.cookieName, JSON.stringify(data));
   }
 
   logout() {
     this.loggedUser = null;
-    window.localStorage.removeItem("loggedUser");
+    window.localStorage.removeItem(this.cookieName);
   }
 }

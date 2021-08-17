@@ -6,16 +6,10 @@ export interface EditorNewPostData {
   subTitle: string,
   content: string,
   image: File | null;
+  categoryId: string
 }
 
 export class BlogStore {
-
-  private editorNewPostData: EditorNewPostData = {
-    title: "",
-    subTitle: "",
-    content: "",
-    image: null
-  };
 
   postList: Post[] = [];
 
@@ -25,31 +19,6 @@ export class BlogStore {
 
   getPost(id: string) {
     return this.postList.find((post) => post.id === id);
-  }
-
-
-  editorContentIsValid(): boolean {
-    return this.editorNewPostData.content.length > 10
-      && this.editorNewPostData.title.length > 2
-      && this.editorNewPostData.image instanceof File
-      && this.editorNewPostData.subTitle.length > 2;
-  }
-
-  setEditorNewPostData(data: Partial<EditorNewPostData>) {
-    Object.assign(this.editorNewPostData, data);
-  }
-
-  getEditorNewPostData(): EditorNewPostData {
-    return this.editorNewPostData;
-  }
-
-  clearEditorNewPostData() {
-    this.editorNewPostData = {
-      title: "",
-      subTitle: "",
-      content: "",
-      image: null
-    };
   }
 
   getPosts(): Post[] {

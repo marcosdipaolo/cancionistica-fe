@@ -1,11 +1,4 @@
-interface Image {
-  id: string
-  path: string
-  imageable_type: string,
-  imageable_id: string,
-  created_at: string,
-  updated_at: string,
-}
+import { Image } from "./Image";
 
 export interface Post {
   id: string;
@@ -14,5 +7,5 @@ export interface Post {
   content: string;
   image: Image;
   created_at: string;
-  updated_at: string
+  updated_at: string;
 }
