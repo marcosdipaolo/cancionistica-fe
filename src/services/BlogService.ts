@@ -49,7 +49,7 @@ export class BlogService implements IBlogService {
       _data.append("image", data.image!);
     }
     if (data.categoryId) {
-      _data.append("category_id", data.categoryId);
+      _data.append("post_category_id", data.categoryId);
     }
     _data.append("_method", "PUT");
     await cancionistica.get(`/sanctum/csrf-cookie`);

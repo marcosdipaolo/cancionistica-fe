@@ -1,5 +1,4 @@
 import AppRouter from "./components/AppRouter";
-import { NotificationContainer } from "react-notifications";
 import { useInjection } from "./container/inversify-hook";
 import { IBlogService } from "./services/BlogService";
 import { TYPES } from "./container/types";
@@ -14,7 +13,8 @@ function App() {
   const { dataStore: { blogStore } } = useStore();
   useEffect(() => {
     blogService.getPosts().then((data) => {      
-      blogStore.setPosts(data);
+      blogStore.postList = data;
+      console.log(blogStore.postList);
     }).catch(err => {
       blogStore.setPosts([]);
       notificationService.createNotification(NotificationType.ERROR, err.message)
@@ -22,7 +22,6 @@ function App() {
   }, []);
   return (
     <div>
-      <NotificationContainer />
       <AppRouter />
     </div>
   );

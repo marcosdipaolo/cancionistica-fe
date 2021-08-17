@@ -5,21 +5,22 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useStore } from "../stores/helpers/useStore";
 import { observer } from "mobx-react-lite";
+import { Post } from "../models/Post";
 
 const Slider: FC = () => {
   const { dataStore: { blogStore } } = useStore();
   const [posts, setPosts] = useState<SlideInterface[]>([]);
   useEffect(() => {
-    const posts = blogStore.postList.map<SlideInterface>(post => {
+    const posts = blogStore.postList.map<SlideInterface>((post: Post) => {
       return {
         id: post.id,
         title: post.title,
-        category: "cancionistica",
-        imageUrl: process.env.REACT_APP_BACKEND_URL + '/' +  post.image.path
+        post_category: post.post_category,
+        images: post.images
       }
     });
     setPosts(posts)
-  }, []);
+  }, [blogStore.postList]);
   
   const settings = {
     dots: true,
@@ -37,9 +38,9 @@ const Slider: FC = () => {
         { posts.map((slideData: SlideInterface, index) => (
           <Slide
             id={slideData.id}
-            category={ slideData.category }
+            post_category={ slideData.post_category }
             title={ slideData.title }
-            imageUrl={ slideData.imageUrl }
+            images={ slideData.images }
             key={ index }
           />
         )) }

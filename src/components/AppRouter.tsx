@@ -15,9 +15,11 @@ import AdminNewPostPage from "./admin/pages/AdminNewPostPage";
 import Logout from "./auth/Logout";
 import SinglePostPage from "./pages/SinglePostPage";
 import AdminEditPost from "./admin/pages/AdminEditPost";
+import { NotificationContainer } from "react-notifications";
 
 const AppRouter: FC = () => (
   <Router>
+    <NotificationContainer />
     <Switch>
       <Route exact path="/" component={ HomePage } />
       <Route exact path="/about" component={ AboutPage } />

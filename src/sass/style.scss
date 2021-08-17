@@ -29,8 +29,8 @@ button, input[type=submit] {
   border-radius: $border-radius-sm;
 }
 
-h1, h2 {
-  color: $h1-color;
+h1, h2, h3, h4, h5, h6 {
+  color: $heading-color;
 }
 
 header.app-header {

@@ -5,7 +5,11 @@ export interface Post {
   title: string;
   sub_title: string;
   content: string;
-  image: Image;
+  images: Image[];
+  post_category?: {
+    id: string;
+    name: string;
+  };
   created_at: string;
   updated_at: string;
 }

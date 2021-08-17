@@ -24,6 +24,11 @@ const AdminEditPostPage: FC = () => {
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
 
   useEffect(() => {
+    blogService.getCategories().then(({ data }) => {
+      setCategories(data);
+    }).catch(err => {
+      notificationService.createNotification(NotificationType.ERROR, err.message);
+    });
     const post = blogService.getPost(id).then(({ data }) => {
       if (!post) {
         history.goBack();
@@ -33,7 +38,10 @@ const AdminEditPostPage: FC = () => {
       setSubTitle(data.sub_title);
       setContent(data.content);
       setInitialValue(data.content);
-      setThumb(`${process.env.REACT_APP_BACKEND_URL}/${data.image.path}`);
+      if(data.post_category) {
+        setCurrentCategory(data.post_category.id);
+      }
+      setThumb(`${process.env.REACT_APP_BACKEND_URL}/${data.images.find(img => img.size === "thumbnail")!.path}`);
     });
   }, []);
 
@@ -102,7 +110,7 @@ const AdminEditPostPage: FC = () => {
           <input id="inputFile" onChange={onFileChange} ref={inputFile} type="file" className="d-none" />
           <button onClick={onSubmit} className="btn btn-danger">publicar</button>
         </div>
-        <img className="thumbnail d-block m-auto position-relative" src={thumb} alt="" width="300" style={{ top: '-50px' }} />
+        <img className="thumbnail d-block m-auto position-relative" src={thumb} alt="" width="150" style={{ top: '-50px' }} />
         <br />
         <br />
       </div>

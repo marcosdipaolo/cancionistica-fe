@@ -56,7 +56,7 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
         <tbody>
           { blogStore.postList.map(post => <tr key={ post.id }>
             <td className="image">
-              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.image.path})` } } />
+              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.images.find(img => img.size === "thumbnail")!.path})` } } />
             </td>
             <td className="title">{ post.title }<br /><span className="sub-title">{ post.sub_title }</span></td>
             <td className="position-relative">
@@ -64,8 +64,9 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
               <br />
               <div className="position-absolute bottom-0">
                 <Link to={ `/blog/${post.id}` }><i className="icon-eye"></i></Link>
-                <Link to={`/admin/blog/${post.id}/edit`}><i className="icon-pencil"></i></Link>
+                <Link to={ `/admin/blog/${post.id}/edit` }><i className="icon-pencil"></i></Link>
                 <i onClick={ () => { setPostToDeleteId(post.id); setModalOpen(true); } } className="icon-bin"></i>
+                { post.post_category ? <span className="badge bg-primary">{ post.post_category.name }</span> : '' }
               </div>
             </td>
           </tr>) }
