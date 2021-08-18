@@ -19,6 +19,8 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
 
   const getPosts = () => {
     blogService.getPosts().then(data => {
+      console.log(data);
+      
       blogStore.setPosts(data);
     }).catch(err => {
       blogStore.setPosts([]);
@@ -56,7 +58,7 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
         <tbody>
           { blogStore.postList.map(post => <tr key={ post.id }>
             <td className="image">
-              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.images.find(img => img.size === "thumbnail")!.path})` } } />
+              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.images.find(img => img.size === "thumbnail")?.path})` } } />
             </td>
             <td className="title">{ post.title }<br /><span className="sub-title">{ post.sub_title }</span></td>
             <td className="position-relative">

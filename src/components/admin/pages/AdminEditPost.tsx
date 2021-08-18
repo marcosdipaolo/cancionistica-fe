@@ -41,7 +41,7 @@ const AdminEditPostPage: FC = () => {
       if(data.post_category) {
         setCurrentCategory(data.post_category.id);
       }
-      setThumb(`${process.env.REACT_APP_BACKEND_URL}/${data.images.find(img => img.size === "thumbnail")!.path}`);
+      setThumb(`${process.env.REACT_APP_BACKEND_URL}/${data.images.find(img => img.size === "thumbnail")?.path}`);
     });
   }, []);
 

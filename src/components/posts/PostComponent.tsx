@@ -21,7 +21,7 @@ const PostComponent: FC<{ postId: string; }> = ({ postId }) => {
   }
   return (
     <div className="single-post">
-      <div className="single-post-image" style={ { backgroundImage: `url(${backendBaseUrl}/${post.images.find(img => img.size === "full")!.path})` } } />
+      <div className="single-post-image" style={ { backgroundImage: `url(${backendBaseUrl}/${post.images.find(img => img.size === "full")?.path})` } } />
       <br />
       <br />
       <SectionTitle title={ post.title } sub={ post.sub_title } />

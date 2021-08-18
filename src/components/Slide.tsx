@@ -17,7 +17,7 @@ const Slide: FC<SlideInterface> = ({
   id
 }: SlideInterface) => (
   <Link to={ `/blog/${id}` }>
-    <div className="app-slide" style={ { backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL}/${images.find(img => img.size === "full")!.path})` } }>
+    <div className="app-slide" style={ { backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL}/${images.find(img => img.size === "full")?.path})` } }>
       <div className="overlay-gradient"></div>
       <div className="row h-100">
         <div className="col-md-6"></div>
