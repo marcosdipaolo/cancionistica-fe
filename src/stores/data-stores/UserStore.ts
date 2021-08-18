@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { User } from "../../models/User";
 
@@ -27,6 +28,7 @@ export interface UserRegistrationResponse {
   created_at: string;
 }
 
+@injectable()
 export class UserStore {
   private loggedUser: User | null = null;
   private readonly cookieName = "loggedUser";

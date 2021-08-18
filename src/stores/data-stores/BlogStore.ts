@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { Post } from "../../models/Post";
 
@@ -9,6 +10,7 @@ export interface EditorNewPostData {
   categoryId: string
 }
 
+@injectable()
 export class BlogStore {
 
   postList: Post[] = [];

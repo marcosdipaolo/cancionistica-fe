@@ -8,4 +8,5 @@ export const TYPES = {
   userStore: Symbol("userStore"),
   uiStore: Symbol("uiStore"),
   adminUiStore: Symbol("adminUiStore"),
+  rootStore: Symbol("rootStore"),
 }
