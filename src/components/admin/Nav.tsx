@@ -1,11 +1,10 @@
 import { FC } from "react";
-import { useHistory } from "react-router-dom";
+import history from "../../history";
 import { useStore } from "../../stores/helpers/useStore";
 
 const Nav: FC = () => {
   const { uiStore, dataStore: { userStore } } = useStore();
   const loggedUser = userStore.getLoggedUser();
-  const history = useHistory();
 
   if (!loggedUser) {
     history.push("/login");

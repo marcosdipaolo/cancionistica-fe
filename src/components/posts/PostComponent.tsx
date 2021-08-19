@@ -1,16 +1,15 @@
 import { FC, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useInjection } from "../../container/inversify-hook";
 import { TYPES } from "../../container/types";
 import { Post } from "../../models/Post";
 import { IBlogService } from "../../services/BlogService";
 import SectionTitle from "../shared/SectionTitle";
+import history from "../../history";
 
 const PostComponent: FC<{ postId: string; }> = ({ postId }) => {
   const blogService = useInjection<IBlogService>(TYPES.blogService);
   const [ post, setPost ] = useState<Post>();
   const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
-  const history = useHistory();
   useEffect(() => {
     blogService.getPost(postId).then(({ data }) => {
       setPost(data);

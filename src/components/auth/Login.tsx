@@ -1,58 +1,18 @@
-import { AxiosResponse } from "axios";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
-import { useInjection } from "../../container/inversify-hook";
-import { IAuthService } from "../../services/AuthService";
-import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
-import { TYPES } from "../../container/types";
-import { useHistory } from "react-router-dom";
-import { INotificationService, NotificationType } from "../../services/NotificationService";
 
 const Login: FC = () => {
   const [ password, setPassword ] = useState("");
   const [ email, setEmail ] = useState("");
-  const [ calling, setCalling ] = useState(false);
-  const history = useHistory();
-  const notiService = useInjection<INotificationService>(TYPES.notificationService);
 
   const { dataStore: { userStore } } = useStore();
 
-  const authService = useInjection<IAuthService>(TYPES.authService);
-
   const onSubmit = (e: { preventDefault: () => void; }) => {
-    setCalling(true);
     e.preventDefault();
-    authService.login(
-      { email, password }
-    ).then((res: AxiosResponse) => {
-      notiService.createNotification(NotificationType.SUCCESS, "Has iniciado sesión exitosamente");
-      const { data }: { data: UserRegistrationResponse; } = res;
-      setCalling(false);
-      userStore.login(data);
-      history.push("/");
-    }).catch(err => {
-      let message;
-      if (err.response) {
-        switch (err.response.status) {
-          case 422:
-            message = "El formato de las credenciales no es correcto";
-            break;
-          case 403:
-            message = "Credenciales inválidas.";
-            break;
-          default:
-            message = `Ocurrió un error: de tipo ${err.response.status}`;
-        }
-      } else {
-        message = "Ocurrió un error interno del servidor";
-      }
-      notiService.createNotification(NotificationType.ERROR, message);
-      setCalling(false);
-    });
+    userStore.login({ email, password });
   };
-
   return (
     <div>
       <form onSubmit={ onSubmit }>
@@ -80,9 +40,9 @@ const Login: FC = () => {
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={ { height: "45px" } }
-                  disabled={ calling }>
-                  { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
-                  { calling ? "" : "Login" }
+                  disabled={ userStore.loggingIn }>
+                  { userStore.loggingIn ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
+                  { userStore.loggingIn ? "" : "Login" }
                 </button>
               </div>
             </div>

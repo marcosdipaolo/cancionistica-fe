@@ -3,8 +3,8 @@ import Sidebar from "../Sidebar";
 import Nav from "../Nav";
 import "../../../sass/admin/style.scss";
 import { useStore } from "../../../stores/helpers/useStore";
-import { useHistory } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import history from "../../../history";
 
 interface Children {
   children: (Element | ReactNode)[] | (Element | ReactNode);
@@ -13,7 +13,6 @@ interface Children {
 const AdminPage: FC<Children> = ({ children }: Children) => {
 
   const { uiStore, dataStore: { userStore } } = useStore();
-  const history = useHistory();
   if (!userStore.getLoggedUser()) {
     history.push("/login");
   }

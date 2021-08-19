@@ -1,35 +1,19 @@
 import { FC, useState } from "react";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
-import { IAuthService } from "../../services/AuthService";
-import { UserRegistrationResponse } from "../../stores/data-stores/UserStore";
 import { observer } from "mobx-react-lite";
-import { useInjection } from "../../container/inversify-hook";
-import { TYPES } from "../../container/types";
-import { useHistory } from "react-router-dom";
 
 const Register: FC = () => {
   const [ name, setName ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ passwordConfirmation, setPasswordConfirmation ] = useState('');
-  const [ calling, setCalling ] = useState(false);
-  const history = useHistory();
 
   const { dataStore: { userStore } } = useStore();
 
-  const authService = useInjection<IAuthService>(TYPES.authService);
-
   const onSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    authService.register(
-      { name, email, password, password_confirmation: passwordConfirmation }
-    ).then(({ data }: { data: UserRegistrationResponse; }) => {
-      setCalling(false);
-      userStore.login(data);
-      history.push("/");
-    }).catch(err => console.log(err));
-    setCalling(true);
+    userStore.register({ name, email, password, password_confirmation: passwordConfirmation });
   };
 
   return (
@@ -76,9 +60,9 @@ const Register: FC = () => {
             </div>
             <div className="form-group">
               <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={ { height: "45px" } }
-                disabled={ calling }>
-                { calling ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
-                { calling ? "" : "Register" }
+                disabled={ userStore.registering }>
+                { userStore.registering ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
+                { userStore.registering ? "" : "Register" }
               </button>
             </div>
           </div>

@@ -1,12 +1,12 @@
 import cancionistica from "../api/cancionistica";
-import { UserLoginRequest, UserRegisterRequest } from "../stores/data-stores/UserStore";
+import { UserLoginRequest, UserRegisterRequest, UserRegistrationResponse } from "../stores/data-stores/UserStore";
 import { injectable } from "inversify";
 import "reflect-metadata";
 import { AxiosResponse } from "axios";
 
 export interface IAuthService {
   register: (data: UserRegisterRequest) => Promise<AxiosResponse>;
-  login: (data: UserLoginRequest) => Promise<AxiosResponse>;
+  login: (data: UserLoginRequest) => Promise<AxiosResponse<UserRegistrationResponse>>;
   logout: () => void;
 }
 
@@ -21,7 +21,7 @@ export class AuthService implements IAuthService {
     });
   };
 
-  login = async (data: UserLoginRequest): Promise<AxiosResponse> => {
+  login = async (data: UserLoginRequest): Promise<AxiosResponse<UserRegistrationResponse>> => {
     await cancionistica.get(`/sanctum/csrf-cookie`);
     return cancionistica.post(`/auth/login`, data);
   };

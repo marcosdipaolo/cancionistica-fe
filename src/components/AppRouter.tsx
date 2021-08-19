@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
@@ -16,9 +16,10 @@ import Logout from "./auth/Logout";
 import SinglePostPage from "./pages/SinglePostPage";
 import AdminEditPost from "./admin/pages/AdminEditPost";
 import { NotificationContainer } from "react-notifications";
+import history from "../history";
 
 const AppRouter: FC = () => (
-  <Router>
+  <Router history={ history }>
     <NotificationContainer />
     <Switch>
       <Route exact path="/" component={ HomePage } />

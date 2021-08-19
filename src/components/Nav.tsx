@@ -1,10 +1,10 @@
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import history from "../history";
 import { FC, Fragment } from "react";
 import { useStore } from "../stores/helpers/useStore";
 import { observer } from "mobx-react-lite";
 
 const Nav: FC = () => {
-  const history = useHistory();
   const { uiStore, dataStore: { userStore } } = useStore();
 
   const logout = () => {

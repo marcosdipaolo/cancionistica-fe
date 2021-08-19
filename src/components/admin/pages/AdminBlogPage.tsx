@@ -18,16 +18,7 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
   const [ postToDeleteId, setPostToDeleteId ] = useState("");
 
   const getPosts = () => {
-    blogService.getPosts().then(data => {
-      console.log(data);
-      
-      blogStore.setPosts(data);
-    }).catch(err => {
-      blogStore.setPosts([]);
-      if (history.action !== "POP") {
-        notificationService.createNotification(NotificationType.ERROR, err.message);
-      }
-    });
+    blogStore.getPosts();
   };
   useEffect(() => {
     getPosts();

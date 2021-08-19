@@ -1,5 +1,5 @@
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import history from "../../../history";
 import { useInjection } from "../../../container/inversify-hook";
 import { TYPES } from "../../../container/types";
 import { Category } from "../../../models/Category";
@@ -20,7 +20,6 @@ const AdminNewPostPage: FC = () => {
   const [ image, setImage ] = useState<File | null>(null);
   const [ thumb, setThumb ] = useState("");
   const blogService = useInjection<IBlogService>(TYPES.blogService);
-  const history = useHistory();
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
 
   useEffect(() => {
