@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Page from "../shared/Page";
 
 const PrePurchasePage: FC = () => {
@@ -9,6 +9,6 @@ const PrePurchasePage: FC = () => {
       </div>
     </Page>
   );
-}
+};
 
 export default PrePurchasePage;

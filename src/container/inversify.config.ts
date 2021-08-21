@@ -10,6 +10,7 @@ import { BlogStore } from "../stores/data-stores/BlogStore";
 import { UserStore } from "../stores/data-stores/UserStore";
 import { AdminUiStore } from "../stores/AdminUiStore";
 import { RootStore } from "../stores/RootStore";
+import { IPaymentService, PaymentService } from "../services/PaymentService";
 
 const container = new Container();
 
@@ -17,6 +18,7 @@ container.bind<IAuthService>(TYPES.authService).to(AuthService);
 container.bind<IContactFormService>(TYPES.contactFormService).to(ContactFormService);
 container.bind<INotificationService>(TYPES.notificationService).to(NotificationService);
 container.bind<IBlogService>(TYPES.blogService).to(BlogService);
+container.bind<IPaymentService>(TYPES.paymentService).to(PaymentService);
 container.bind<DataStore>(TYPES.dataStore).to(DataStore);
 container.bind<UiStore>(TYPES.uiStore).to(UiStore);
 container.bind<AdminUiStore>(TYPES.adminUiStore).to(AdminUiStore);

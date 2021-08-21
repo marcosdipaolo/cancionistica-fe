@@ -1,8 +1,8 @@
+import { inject, injectable } from "inversify";
 import { flow, makeAutoObservable } from "mobx";
-import { postMessages } from "../../messages/messages";
+import { TYPES } from "../../container/types";
 import { Post } from "../../models/Post";
-import { BlogService, IBlogService } from "../../services/BlogService";
-import { INotificationService, NotificationService, NotificationType } from "../../services/NotificationService";
+import { IBlogService } from "../../services/BlogService";
 
 export interface EditorNewPostData {
   title: string,
@@ -12,25 +12,20 @@ export interface EditorNewPostData {
   categoryId: string;
 }
 
+@injectable()
 export class BlogStore {
 
   postList: Post[] = [];
+  @inject(TYPES.blogService) private blogService!: IBlogService;
 
   constructor(
-    private notificationService: INotificationService = new NotificationService(),
-    private blogService: IBlogService = new BlogService()
   ) {
-    this.notificationService = notificationService;
     makeAutoObservable(this);
   }
 
   getPosts = flow(function* (this: BlogStore) {
-    try {
-      const posts = yield this.blogService.getPosts()
+      const posts = yield this.blogService.getPosts();
       this.postList = posts;
-    } catch (err) {
-      this.notificationService.createNotification(NotificationType.ERROR, postMessages.getPostsFailed);
-    }
   });
 
   addPostToList(post: Post) {

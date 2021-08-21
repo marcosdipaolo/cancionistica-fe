@@ -1,9 +1,11 @@
 import { AxiosResponse } from "axios";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import cancionistica from "../api/cancionistica";
+import { TYPES } from "../container/types";
 import { Category } from "../models/Category";
 import { Post } from "../models/Post";
 import { EditorNewPostData } from "../stores/data-stores/BlogStore";
+import { INotificationService, NotificationType } from "./NotificationService";
 
 export interface IBlogService {
   createPost: (data: EditorNewPostData) => Promise<AxiosResponse<Post>>;
@@ -16,6 +18,7 @@ export interface IBlogService {
 
 @injectable()
 export class BlogService implements IBlogService {
+  @inject(TYPES.notificationService) private notificationService!: INotificationService
 
   async createPost(data: EditorNewPostData) {
     const _data = new FormData();
@@ -29,11 +32,16 @@ export class BlogService implements IBlogService {
   }
 
   async getPosts(): Promise<Post[]> {
-    const { data } = await cancionistica.get<Post[]>("/api/posts");
-    if (!Array.isArray(data)) {
-      throw new Error("No nos pudimos conectar con nuestra base de datos");
+    try {
+      const { data } = await cancionistica.get<Post[]>("/api/posts");
+      if (!Array.isArray(data)) {
+        throw new Error("No nos pudimos conectar con nuestra base de datos");
+      }
+      return data;
+    } catch(err){
+      this.notificationService.createNotification(NotificationType.ERROR, "Hubo un problema adquiriendo los artículos");
+      return  [];
     }
-    return data;
   }
 
   getPost(id: string) {

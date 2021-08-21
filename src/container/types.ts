@@ -3,6 +3,7 @@ export const TYPES = {
   contactFormService: Symbol("contactFormService"),
   notificationService: Symbol("notificationService"),
   blogService: Symbol("blogService"),
+  paymentService: Symbol("paymentService"),
   dataStore: Symbol("dataStore"),
   blogStore: Symbol("blogStore"),
   userStore: Symbol("userStore"),

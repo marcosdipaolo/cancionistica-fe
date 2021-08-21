@@ -1,4 +1,6 @@
+import { inject, injectable } from "inversify";
 import { flow, makeAutoObservable } from "mobx";
+import { TYPES } from "../../container/types";
 import history from "../../history";
 import { authMessages } from "../../messages/messages";
 import { User } from "../../models/User";
@@ -31,15 +33,17 @@ export interface UserRegistrationResponse {
   created_at: string;
 }
 
+@injectable()
 export class UserStore {
   private loggedUser: User | null = null;
   private readonly cookieName = "loggedUser";
   loggingIn = false;
   registering = false;
 
+  @inject(TYPES.notificationService) private notificationService!: INotificationService;
+  @inject(TYPES.authService) private authService!: IAuthService;
+
   constructor(
-    private notificationService: INotificationService = new NotificationService(),
-    private authService: IAuthService = new AuthService()
   ) {
     makeAutoObservable(this);
   }
@@ -62,22 +66,21 @@ export class UserStore {
       const { data }: { data: UserRegistrationResponse; } = yield this.authService.login({ email: _data.email, password: _data.password });
       const { id, name, email } = data;
       this.loggedUser = { id, name, email };
-      this.loggingIn = false;
       yield history.push("/");
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedInSuccess);
       window.localStorage.setItem(this.cookieName, JSON.stringify(data));
     } catch (err) {
+      this.loggingIn = false;
       this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggingInError);
     }
   });
 
-  register = flow(function* (this: UserStore, _data: UserRegisterRequest) { 
+  register = flow(function* (this: UserStore, _data: UserRegisterRequest) {
     try {
       this.registering = true;
       const { data } = yield this.authService.register(_data);
       const { id, name, email } = data;
       this.loggedUser = { id, name, email };
-      this.registering = false;
       yield history.push("/");
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedInSuccess);
     } catch (err) {
@@ -93,7 +96,7 @@ export class UserStore {
       this.loggedUser = null;
       window.localStorage.removeItem(this.cookieName);
     } catch (err) {
-      this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggedOutError );
+      this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggedOutError);
     }
   }
 }
