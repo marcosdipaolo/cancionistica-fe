@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { RouteComponentProps, useParams } from "react-router-dom";
+import { Link, RouteComponentProps, useParams } from "react-router-dom";
 import Page from "../shared/Page";
 import SectionTitle from "../shared/SectionTitle";
 import modulesConfig, { WorkshopModuleData } from "../workshop/modules.config";
@@ -22,8 +22,11 @@ const SingleModulePage: FC<SingleModulePageProps> = ({ history }) => {
     <Page>
       <div className="container single-module">
         <div className="image mb-5 animate-box" style={ { backgroundImage: `url(${data.image})` } } />
-        <span onClick={ () => history.goBack() }>&laquo;&laquo; Atras</span>
-        <SectionTitle title={ data.title } sub={ data.subTitle } />
+        <span onClick={ () => history.goBack() } className="back">&laquo;&laquo; Atras</span>
+        <div className="d-flex align-items-start">
+          <SectionTitle title={ data.title } sub={ data.subTitle } />
+          <Link to={`/modules/${id}/pre-purchase`}><button className="btn btn-primary">Comprar</button></Link>
+        </div>
         <p>{ data.content }</p>
       </div>
     </Page>);

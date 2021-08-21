@@ -11,7 +11,7 @@ const WorkshopModule: FC<WorkshopModuleProps> = ({ index, image }) => {
     <div id={ `module#${index}` } className="col-md-6 text-center animate-box">
       <div
         className="work"
-        style={ { backgroundImage: `url(${image})` } }
+        style={ { backgroundImage: `url(${image})`, backgroundSize: 'cover' } }
       >
         <Link to={`/modules/${index}`} className="view">
           <span>Ver Descripción</span>

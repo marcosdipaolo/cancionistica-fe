@@ -17,6 +17,7 @@ import SinglePostPage from "./pages/SinglePostPage";
 import AdminEditPost from "./admin/pages/AdminEditPost";
 import { NotificationContainer } from "react-notifications";
 import history from "../history";
+import PrePurchasePage from "./pages/PrePurchasePage";
 
 const AppRouter: FC = () => (
   <Router history={ history }>
@@ -29,6 +30,7 @@ const AppRouter: FC = () => (
       <Route exact path="/logout" component={ Logout } />
       <Route exact path="/register" component={ RegisterPage } />
       <Route exact path="/modules/:id" component={ SingleModulePage } />
+      <Route exact path="/modules/:id/pre-purchase" component={ PrePurchasePage } />
       <Route exact path="/blog/:id" component={ SinglePostPage } />
       <Route exact path="/admin" component={ AdminHomePage } />
       <Route exact path="/admin/profile" component={ AdminProfilePage } />

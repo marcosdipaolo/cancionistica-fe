@@ -7,14 +7,16 @@
 @import "spinner";
 
 a {
-  text-decoration: none!important;
+  text-decoration: none !important;
   &:hover {
-    text-decoration: none!important;
+    text-decoration: none !important;
   }
   color: inherit;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: $font-primary;
   font-size: 16px !important;
   border-radius: 0;
@@ -24,12 +26,18 @@ input, textarea, select {
   }
 }
 
-button, input[type=submit] {
+button,
+input[type="submit"] {
   text-transform: uppercase;
   border-radius: $border-radius-sm;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: $heading-color;
 }
 
@@ -38,7 +46,7 @@ header.app-header {
     right: 50px;
     top: 50px;
     width: 135px;
-    box-shadow: 1px 1px 4px rgb(0, 0, 0, .4);
+    box-shadow: 1px 1px 4px rgb(0, 0, 0, 0.4);
     font-size: 16px;
     opacity: 0;
     transition: opacity 300ms;
@@ -94,7 +102,12 @@ header.app-header {
   }
 }
 
-.single-module .image {
-  height: 500px;
-  background-position: center;
+.single-module {
+  .image {
+    height: 500px;
+    background-position: center;
+  }
+  .back {
+    cursor: pointer;
+  }
 }

@@ -30,22 +30,22 @@ const Contact: FC = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-3 col-md-push-1 animate-box">
-            <h3>Our Address</h3>
+            <h3>Mi dirección</h3>
             <ul className="contact-info">
               <li>
-                <i className="icon-location-pin"></i>198 West 21th Street, Suite
-                721 New York NY 10016
+                <i className="icon-location-pin"></i>Aguirre 157 dto G,
+                Villa Crespo, CABA
               </li>
               <li>
-                <i className="icon-phone2"></i>+ 1235 2355 98
+                <i className="icon-phone2"></i>+54 9 11 57987824
               </li>
               <li>
                 <i className="icon-mail"></i>
-                <a href="#">info@yoursite.com</a>
+                <a href="#">luchoguedes@gmail.com</a>
               </li>
               <li>
                 <i className="icon-globe2"></i>
-                <a href="#">www.yoursite.com</a>
+                <a href="#">cancionistica.com.ar</a>
               </li>
             </ul>
           </div>
