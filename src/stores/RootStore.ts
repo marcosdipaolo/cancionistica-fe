@@ -7,10 +7,10 @@ import { TYPES } from "../container/types";
 
 @injectable()
 export class RootStore {
+  @inject(TYPES.adminUiStore) public adminUiStore!: AdminUiStore
+  @inject(TYPES.uiStore) public uiStore!: UiStore
+  @inject(TYPES.dataStore) public dataStore!: DataStore
   constructor(
-    @inject(TYPES.adminUiStore) public adminUiStore: AdminUiStore,
-    @inject(TYPES.uiStore) public uiStore: UiStore,
-    @inject(TYPES.dataStore) public dataStore: DataStore
   ) {
     makeAutoObservable(this);
   }
