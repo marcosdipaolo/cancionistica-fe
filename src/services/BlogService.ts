@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { inject, injectable } from "inversify";
 import cancionistica from "../api/cancionistica";
+import { MercadoPagoResponse } from "../components/pages/HomePage";
 import { TYPES } from "../container/types";
 import { Category } from "../models/Category";
 import { Post } from "../models/Post";
@@ -13,12 +14,12 @@ export interface IBlogService {
   getPost(id: string): Promise<AxiosResponse<Post>>;
   deletePost(id: string): Promise<AxiosResponse>;
   editPost(id: string, data: EditorNewPostData): Promise<AxiosResponse<Post>>;
-  getCategories(): Promise<AxiosResponse<Category[]>>
+  getCategories(): Promise<AxiosResponse<Category[]>>;
 }
 
 @injectable()
 export class BlogService implements IBlogService {
-  @inject(TYPES.notificationService) private notificationService!: INotificationService
+  @inject(TYPES.notificationService) private notificationService!: INotificationService;
 
   async createPost(data: EditorNewPostData) {
     const _data = new FormData();
@@ -38,9 +39,9 @@ export class BlogService implements IBlogService {
         throw new Error("No nos pudimos conectar con nuestra base de datos");
       }
       return data;
-    } catch(err){
+    } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, "Hubo un problema adquiriendo los artículos");
-      return  [];
+      return [];
     }
   }
 
@@ -64,7 +65,7 @@ export class BlogService implements IBlogService {
     return cancionistica.post<Post>(`/api/posts/${id}`, _data);
   }
 
-  getCategories(){
+  getCategories() {
     return cancionistica.get<Category[]>("/api/categories");
   }
 

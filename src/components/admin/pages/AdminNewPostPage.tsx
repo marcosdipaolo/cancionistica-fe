@@ -31,7 +31,6 @@ const AdminNewPostPage: FC = () => {
   }, []);
 
   const onSubmit = () => {
-    console.log(image);
     blogService.createPost({ title, subTitle, content, image, categoryId: currentCategory }).then(({ data }) => {
       blogStore.addPostToList(data);
       notificationService.createNotification(NotificationType.SUCCESS, "Artículo creado");

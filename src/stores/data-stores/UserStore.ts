@@ -4,8 +4,8 @@ import { TYPES } from "../../container/types";
 import history from "../../history";
 import { authMessages } from "../../messages/messages";
 import { User } from "../../models/User";
-import { AuthService, IAuthService } from "../../services/AuthService";
-import { INotificationService, NotificationService, NotificationType } from "../../services/NotificationService";
+import { IAuthService } from "../../services/AuthService";
+import { INotificationService, NotificationType } from "../../services/NotificationService";
 
 export interface UserRegisterRequest {
   name: string,

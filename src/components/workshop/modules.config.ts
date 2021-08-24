@@ -6,6 +6,7 @@ export interface WorkshopModuleData {
   title: string;
   subTitle: string;
   content: string;
+  price: number;
 }
 
 const config: WorkshopModuleData[] = [
@@ -16,7 +17,8 @@ const config: WorkshopModuleData[] = [
     thumb: '/images/cancionistica-1.jpg',
     title: 'Modulo 1',
     subTitle: 'Subtítulo Modulo 1',
-    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.'
+    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.',
+    price: 8000
   },
   {
     index: 2,
@@ -25,7 +27,8 @@ const config: WorkshopModuleData[] = [
     thumb: '/images/cancionistica-2.jpg',
     title: 'Modulo 2',
     subTitle: 'Subtítulo Modulo 2',
-    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.'
+    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.',
+    price: 8000
   },
   {
     index: 3,
@@ -34,7 +37,8 @@ const config: WorkshopModuleData[] = [
     thumb: '/images/cancionistica-3.jpg',
     title: 'Modulo 3',
     subTitle: 'Subtítulo Modulo 3',
-    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.'
+    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.',
+    price: 8000
   },
   {
     index: 4,
@@ -43,7 +47,8 @@ const config: WorkshopModuleData[] = [
     thumb: '/images/cancionistica-4.jpg',
     title: 'Modulo 4',
     subTitle: 'Subtítulo Modulo 4',
-    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.'
+    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dicta placeat numquam velit ex officia dolore quia inventore, tenetur provident sapiente quos quidem vitae repellat doloribus! Veritatis quasi quis eaque.',
+    price: 8000
   },
 ];
 

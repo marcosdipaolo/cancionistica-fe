@@ -11,6 +11,7 @@ import { UserStore } from "../stores/data-stores/UserStore";
 import { AdminUiStore } from "../stores/AdminUiStore";
 import { RootStore } from "../stores/RootStore";
 import { IPaymentService, PaymentService } from "../services/PaymentService";
+import { PaymentStore } from "../stores/data-stores/PaymentStore";
 
 const container = new Container();
 
@@ -23,6 +24,7 @@ container.bind<DataStore>(TYPES.dataStore).to(DataStore);
 container.bind<UiStore>(TYPES.uiStore).to(UiStore);
 container.bind<AdminUiStore>(TYPES.adminUiStore).to(AdminUiStore);
 container.bind<BlogStore>(TYPES.blogStore).to(BlogStore);
+container.bind<PaymentStore>(TYPES.paymentStore).to(PaymentStore);
 container.bind<UserStore>(TYPES.userStore).to(UserStore);
 container.bind<RootStore>(RootStore).to(RootStore);
 
