@@ -4,9 +4,10 @@ import { useStore } from "./stores/helpers/useStore";
 
 
 function App() {
-  const { dataStore: { blogStore } } = useStore();
+  const { dataStore: { blogStore, courseStore } } = useStore();
   useEffect(() => {
     blogStore.getPosts();
+    courseStore.getCourses();
   }, []);
   return (
     <div>

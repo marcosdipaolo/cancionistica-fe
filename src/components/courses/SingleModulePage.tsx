@@ -4,7 +4,7 @@ import { Link, RouteComponentProps, useParams } from "react-router-dom";
 import { useStore } from "../../stores/helpers/useStore";
 import Page from "../shared/Page";
 import SectionTitle from "../shared/SectionTitle";
-import modulesConfig, { WorkshopModuleData } from "../workshop/modules.config";
+import modulesConfig, { WorkshopModuleData } from "./modules.config";
 
 interface SingleModulePageProps extends RouteComponentProps { }
 

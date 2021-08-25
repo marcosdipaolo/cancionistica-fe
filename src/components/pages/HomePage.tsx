@@ -3,7 +3,7 @@ import Slider from "../Slider";
 import Intro from "../Intro";
 import Services from "../services/Services";
 import Page from "../shared/Page";
-import Workshop from "../workshop/Workshop";
+import Courses from "../courses/Courses";
 import { RouteComponentProps } from "react-router-dom";
 import { parseQS } from "../../helpers/queryStringParser";
 import { useInjection } from "../../container/inversify-hook";
@@ -45,7 +45,7 @@ const HomePage: FC<RouteComponentProps> = ({ location }) => {
       />
       <Slider />
       <Services />
-      <Workshop />
+      <Courses />
     </Page>
   );
 };

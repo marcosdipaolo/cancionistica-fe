@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { inject, injectable } from "inversify";
 import cancionistica from "../api/cancionistica";
-import { WorkshopModuleData } from "../components/workshop/modules.config";
+import { WorkshopModuleData } from "../components/courses/modules.config";
 import { TYPES } from "../container/types";
 import { INotificationService, NotificationType } from "./NotificationService";
 

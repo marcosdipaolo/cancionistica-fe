@@ -1,7 +1,6 @@
 import { AxiosResponse } from "axios";
 import { inject, injectable } from "inversify";
 import cancionistica from "../api/cancionistica";
-import { MercadoPagoResponse } from "../components/pages/HomePage";
 import { TYPES } from "../container/types";
 import { Category } from "../models/Category";
 import { Post } from "../models/Post";

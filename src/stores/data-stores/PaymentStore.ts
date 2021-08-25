@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { flow, makeAutoObservable } from "mobx";
-import { WorkshopModuleData } from "../../components/workshop/modules.config";
+import { WorkshopModuleData } from "../../components/courses/modules.config";
 import { TYPES } from "../../container/types";
 import { IPaymentService } from "../../services/PaymentService";
 
