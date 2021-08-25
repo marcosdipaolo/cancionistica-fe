@@ -17,7 +17,7 @@ const Courses: FC = () => {
       <div className="container">
         <div className="row">
           { courses.map(
-              course => <Course images={course.images} courseId={course.id} />
+              course => <Course images={course.images} courseId={course.id} key={course.id} />
             )
           }
         </div>

@@ -1,12 +1,12 @@
 import { AxiosResponse } from "axios";
 import { inject, injectable } from "inversify";
 import cancionistica from "../api/cancionistica";
-import { WorkshopModuleData } from "../components/courses/modules.config";
 import { TYPES } from "../container/types";
+import { Course } from "../models/Course";
 import { INotificationService, NotificationType } from "./NotificationService";
 
 export interface IPaymentService {
-  getReferenceId(data: WorkshopModuleData): Promise<AxiosResponse>;
+  getReferenceId(data: Course): Promise<AxiosResponse>;
   postMPResponse(data: {[key: string]: string}): Promise<void>;
 }
 
@@ -14,7 +14,7 @@ export interface IPaymentService {
 export class PaymentService implements IPaymentService {
   @inject(TYPES.notificationService) private notificationService!: INotificationService;
 
-  getReferenceId(data: WorkshopModuleData): Promise<AxiosResponse> {
+  getReferenceId(data: Course): Promise<AxiosResponse> {
     try {
       return cancionistica.post<void>("/api/payments/mercadopago", {
         productId: data.id,

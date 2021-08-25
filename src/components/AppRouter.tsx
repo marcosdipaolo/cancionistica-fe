@@ -9,7 +9,7 @@ import AdminProfilePage from "./admin/pages/AdminProfilePage";
 import AdminPurchasesPage from "./admin/pages/AdminPurchasesPage";
 import AdminModulesPage from "./admin/pages/AdminModulesPage";
 import AdminHomePage from "./admin/pages/AdminHomePage";
-import SingleModulePage from "./courses/SingleModulePage";
+import SingleCoursePage from "./courses/SingleCoursePage";
 import AdminBlogPage from "./admin/pages/AdminBlogPage";
 import AdminNewPostPage from "./admin/pages/AdminNewPostPage";
 import Logout from "./auth/Logout";
@@ -29,7 +29,7 @@ const AppRouter: FC = () => (
       <Route exact path="/login" component={ LoginPage } />
       <Route exact path="/logout" component={ Logout } />
       <Route exact path="/register" component={ RegisterPage } />
-      <Route exact path="/courses/:id" component={ SingleModulePage } />
+      <Route exact path="/courses/:id" component={ SingleCoursePage } />
       <Route exact path="/courses/:id/pre-purchase" component={ PrePurchasePage } />
       <Route exact path="/blog/:id" component={ SinglePostPage } />
       <Route exact path="/admin" component={ AdminHomePage } />

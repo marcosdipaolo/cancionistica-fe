@@ -18,7 +18,5 @@ export class CourseStore {
   getCourses = flow(function* (this: CourseStore) {
     const { data } = yield this.courseService.getCourses();
     this.courses = data;
-    console.log(this.courses);
-
   });
 }

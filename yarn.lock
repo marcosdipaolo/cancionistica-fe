@@ -9697,6 +9697,11 @@
   optionalDependencies:
     "fsevents" "^2.1.3"
 
+"react-sdk-mercadopago@^1.1.1":
+  "integrity" "sha512-HG3WwC1YztevWe5MrcaY1/MzjTtohihstBMI5QXFWB6zQDxcL4PZT39q6SYQ2ZvNZMYCXxSFcGf6FheELthIXQ=="
+  "resolved" "https://registry.npmjs.org/react-sdk-mercadopago/-/react-sdk-mercadopago-1.1.1.tgz"
+  "version" "1.1.1"
+
 "react-slick@^0.28.1":
   "integrity" "sha512-JwRQXoWGJRbUTE7eZI1rGIHaXX/4YuwX6gn7ulfvUZ4vFDVQAA25HcsHSYaUiRCduTr6rskyIuyPMpuG6bbluw=="
   "resolved" "https://registry.npmjs.org/react-slick/-/react-slick-0.28.1.tgz"
