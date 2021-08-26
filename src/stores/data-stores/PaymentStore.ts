@@ -13,7 +13,7 @@ export class PaymentStore {
     makeAutoObservable(this);
   }
 
-  getMercadopagoReferenceId = flow(function* (this: PaymentStore, _data: Course) {
+  getMercadopagoPreferenceId = flow(function* (this: PaymentStore, _data: Course) {
     const { data } = yield this.paymentService.getReferenceId(_data);
     console.log("from store: ", data.data);    
     this.preferenceId = data.data;

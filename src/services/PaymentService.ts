@@ -14,8 +14,9 @@ export interface IPaymentService {
 export class PaymentService implements IPaymentService {
   @inject(TYPES.notificationService) private notificationService!: INotificationService;
 
-  getReferenceId(data: Course): Promise<AxiosResponse> {
+  async getReferenceId(data: Course): Promise<AxiosResponse> {
     try {
+      await cancionistica.get(`/sanctum/csrf-cookie`);
       return cancionistica.post<void>("/api/payments/mercadopago", {
         productId: data.id,
         productName: data.title,

@@ -15,7 +15,7 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
   const { id } = useParams<{ id: string; }>();
   const [ course, setCourse ] = useState<Course | null>(null);
   const courseService = useInjection<ICourseService>(TYPES.courseService);
-
+  const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
   const { dataStore: { paymentStore } } = useStore();
 
   useEffect(() => {
@@ -25,7 +25,6 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
       setCourse(data);
     }).catch(() => { });
   }, []);
-
   if (!course) {
     return (
       <div className="container d-flex" style={{ height: '80vh' }}>
@@ -33,22 +32,18 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
       </div>
     );
   }
-
   const buyModuleClicked = () => {
-    paymentStore.getMercadopagoReferenceId(course);
+    paymentStore.getMercadopagoPreferenceId(course);
   };
-
-
-  const image = course.images.find(img => img.path === "full");
-
+  const image = course.images.find(img => img.size === "full");
   return (
     <Page>
       <div className="container single-module">
-        <div className="image mb-5 animate-box" style={{ backgroundImage: `url(${image || ""})` }} />
+        <div className="image mb-5 animate-box" style={{ backgroundImage: `url(${backendBaseUrl}/${image?.path || ""})` }} />
         <span onClick={() => history.goBack()} className="back">&laquo;&laquo; Atras</span>
         <div className="d-flex align-items-start">
           <SectionTitle title={course.title} sub={course.sub_title} />
-          <Link to={`/modules/${id}/pre-purchase`}><button onClick={buyModuleClicked} className="btn btn-primary">Comprar</button></Link>
+          <Link to={`/courses/${id}/pre-purchase`}><button onClick={buyModuleClicked} className="btn btn-primary">Comprar</button></Link>
         </div>
         <p>{course.content}</p>
       </div>

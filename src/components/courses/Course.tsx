@@ -8,8 +8,8 @@ export interface CourseProps {
 }
 
 const Course: FC<CourseProps> = ({ courseId, images }) => {
-  const thumb = images.find(img => img.size === "thumbnail") ?? {path: ""}; 
-  
+  const thumb = images.find(img => img.size === "thumbnail") ?? { path: "" };
+
   const backEndUrl = process.env.REACT_APP_BACKEND_URL;
   return (
     <div id={ `course#${courseId}` } className="col-md-6 text-center animate-box">
@@ -17,7 +17,7 @@ const Course: FC<CourseProps> = ({ courseId, images }) => {
         className="work"
         style={ { backgroundImage: `url(${backEndUrl}/${thumb.path})`, backgroundSize: 'cover' } }
       >
-        <Link to={`/courses/${courseId}`} className="view">
+        <Link to={ `/courses/${courseId}` } className="view">
           <span>Ver Descripción</span>
         </Link>
       </div>

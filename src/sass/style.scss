@@ -6,6 +6,10 @@
 @import "single-post";
 @import "spinner";
 
+img {
+  max-width: 100%;
+}
+
 a {
   text-decoration: none !important;
   &:hover {
@@ -109,5 +113,19 @@ header.app-header {
   }
   .back {
     cursor: pointer;
+  }
+}
+.info-container {
+  .image {
+    flex: 1;
+  }  
+  .content {
+    flex: 1;
+    .cho-container {
+      text-align: right;
+      .mercadopago-button {
+        background-color: $primary;
+      }
+    }
   }
 }
