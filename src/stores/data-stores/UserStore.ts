@@ -6,6 +6,7 @@ import { authMessages } from "../../messages/messages";
 import { User } from "../../models/User";
 import { IAuthService } from "../../services/AuthService";
 import { INotificationService, NotificationType } from "../../services/NotificationService";
+import { IUserService } from "../../services/UserService";
 
 export interface UserRegisterRequest {
   name: string,
@@ -42,6 +43,7 @@ export class UserStore {
 
   @inject(TYPES.notificationService) private notificationService!: INotificationService;
   @inject(TYPES.authService) private authService!: IAuthService;
+  @inject(TYPES.userService) private userService!: IUserService;
 
   constructor(
   ) {
@@ -99,4 +101,9 @@ export class UserStore {
       this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggedOutError);
     }
   }
+
+  isLoggedIn = flow(function*(this: UserStore){
+    const backendLoggedUser = yield this.authService.getLoggedUser();
+    console.log(backendLoggedUser);    
+  })
 }

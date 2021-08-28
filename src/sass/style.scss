@@ -122,10 +122,16 @@ header.app-header {
   .content {
     flex: 1;
     .cho-container {
-      text-align: right;
       .mercadopago-button {
         background-color: $primary;
       }
     }
+  }
+}
+
+footer {
+  background-color: #f8f8f8;
+  div#footer {
+    border: none;
   }
 }

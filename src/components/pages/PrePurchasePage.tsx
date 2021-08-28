@@ -24,7 +24,7 @@ const PrePurchasePage: FC = () => {
       setCourse(data);
     });
   }, []);
-  
+
   useEffect(() => {
     if (mercadopago && paymentStore.getPreferenceId()) {
       mercadopago.checkout({
@@ -38,32 +38,33 @@ const PrePurchasePage: FC = () => {
       });
     }
   }, [ mercadopago, paymentStore.getPreferenceId() ]);
-  
+
   if (!course || !paymentStore.getPreferenceId()) {
     return (<Page>
-      <div className="container d-flex" style={{ height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' }}>
+      <div className="container d-flex" style={ { height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' } }>
         <i className="spinner d-inline-block icon-spinner9 m-auto" />
       </div>
       <div className="cho-container d-none"></div>
-    </Page>)
+    </Page>);
   }
 
   const image = course.images.find(img => img.size === "thumbnail");
-  
+
   return (
     <Page>
-      <div className="container">
+      <div className="container mb-4">
         <div>
           <h1 className="text-center">Estás comprando un<br />módulo de Cancionística</h1>
-          <div className="info-container d-flex justify-content-between">
+          <hr style={{backgroundColor: "#b2b2b2", color: "#b2b2b2"}} />
+          <div className="info-container pt-4 d-flex justify-content-between">
             <div className="image">
-              <img src={`${backendBaseUrl}/${image?.path || ""}`} alt="" />
+              <img src={ `${backendBaseUrl}/${image?.path || ""}` } alt="" width="300" />
             </div>
-            <div className="content px-4">
-              <h4>{course.title}</h4>
-              <h6>{course.sub_title}</h6>
-              <p>Precio: $ {course.price}.-</p>
-              <div className="cho-container"></div> 
+            <div className="content flex-fill px-4">
+              <h4>{ course.title }</h4>
+              <h6>{ course.sub_title }</h6>
+              <p>Precio: $ { course.price }.-</p>
+              <div className="cho-container"></div>
             </div>
           </div>
         </div>

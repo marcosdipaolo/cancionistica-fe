@@ -30,10 +30,21 @@ const HomePage: FC<RouteComponentProps> = ({ location }) => {
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
   const parsed = parseQS(location.search);
   useEffect(() => {
-    if ('preference_id' in parsed) {
+    if (
+      'collection_id' in parsed &&
+      'collection_status' in parsed &&
+      'payment_id' in parsed &&
+      'status' in parsed &&
+      'external_reference' in parsed &&
+      'payment_type' in parsed &&
+      'merchant_order_id' in parsed &&
+      'site_id' in parsed &&
+      'processing_mode' in parsed &&
+      'merchant_account_id' in parsed &&
+      'preference_id' in parsed
+    ) {
       paymentService.postMPResponse(parsed);
       notificationService.createNotification(NotificationType.SUCCESS, "Su pago se inició correctamente");
-      console.log("notifying");      
     }
   }, [parsed]);
 

@@ -5,6 +5,7 @@ export const TYPES = {
   blogService: Symbol("blogService"),
   courseService: Symbol("courseService"),
   paymentService: Symbol("paymentService"),
+  userService: Symbol("userService"),
   dataStore: Symbol("dataStore"),
   blogStore: Symbol("blogStore"),
   courseStore: Symbol("courseStore"),

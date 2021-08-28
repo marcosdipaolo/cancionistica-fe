@@ -3,11 +3,13 @@ import { UserLoginRequest, UserRegisterRequest, UserRegistrationResponse } from 
 import { injectable } from "inversify";
 import "reflect-metadata";
 import { AxiosResponse } from "axios";
+import { User } from "../models/User";
 
 export interface IAuthService {
   register: (data: UserRegisterRequest) => Promise<AxiosResponse>;
   login: (data: UserLoginRequest) => Promise<AxiosResponse<UserRegistrationResponse>>;
   logout: () => void;
+  getLoggedUser(): Promise<AxiosResponse<User>>;
 }
 
 @injectable()
@@ -25,8 +27,13 @@ export class AuthService implements IAuthService {
     await cancionistica.get(`/sanctum/csrf-cookie`);
     return cancionistica.post(`/auth/login`, data);
   };
-
+  
   logout = async (): Promise<void> => {
-    return await cancionistica.get(`/auth/logout`);
+    return cancionistica.get(`/auth/logout`);
+  }
+  
+  getLoggedUser = async (): Promise<AxiosResponse<User>> => {
+    await cancionistica.get(`/sanctum/csrf-cookie`);
+    return cancionistica.get<User>("/auth/logged-user"); 
   }
 }

@@ -31,7 +31,7 @@ const Header: FC = () => {
     <header className="app-header">
       <div className="container clearfix">
         <div className="fh5co-navbar-brand">
-          <h1 className="text-center">
+          <h1 onClick={() => userStore.isLoggedIn()} className="text-center">
             <Link className="fh5co-logo" to="/">
               Cancionística
             </Link>
