@@ -37,7 +37,8 @@ export interface UserRegistrationResponse {
 @injectable()
 export class UserStore {
   private loggedUser: User | null = null;
-  private readonly cookieName = "loggedUser";
+  private readonly loggedUserLocalStorageKey = "loggedUser";
+  private readonly unauthorizedRouteLocalStorageKey = "unauthorizedRoute";
   loggingIn = false;
   registering = false;
 
@@ -52,7 +53,7 @@ export class UserStore {
 
   getLoggedUser(): User | null {
     if (!this.loggedUser) {
-      const storedUser = window.localStorage.getItem(this.cookieName);
+      const storedUser = window.localStorage.getItem(this.loggedUserLocalStorageKey);
       if (!storedUser) {
         return null;
       }
@@ -68,9 +69,17 @@ export class UserStore {
       const { data }: { data: UserRegistrationResponse; } = yield this.authService.login({ email: _data.email, password: _data.password });
       const { id, name, email } = data;
       this.loggedUser = { id, name, email };
-      yield history.push("/");
+      const unauthorizedRoute = window.localStorage.getItem(this.unauthorizedRouteLocalStorageKey);
+      console.log("unauthorizedRoute", unauthorizedRoute);
+      if (unauthorizedRoute) {
+        window.localStorage.removeItem(this.unauthorizedRouteLocalStorageKey);
+        yield history.push(unauthorizedRoute);
+      } else {
+        yield history.push("/");
+      }
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedInSuccess);
-      window.localStorage.setItem(this.cookieName, JSON.stringify(data));
+      window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(data));
+      this.loggingIn = false;
     } catch (err) {
       this.loggingIn = false;
       this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggingInError);
@@ -96,14 +105,23 @@ export class UserStore {
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedOutSuccess);
       this.authService.logout();
       this.loggedUser = null;
-      window.localStorage.removeItem(this.cookieName);
+      window.localStorage.removeItem(this.loggedUserLocalStorageKey);
     } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggedOutError);
     }
   }
 
-  isLoggedIn = flow(function*(this: UserStore){
-    const backendLoggedUser = yield this.authService.getLoggedUser();
-    console.log(backendLoggedUser);    
-  })
+  loggedOrRedirect = flow(function* (this: UserStore) {
+    try {
+      const { data }: { data: User; } = yield this.authService.getLoggedUser();
+      const { name, email, id } = data;
+      this.loggedUser = { name, email, id };
+    } catch (err) {
+      this.notificationService.createNotification(NotificationType.ERROR, "Necesitás iniciar sesión para acceder a ese contenido");
+      this.loggedUser = null;
+      window.localStorage.setItem("unauthorizedRoute", history.location.pathname);
+      console.log("history.location.pathname@loggedOrRedirect", history.location.pathname);
+      history.push("/login");
+    }
+  });
 }

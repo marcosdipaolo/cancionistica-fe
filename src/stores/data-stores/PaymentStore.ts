@@ -7,7 +7,7 @@ import { IPaymentService } from "../../services/PaymentService";
 @injectable()
 export class PaymentStore {
   @inject(TYPES.paymentService) private paymentService!: IPaymentService;
-  private preferenceId: string | null = null;
+  private _preferenceId: string | null = null;
 
   constructor(){
     makeAutoObservable(this);
@@ -20,12 +20,18 @@ export class PaymentStore {
     window.localStorage.setItem("mercadopagoPreferenceId", data.data);
   });
 
-  getPreferenceId(){
-    return this.preferenceId || window.localStorage.getItem("mercadopagoPreferenceId")
+  get preferenceId(): string | null{
+    const preferenceId = this._preferenceId || window.localStorage.getItem("mercadopagoPreferenceId")
+    this._preferenceId = preferenceId;
+    return this._preferenceId
+  }
+
+  set preferenceId(preferenceId) {
+    this._preferenceId = preferenceId; 
   }
 
   clearPreferenceId(){
-    this.preferenceId = null;
+    this._preferenceId = null;
     window.localStorage.removeItem("mercadopagoPreferenceId");
   }
 }

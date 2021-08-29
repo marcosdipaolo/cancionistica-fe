@@ -18,6 +18,7 @@ const PrePurchasePage: FC = () => {
   const courseService = useInjection<ICourseService>(TYPES.courseService);
   const [ course, setCourse ] = useState<Course>();
   const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
+  const { dataStore: { userStore } } = useStore();
 
   useEffect(() => {
     courseService.getCourse(id).then(({ data }) => {
@@ -26,10 +27,21 @@ const PrePurchasePage: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (mercadopago && paymentStore.getPreferenceId()) {
+    if (course) {
+      userStore.loggedOrRedirect().then(() => {
+        paymentStore.getMercadopagoPreferenceId(course);
+      });
+    }
+    return () => {
+      paymentStore.clearPreferenceId();
+    };
+  }, [ course ]);
+
+  useEffect(() => {
+    if (mercadopago && paymentStore.preferenceId) {
       mercadopago.checkout({
         preference: {
-          id: paymentStore.getPreferenceId()
+          id: paymentStore.preferenceId
         },
         render: {
           container: '.cho-container',
@@ -37,15 +49,17 @@ const PrePurchasePage: FC = () => {
         }
       });
     }
-  }, [ mercadopago, paymentStore.getPreferenceId() ]);
+  }, [ mercadopago, paymentStore.preferenceId ]);
 
-  if (!course || !paymentStore.getPreferenceId()) {
-    return (<Page>
-      <div className="container d-flex" style={ { height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' } }>
-        <i className="spinner d-inline-block icon-spinner9 m-auto" />
-      </div>
-      <div className="cho-container d-none"></div>
-    </Page>);
+  if (!course || !paymentStore.preferenceId) {
+    return (
+      <Page>
+        <div className="container d-flex" style={{ height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' }}>
+          <i className="spinner d-inline-block icon-spinner9 m-auto" />
+        </div>
+        <div className="cho-container d-none"></div>
+      </Page>
+    );
   }
 
   const image = course.images.find(img => img.size === "thumbnail");
@@ -55,15 +69,15 @@ const PrePurchasePage: FC = () => {
       <div className="container mb-4">
         <div>
           <h1 className="text-center">Estás comprando un<br />módulo de Cancionística</h1>
-          <hr style={{backgroundColor: "#b2b2b2", color: "#b2b2b2"}} />
+          <hr style={{ backgroundColor: "#b2b2b2", color: "#b2b2b2" }} />
           <div className="info-container pt-4 d-flex justify-content-between">
             <div className="image">
-              <img src={ `${backendBaseUrl}/${image?.path || ""}` } alt="" width="300" />
+              <img src={`${backendBaseUrl}/${image?.path || ""}`} alt="" width="300" />
             </div>
             <div className="content flex-fill px-4">
-              <h4>{ course.title }</h4>
-              <h6>{ course.sub_title }</h6>
-              <p>Precio: $ { course.price }.-</p>
+              <h4>{course.title}</h4>
+              <h6>{course.sub_title}</h6>
+              <p>Precio: $ {course.price}.-</p>
               <div className="cho-container"></div>
             </div>
           </div>

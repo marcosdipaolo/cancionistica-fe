@@ -5,7 +5,6 @@ import { useInjection } from "../../container/inversify-hook";
 import { TYPES } from "../../container/types";
 import { Course } from "../../models/Course";
 import { ICourseService } from "../../services/CourseService";
-import { useStore } from "../../stores/helpers/useStore";
 import Page from "../shared/Page";
 import SectionTitle from "../shared/SectionTitle";
 
@@ -16,11 +15,9 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
   const [ course, setCourse ] = useState<Course | null>(null);
   const courseService = useInjection<ICourseService>(TYPES.courseService);
   const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
-  const { dataStore: { paymentStore } } = useStore();
 
   useEffect(() => {
     window.scroll({ top: 0 });
-    paymentStore.clearPreferenceId();
     courseService.getCourse(id).then(({ data }) => {
       setCourse(data);
     }).catch(() => { });
@@ -32,9 +29,6 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
       </div>
     );
   }
-  const buyModuleClicked = () => {
-    paymentStore.getMercadopagoPreferenceId(course);
-  };
   const image = course.images.find(img => img.size === "full");
   return (
     <Page>
@@ -43,7 +37,7 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
         <span onClick={() => history.goBack()} className="back">&laquo;&laquo; Atras</span>
         <div className="d-flex align-items-start">
           <SectionTitle title={course.title} sub={course.sub_title} />
-          <Link to={`/courses/${id}/pre-purchase`}><button onClick={buyModuleClicked} className="btn btn-primary">Comprar</button></Link>
+          <Link to={`/courses/${id}/pre-purchase`}><button className="btn btn-primary">Comprar</button></Link>
         </div>
         <p>{course.content}</p>
       </div>
