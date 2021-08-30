@@ -39,7 +39,7 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
           <SectionTitle title={course.title} sub={course.sub_title} />
           <Link to={`/courses/${id}/pre-purchase`}><button className="btn btn-primary">Comprar</button></Link>
         </div>
-        <p>{course.content}</p>
+        <div dangerouslySetInnerHTML={{__html: course.content}} />
       </div>
     </Page>);
 };

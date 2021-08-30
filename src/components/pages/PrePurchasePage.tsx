@@ -8,6 +8,7 @@ import { useInjection } from "../../container/inversify-hook";
 import { TYPES } from "../../container/types";
 import { ICourseService } from "../../services/CourseService";
 import { Course } from "../../models/Course";
+import PersonalInfoForm from "../PersonalInfoForm";
 
 const PrePurchasePage: FC = () => {
   const { dataStore: { paymentStore } } = useStore();
@@ -61,14 +62,14 @@ const PrePurchasePage: FC = () => {
       </Page>
     );
   }
-
+  
   const image = course.images.find(img => img.size === "thumbnail");
-
+  
   return (
     <Page>
+      <PersonalInfoForm />
       <div className="container mb-4">
         <div>
-          <h1 className="text-center">Estás comprando un<br />módulo de Cancionística</h1>
           <hr style={{ backgroundColor: "#b2b2b2", color: "#b2b2b2" }} />
           <div className="info-container pt-4 d-flex justify-content-between">
             <div className="image">

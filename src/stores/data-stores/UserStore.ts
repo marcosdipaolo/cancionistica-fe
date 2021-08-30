@@ -34,9 +34,21 @@ export interface UserRegistrationResponse {
   created_at: string;
 }
 
+export interface PersonalInfo {
+  firstName: string;
+  lastName: string;
+  phonenumber: string;
+  addressLineOne?: string,
+  addressLineTwo?: string,
+  postcode?: string;  
+  city?: string;
+  country?: string;
+}
+
 @injectable()
 export class UserStore {
   private loggedUser: User | null = null;
+  private personalInfo: PersonalInfo | null = null;
   private readonly loggedUserLocalStorageKey = "loggedUser";
   private readonly unauthorizedRouteLocalStorageKey = "unauthorizedRoute";
   loggingIn = false;
@@ -70,7 +82,6 @@ export class UserStore {
       const { id, name, email } = data;
       this.loggedUser = { id, name, email };
       const unauthorizedRoute = window.localStorage.getItem(this.unauthorizedRouteLocalStorageKey);
-      console.log("unauthorizedRoute", unauthorizedRoute);
       if (unauthorizedRoute) {
         window.localStorage.removeItem(this.unauthorizedRouteLocalStorageKey);
         yield history.push(unauthorizedRoute);
@@ -120,8 +131,15 @@ export class UserStore {
       this.notificationService.createNotification(NotificationType.ERROR, "Necesitás iniciar sesión para acceder a ese contenido");
       this.loggedUser = null;
       window.localStorage.setItem("unauthorizedRoute", history.location.pathname);
-      console.log("history.location.pathname@loggedOrRedirect", history.location.pathname);
       history.push("/login");
+    }
+  });
+
+  setPersonalInfo = flow(function*(this: UserStore){
+    try {
+
+    } catch(err) {
+
     }
   });
 }

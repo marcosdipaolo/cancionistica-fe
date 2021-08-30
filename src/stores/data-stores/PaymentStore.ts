@@ -15,7 +15,6 @@ export class PaymentStore {
 
   getMercadopagoPreferenceId = flow(function* (this: PaymentStore, _data: Course) {
     const { data } = yield this.paymentService.getReferenceId(_data);
-    console.log("from store: ", data.data);    
     this.preferenceId = data.data;
     window.localStorage.setItem("mercadopagoPreferenceId", data.data);
   });
