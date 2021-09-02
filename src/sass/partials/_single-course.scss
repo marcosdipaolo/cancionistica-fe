@@ -1,0 +1,39 @@
+.single-module {
+  .image {
+    height: 500px;
+    background-position: center;
+  }
+  .back {
+    cursor: pointer;
+  }
+  .icon-cart {
+    font-size: 36px;
+    transition: all 300ms;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 50%;
+    padding: 20px;
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+  .cart-action-icon {
+    position: relative;
+    right: 35px;
+    bottom: -5px;
+    width: 30px;
+    height: 30px;
+    color: white;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    font-size: 24px;
+    border-radius: 50%;
+    &.add {
+      background-color: green;
+    }
+    &.remove {
+      background-color: red;
+    }
+  }
+}

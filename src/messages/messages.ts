@@ -8,4 +8,5 @@ export const authMessages: { [ key: string ]: string; } = {
   loggingInError: "No se pudo iniciar sesión",
   loggedOutSuccess: "Has cerrado sesión",
   loggedOutError: "Ocurrió un error cerrando sesión",
+  notLoggedIn: "Necesitás iniciar sesión para acceder a ese contenido"
 };

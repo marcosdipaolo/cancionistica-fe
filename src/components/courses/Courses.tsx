@@ -16,7 +16,7 @@ const Courses: FC = () => {
       <SectionTitle title="El Taller" />
       <div className="container">
         <div className="row">
-          { courses.map(
+          { Array.isArray(courses) && courses.map(
               course => <Course images={course.images} courseId={course.id} key={course.id} />
             )
           }

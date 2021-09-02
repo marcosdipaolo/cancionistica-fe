@@ -15,7 +15,7 @@ const Course: FC<CourseProps> = ({ courseId, images }) => {
     <div id={ `course#${courseId}` } className="col-md-6 text-center animate-box">
       <div
         className="work"
-        style={ { backgroundImage: `url(${backEndUrl}/${thumb.path})`, backgroundSize: 'cover' } }
+        style={ { backgroundImage: `url(${backEndUrl}/${thumb.path})`} }
       >
         <Link to={ `/courses/${courseId}` } className="view">
           <span>Ver Descripción</span>

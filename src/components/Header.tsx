@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStore } from "../stores/helpers/useStore";
+import CartIcon from "./CartIcon";
 
 const Header: FC = () => {
   const { uiStore, dataStore: { userStore } } = useStore();
@@ -43,16 +44,20 @@ const Header: FC = () => {
                 <Link to="/logout"><li>Logout</li></Link>
               </ul>
             </div>
+
+            <Link to="/courses/pre-purchase">
+              <CartIcon />
+            </Link>
             {
               userStore.getLoggedUser()
-                ? <i onClick={ openTooltip } className="icon-user"/>
+                ? <i onClick={ openTooltip } className="icon-user" />
                 : ""
             }
             <a
               onClick={ uiStore.toggleMenu }
               className={ `js-fh5co-nav-toggle fh5co-nav-toggle` }
             >
-              <i/>
+              <i />
             </a>
           </div>
         </div>

@@ -40,9 +40,10 @@ export interface PersonalInfo {
   phonenumber: string;
   addressLineOne?: string,
   addressLineTwo?: string,
-  postcode?: string;  
+  postcode?: string;
   city?: string;
   country?: string;
+  _method?: string;
 }
 
 @injectable()
@@ -70,7 +71,7 @@ export class UserStore {
         return null;
       }
       const { id, name, email }: UserAttributes = JSON.parse(storedUser);
-      return { id, name, email };
+      return { id, name, email } as User;
     }
     return this.loggedUser;
   }
@@ -127,19 +128,44 @@ export class UserStore {
       const { data }: { data: User; } = yield this.authService.getLoggedUser();
       const { name, email, id } = data;
       this.loggedUser = { name, email, id };
+      return true;
     } catch (err) {
-      this.notificationService.createNotification(NotificationType.ERROR, "Necesitás iniciar sesión para acceder a ese contenido");
-      this.loggedUser = null;
+      this.notificationService.createNotification(NotificationType.ERROR, authMessages.notLoggedIn);
+      this.clearLoggedUser();
       window.localStorage.setItem("unauthorizedRoute", history.location.pathname);
       history.push("/login");
+      return false;
     }
   });
 
-  setPersonalInfo = flow(function*(this: UserStore){
+  isUserLoggedIn = flow(function* (this: UserStore) {
     try {
+      const { data } = yield this.authService.getLoggedUser();
+      const { name, email, id } = data;
+      this.loggedUser = { name, email, id };
+      window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(data));
+      return true;
+    } catch (err) {
+      this.clearLoggedUser();
+      return false;
+    }
+  });
 
+  private clearLoggedUser() {
+    this.loggedUser = null;
+    window.localStorage.removeItem(this.loggedUserLocalStorageKey);
+  }
+
+  setPersonalInfo = flow(function*(this: UserStore, data: PersonalInfo){
+    if (!this.getLoggedUser()) {
+      this.notificationService.createNotification(NotificationType.ERROR, "Es necesario loguearse para poder continuar");
+      history.push("/login");
+      return;
+    }
+    try {
+      this.userService.setPersonalInfo(this.getLoggedUser()!.id, data, !this.personalInfo);
     } catch(err) {
-
+      
     }
   });
 }

@@ -1,0 +1,30 @@
+.info-container {
+  .image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 300px;
+  }  
+  .content {
+    flex: 1;
+    
+  }
+}
+.cart-detail {
+  position: relative;
+  &.disabled::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, .7);
+  }
+}
+.cho-container {
+  .mercadopago-button {
+    background-color: $primary;
+  }
+}

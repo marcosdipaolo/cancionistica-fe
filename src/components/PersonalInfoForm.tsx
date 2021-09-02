@@ -1,61 +1,120 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useStore } from "../stores/helpers/useStore";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const PersonalInfoForm: FC = () => {
   const { dataStore: { userStore } } = useStore();
-  const [ firstName, setFirstName ] = useState("");
-  const [ lastName, setLastName ] = useState("");
-  const [ phonenumber, setPhonenumber ] = useState("");
-  const [ addressLineOne, setAddressLineOne ] = useState("");
-  const [ addressLineTwo, setAddressLineTwo ] = useState("");
-  const [ postcode, setPostcode ] = useState("");
-  const [ city, setCity ] = useState("");
-  const [ country, setCountry ] = useState("");
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      addressLineOne: "",
+      addressLineTwo: "",
+      city: "",
+      postcode: "",
+      country: "",
+      phonenumber: ""
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().min(3, "El nombre debe contener al menos 2 caracteres").required("Nombre Requerido"),
+      lastName: Yup.string().min(3, "El apellido debe contener al menos 2 caracteres").required("Apellido Requerido"),
+      phonenumber: Yup.string().min(8, "El teléfono debe contar con al menos 8 caracteres").required("Teléfono Requerido"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+    }
+  });
+
+  const renderError = (field: ("firstName" | "lastName" | "phonenumber")) => {
+    return formik.touched[field] && formik.errors[field] 
+      ? (<div className="invalid-feedback">{formik.errors[field]}</div>) 
+      : null
+  }
+
   return (
-    <form>
+    <form className="needs-validation" onSubmit={ formik.handleSubmit }>
       <div className="container">
         <h3 className="text-center">Información Personal</h3>
         <div className="row mb-5">
           <div className="col-md-4">
-            <label className="form-label">Nombre</label>
-            <input onChange={ (e) => setFirstName(e.target.value) } value={ firstName } type="text" className="form-control" />
+            <label htmlFor="firstName" className="form-label">Nombre<span style={ { color: 'red' } }>*</span></label>
+            <input 
+              id="firstName" 
+              type="text" 
+              className={`form-control${formik.touched.firstName && formik.errors.firstName ? ' is-invalid' : ''}`} 
+              {...formik.getFieldProps('firstName')}
+            />
+            {renderError("firstName")}
           </div>
           <div className="col-md-4">
-            <label className="form-label">Apellido</label>
-            <input onChange={ (e) => setLastName(e.target.value) } value={ lastName } type="text" className="form-control" />
+            <label htmlFor="lastName" className="form-label">Apellido<span style={ { color: 'red' } }>*</span></label>
+            <input 
+              id="lastName" 
+              type="text" 
+              className={`form-control${formik.touched.lastName && formik.errors.lastName ? ' is-invalid' : ''}`} 
+              {...formik.getFieldProps("lastName")}
+            />
+            {renderError("lastName")}
           </div>
           <div className="col-md-4">
-            <label className="form-label">Email</label>
-            <input type="text" value={userStore.getLoggedUser()!.email} className="form-control" disabled />
+            <label className="form-label">Email<span style={ { color: 'red' } }>*</span></label>
+            <input 
+              value={userStore.getLoggedUser()?.email} 
+              name="email" 
+              type="email" 
+              className={ `form-control` } 
+              disabled 
+            />
           </div>
         </div>
         <div className="row mb-5">
           <div className="col-md-4">
             <label className="form-label">Dirección (línea uno)</label>
-            <input onChange={ (e) => setAddressLineOne(e.target.value) } value={ addressLineOne } type="text" className="form-control" />
+            <input 
+              id="addressLineOne" 
+              type="text" 
+              className={ `form-control`} 
+              {...formik.getFieldProps("addressLineOne")}  
+            />
           </div>
           <div className="col-md-4">
             <label className="form-label">Dirección (línea dos)</label>
-            <input onChange={ (e) => setAddressLineTwo(e.target.value) } value={ addressLineTwo } type="text" className="form-control" />
+            <input 
+              id="addressLineTwo" 
+              type="text" 
+              className={ `form-control` } 
+              {...formik.getFieldProps("addressLineTwo")} 
+            />
           </div>
           <div className="col-md-4">
             <label className="form-label">Código Postal</label>
-            <input onChange={ (e) => setPostcode(e.target.value) } value={ postcode } type="text" className="form-control" />
+            <input id="postcode" type="text" className={ `form-control` } {...formik.getFieldProps("postcode")} />
           </div>
         </div>
         <div className="row mb-5">
           <div className="col-md-4">
             <label className="form-label">Teléfono</label>
-            <input onChange={ (e) => setPhonenumber(e.target.value) } value={ phonenumber } type="text" className="form-control" />
+            <input 
+              id="phonenumber" 
+              type="text" 
+              className={`form-control${formik.touched.phonenumber && formik.errors.phonenumber ? ' is-invalid' : ''}`} 
+              {...formik.getFieldProps("phonenumber")} 
+            />
+            {renderError("phonenumber")}
           </div>
           <div className="col-md-4">
             <label className="form-label">Ciudad</label>
-            <input onChange={ (e) => setCity(e.target.value) } value={ city } type="text" className="form-control" />
+            <input id="city" type="text" className={ `form-control` } {...formik.getFieldProps("city")} />
           </div>
           <div className="col-md-4">
             <label className="form-label">País</label>
-            <input onChange={ (e) => setCountry(e.target.value) } value={ country } type="text" className="form-control" />
+            <input id="country" type="text" className={ `form-control` } {...formik.getFieldProps("country")} />
           </div>
+        </div>
+        <div className="text-center">
+          <button className="btn btn-primary">Guardar</button>
         </div>
       </div>
     </form >

@@ -29,8 +29,8 @@ const AppRouter: FC = () => (
       <Route exact path="/login" component={ LoginPage } />
       <Route exact path="/logout" component={ Logout } />
       <Route exact path="/register" component={ RegisterPage } />
+      <Route exact path="/courses/pre-purchase" component={ PrePurchasePage } />
       <Route exact path="/courses/:id" component={ SingleCoursePage } />
-      <Route exact path="/courses/:id/pre-purchase" component={ PrePurchasePage } />
       <Route exact path="/blog/:id" component={ SinglePostPage } />
       <Route exact path="/admin" component={ AdminHomePage } />
       <Route exact path="/admin/profile" component={ AdminProfilePage } />

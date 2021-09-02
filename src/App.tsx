@@ -4,10 +4,11 @@ import { useStore } from "./stores/helpers/useStore";
 
 
 function App() {
-  const { dataStore: { blogStore, courseStore } } = useStore();
+  const { dataStore: { blogStore, courseStore, userStore } } = useStore();
   useEffect(() => {
     blogStore.getPosts();
     courseStore.getCourses();
+    userStore.isUserLoggedIn();
   }, []);
   return (
     <div>

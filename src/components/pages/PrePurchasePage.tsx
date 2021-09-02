@@ -1,88 +1,101 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import Page from "../shared/Page";
 import { useMercadopago } from 'react-sdk-mercadopago';
 import { useStore } from "../../stores/helpers/useStore";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
-import { useInjection } from "../../container/inversify-hook";
-import { TYPES } from "../../container/types";
-import { ICourseService } from "../../services/CourseService";
-import { Course } from "../../models/Course";
 import PersonalInfoForm from "../PersonalInfoForm";
+import { Course } from "../../models/Course";
+import { Link } from "react-router-dom";
 
 const PrePurchasePage: FC = () => {
-  const { dataStore: { paymentStore } } = useStore();
+  const { dataStore: { paymentStore, cartStore, userStore } } = useStore();
   const mercadopago = useMercadopago.v2(process.env.REACT_APP_MP_PUBLIC_KEY!, {
     locale: 'es-AR'
   });
-  const { id } = useParams<{ id: string; }>();
-  const courseService = useInjection<ICourseService>(TYPES.courseService);
-  const [ course, setCourse ] = useState<Course>();
   const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
-  const { dataStore: { userStore } } = useStore();
+  const buttonContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    courseService.getCourse(id).then(({ data }) => {
-      setCourse(data);
+    userStore.loggedOrRedirect().then((logged) => {
+      if (logged && cartStore.cart.length) {
+        paymentStore.getMercadopagoPreferenceId();
+      }
     });
-  }, []);
-
-  useEffect(() => {
-    if (course) {
-      userStore.loggedOrRedirect().then(() => {
-        paymentStore.getMercadopagoPreferenceId(course);
-      });
-    }
     return () => {
       paymentStore.clearPreferenceId();
     };
-  }, [ course ]);
+  }, [ cartStore.cart.length ]);
 
   useEffect(() => {
-    if (mercadopago && paymentStore.preferenceId) {
+    if (
+      mercadopago
+      && paymentStore.preferenceId
+      && buttonContainer.current
+      && !buttonContainer.current.children.length
+    ) {
       mercadopago.checkout({
         preference: {
           id: paymentStore.preferenceId
         },
         render: {
           container: '.cho-container',
-          label: 'Comprar',
+          label: 'Pagar',
         }
       });
     }
-  }, [ mercadopago, paymentStore.preferenceId ]);
+  }, [ mercadopago, paymentStore.preferenceId, buttonContainer ]);
 
-  if (!course || !paymentStore.preferenceId) {
+  if (!paymentStore.preferenceId && cartStore.cart.length) {
     return (
       <Page>
-        <div className="container d-flex" style={{ height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' }}>
+        <div className="container d-flex" style={ { height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' } }>
           <i className="spinner d-inline-block icon-spinner9 m-auto" />
         </div>
         <div className="cho-container d-none"></div>
       </Page>
     );
   }
-  
-  const image = course.images.find(img => img.size === "thumbnail");
-  
+
+  if (!cartStore.cart.length) {
+    return (
+      <Page>
+        <div className="container">
+          <h1>No hay cursos seleccionados para ser comprados</h1>
+        </div>
+      </Page>
+    );
+  }
+
+  const renderCourses = () => (
+    <>
+      { cartStore.cart.map((course: Course) => {
+        const image = course.images.find(img => img.size === "thumbnail");
+        return (
+          <div key={ course.id }>
+            <hr style={ { backgroundColor: "#b2b2b2", color: "#b2b2b2" } } />
+            <div className="info-container pt-4 d-flex justify-content-between">
+              <div className="image" style={ { backgroundImage: `url(${backendBaseUrl}/${image?.path || ""})` } }>
+              </div>
+              <div className="content flex-fill px-4">
+                <Link to={ `/courses/${course.id}` }><h4>{ course.title }</h4></Link>
+                <h6>{ course.sub_title }</h6>
+                <p>Precio: $ { course.price }.-</p>
+              </div>
+            </div>
+          </div>
+        );
+      }) }
+    </>
+  );
+
+
   return (
     <Page>
       <PersonalInfoForm />
-      <div className="container mb-4">
-        <div>
-          <hr style={{ backgroundColor: "#b2b2b2", color: "#b2b2b2" }} />
-          <div className="info-container pt-4 d-flex justify-content-between">
-            <div className="image">
-              <img src={`${backendBaseUrl}/${image?.path || ""}`} alt="" width="300" />
-            </div>
-            <div className="content flex-fill px-4">
-              <h4>{course.title}</h4>
-              <h6>{course.sub_title}</h6>
-              <p>Precio: $ {course.price}.-</p>
-              <div className="cho-container"></div>
-            </div>
-          </div>
-        </div>
+      <div className="container cart-detail disabled mb-4">
+        { renderCourses() }
+        <br />
+        <div ref={ buttonContainer } className="cho-container text-center"></div>
       </div>
     </Page>
   );
