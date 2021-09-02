@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { flow, makeAutoObservable } from "mobx";
 import { TYPES } from "../../container/types";
+import { snakeToCamelObj } from "../../helpers/snakeToCamel";
 import history from "../../history";
 import { authMessages } from "../../messages/messages";
 import { User } from "../../models/User";
@@ -49,7 +50,7 @@ export interface PersonalInfo {
 @injectable()
 export class UserStore {
   private loggedUser: User | null = null;
-  private personalInfo: PersonalInfo | null = null;
+  personalInfo: PersonalInfo | undefined = undefined;
   private readonly loggedUserLocalStorageKey = "loggedUser";
   private readonly unauthorizedRouteLocalStorageKey = "unauthorizedRoute";
   loggingIn = false;
@@ -141,8 +142,20 @@ export class UserStore {
   isUserLoggedIn = flow(function* (this: UserStore) {
     try {
       const { data } = yield this.authService.getLoggedUser();
-      const { name, email, id } = data;
+      const { name, email, id, personal_info }: {
+        name: string, id: string, email: string, personal_info: {
+          first_name: string,
+          last_name: string,
+          phonenumber: string,
+          address_line_one: string,
+          address_line_two: string,
+          postcode: string,
+          city: string,
+          country: string,
+        };
+      } = data;
       this.loggedUser = { name, email, id };
+      this.personalInfo = snakeToCamelObj(personal_info) as PersonalInfo;
       window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(data));
       return true;
     } catch (err) {
@@ -156,16 +169,19 @@ export class UserStore {
     window.localStorage.removeItem(this.loggedUserLocalStorageKey);
   }
 
-  setPersonalInfo = flow(function*(this: UserStore, data: PersonalInfo){
+  setPersonalInfo = flow(function* (this: UserStore, _data: PersonalInfo) {
     if (!this.getLoggedUser()) {
-      this.notificationService.createNotification(NotificationType.ERROR, "Es necesario loguearse para poder continuar");
+      this.notificationService.createNotification(NotificationType.ERROR, authMessages.notLoggedIn);
       history.push("/login");
       return;
     }
     try {
-      this.userService.setPersonalInfo(this.getLoggedUser()!.id, data, !this.personalInfo);
-    } catch(err) {
-      
+      const { data } = yield this.userService.setPersonalInfo(this.getLoggedUser()!.id, _data, !!this.personalInfo);
+      this.personalInfo = data.personal_info;
+      this.notificationService.createNotification(NotificationType.SUCCESS, "Información actualizada");
+    } catch (err) {
+      this.notificationService.createNotification(NotificationType.ERROR, "Hubo un error actualizando la información");
+      console.log(err);
     }
   });
 }
