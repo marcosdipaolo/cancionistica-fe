@@ -25,6 +25,7 @@
 }
 .cho-container {
   .mercadopago-button {
-    background-color: $primary;
+    @extend .btn; 
+    @extend .btn-danger;
   }
 }

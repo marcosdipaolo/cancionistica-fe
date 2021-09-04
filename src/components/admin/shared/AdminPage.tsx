@@ -18,7 +18,7 @@ const AdminPage: FC<Children> = ({ children }: Children) => {
 
   useEffect(() => {
     userStore.loggedOrRedirect();
-  });
+  }, []);
 
   return (
     <div id="adminPanel" className={getSidebarOpenedClass()}>

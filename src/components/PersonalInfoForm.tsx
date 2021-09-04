@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PersonalInfo } from "../stores/data-stores/UserStore";
 import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 
 const PersonalInfoForm: FC = () => {
   const { dataStore: { userStore } } = useStore();
@@ -20,14 +21,15 @@ const PersonalInfoForm: FC = () => {
 
   useEffect(() => {
     if(userStore.personalInfo){
+      // console.log("at useEffect@PersonaInfoForm", toJS(userStore.personalInfo));      
       setInitialValues(userStore.personalInfo);
     }
-    console.log(initialValues);
     
   }, [userStore.personalInfo]);
 
   const formik = useFormik({
-    initialValues,
+    initialValues: toJS(initialValues),
+    enableReinitialize: true,
     validationSchema: Yup.object({
       firstName: Yup.string().min(3, "El nombre debe contener al menos 2 caracteres").required("Nombre Requerido"),
       lastName: Yup.string().min(3, "El apellido debe contener al menos 2 caracteres").required("Apellido Requerido"),
@@ -42,7 +44,8 @@ const PersonalInfoForm: FC = () => {
     return formik.touched[ field ] && formik.errors[ field ]
       ? (<div className="invalid-feedback">{formik.errors[ field ]}</div>)
       : null;
-  };
+  }
+  
 
   return (
     <form className="needs-validation" onSubmit={formik.handleSubmit}>
@@ -72,7 +75,7 @@ const PersonalInfoForm: FC = () => {
           <div className="col-md-4">
             <label className="form-label">Email<span style={{ color: 'red' }}>*</span></label>
             <input
-              value={userStore.getLoggedUser()!.email}
+              value={userStore.getLoggedUser()?.email}
               name="email"
               type="email"
               className={`form-control`}

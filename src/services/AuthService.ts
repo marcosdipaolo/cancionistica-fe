@@ -10,6 +10,7 @@ export interface IAuthService {
   login: (data: UserLoginRequest) => Promise<AxiosResponse<UserRegistrationResponse>>;
   logout: () => void;
   getLoggedUser(): Promise<AxiosResponse<User>>;
+  emailExists(email: string): Promise<boolean>;
 }
 
 @injectable()
@@ -27,13 +28,22 @@ export class AuthService implements IAuthService {
     await cancionistica.get(`/sanctum/csrf-cookie`);
     return cancionistica.post(`/auth/login`, data);
   };
-  
+
   logout = async (): Promise<void> => {
     return cancionistica.get(`/auth/logout`);
-  }
-  
+  };
+
   getLoggedUser = async (): Promise<AxiosResponse<User>> => {
     await cancionistica.get(`/sanctum/csrf-cookie`);
-    return cancionistica.get<User>("/auth/logged-user"); 
-  }
+    return cancionistica.get<User>("/auth/logged-user");
+  };
+
+  emailExists = async (email: string): Promise<boolean> => {
+    try {
+      const response = await cancionistica.get(`/auth/email-exists/${email}`);
+      return response.status === 200;
+    } catch (err) {
+      return false;
+    }
+  };
 }

@@ -1,42 +1,57 @@
 import { observer } from "mobx-react-lite";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Login: FC = () => {
-  const [ password, setPassword ] = useState("");
-  const [ email, setEmail ] = useState("");
-
   const { dataStore: { userStore } } = useStore();
 
-  const onSubmit = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    userStore.login({ email, password });
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('La dirección de email no es valida').required('El email es un campo requerido.'),
+      password: Yup.string().required('La contraseña es un campo requerido.'),
+    }),
+    onSubmit: ({ email, password }) => {
+      userStore.login({ email, password });
+    }
+  });
+
+  const renderError = (field: ("email" | "password")) => {
+    return formik.touched[ field ] && formik.errors[ field ]
+      ? (<div className="invalid-feedback">{formik.errors[ field ]}</div>)
+      : null;
+  }
+
   return (
     <div>
-      <form onSubmit={ onSubmit }>
+      <form onSubmit={ formik.handleSubmit }>
         <SectionTitle title="Iniciá Sesión" />
         <div className="container">
           <div className="row">
             <div className="col-md-4 offset-md-4">
               <div className="form-group">
                 <input
-                  onChange={ (e) => setEmail(e.target.value) }
-                  value={ email }
                   type="email"
                   placeholder="Escribí tu email"
-                  className="form-control mb-5"
+                  className={`form-control${formik.touched.email && formik.errors.email ? ' is-invalid' : ' mb-5'}`}
+                  { ...formik.getFieldProps("email") }
                 />
+                {renderError("email")}
               </div>
               <div className="form-group">
                 <input
-                  onChange={ (e) => setPassword(e.target.value) }
-                  value={ password }
                   type="password"
                   placeholder="Escribí tu contraseña"
-                  className="form-control"
-                />
+                  className={`form-control${formik.touched.password && formik.errors.password ? ' is-invalid' : ''}`}
+                  { ...formik.getFieldProps("password") }
+                  />
+                  {renderError("password")}
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary d-block w-100 mt-5" style={ { height: "45px" } }

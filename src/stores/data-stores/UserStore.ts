@@ -95,16 +95,27 @@ export class UserStore {
       this.loggingIn = false;
     } catch (err) {
       this.loggingIn = false;
-      this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggingInError);
+      if (err.response && err.response.status === 403) {
+        this.notificationService.createNotification(NotificationType.ERROR, authMessages.unauthorized);
+      } else {
+        this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggingInError);
+      }
+
     }
   });
 
   register = flow(function* (this: UserStore, _data: UserRegisterRequest) {
     try {
       this.registering = true;
-      const { data } = yield this.authService.register(_data);
-      const { id, name, email } = data;
+      const registerResponse = yield this.authService.register(_data);
+      const loginResponse = yield this.authService.login({
+        email: registerResponse.data.email,
+        password: _data.password
+      });
+      const { id, name, email } = loginResponse;
       this.loggedUser = { id, name, email };
+      window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(loginResponse.data));
+      this.registering = false;
       yield history.push("/");
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedInSuccess);
     } catch (err) {
@@ -143,19 +154,23 @@ export class UserStore {
     try {
       const { data } = yield this.authService.getLoggedUser();
       const { name, email, id, personal_info }: {
-        name: string, id: string, email: string, personal_info: {
-          first_name: string,
-          last_name: string,
-          phonenumber: string,
-          address_line_one: string,
-          address_line_two: string,
-          postcode: string,
-          city: string,
-          country: string,
+        name: string,
+        id: string,
+        email: string,
+        personal_info: {
+          first_name: string;
+          last_name: string;
+          phonenumber: string;
+          address_line_one: string;
+          address_line_two: string;
+          postcode: string;
+          city: string;
+          country: string;
         };
       } = data;
       this.loggedUser = { name, email, id };
-      this.personalInfo = snakeToCamelObj(personal_info) as PersonalInfo;
+
+      this.personalInfo = !personal_info ? undefined : snakeToCamelObj(personal_info) as PersonalInfo;
       window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(data));
       return true;
     } catch (err) {
