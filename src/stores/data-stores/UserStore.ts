@@ -13,7 +13,7 @@ export interface UserRegisterRequest {
   name: string,
   email: string,
   password: string,
-  password_confirmation: string,
+  passwordConfirmation: string,
 }
 
 export interface UserLoginRequest {
@@ -124,9 +124,11 @@ export class UserStore {
     }
   });
 
-  logout() {
+  logout(withNotification: boolean = true) {
     try {
-      this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedOutSuccess);
+      if (withNotification) {
+        this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedOutSuccess);
+      }
       this.authService.logout();
       this.loggedUser = null;
       window.localStorage.removeItem(this.loggedUserLocalStorageKey);

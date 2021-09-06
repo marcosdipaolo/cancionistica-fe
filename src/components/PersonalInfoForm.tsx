@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PersonalInfo } from "../stores/data-stores/UserStore";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 
 const PersonalInfoForm: FC = () => {
   const { dataStore: { userStore } } = useStore();
@@ -20,15 +19,20 @@ const PersonalInfoForm: FC = () => {
   });
 
   useEffect(() => {
-    if(userStore.personalInfo){
-      // console.log("at useEffect@PersonaInfoForm", toJS(userStore.personalInfo));      
-      setInitialValues(userStore.personalInfo);
+    if(userStore.personalInfo){ 
+      const personalInfo = userStore.personalInfo;
+      for(let key in personalInfo) {
+        if(personalInfo[key] === null) {
+          personalInfo[key] = "";
+        }
+      }
+      setInitialValues(personalInfo);
     }
     
   }, [userStore.personalInfo]);
-
+  
   const formik = useFormik({
-    initialValues: toJS(initialValues),
+    initialValues: initialValues,
     enableReinitialize: true,
     validationSchema: Yup.object({
       firstName: Yup.string().min(3, "El nombre debe contener al menos 2 caracteres").required("Nombre Requerido"),

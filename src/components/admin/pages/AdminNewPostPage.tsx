@@ -8,6 +8,8 @@ import { INotificationService, NotificationType } from "../../../services/Notifi
 import { useStore } from "../../../stores/helpers/useStore";
 import BlogEditor from "../BlogEditor";
 import AdminPage from "../shared/AdminPage";
+import * as Yup from "yup";
+import { ValidationError } from "yup";
 
 const AdminNewPostPage: FC = () => {
   const inputFile = useRef<HTMLInputElement>(null);
@@ -22,6 +24,16 @@ const AdminNewPostPage: FC = () => {
   const blogService = useInjection<IBlogService>(TYPES.blogService);
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
 
+  const schema = Yup.object().shape({
+    title: Yup.string().min(4, "El título debe tener un mínimo de 4 caracteres").required("El título es obligatorio"),
+    subTitle: Yup.string().min(4, "El subtítulo debe tener un mínimo de 4 caracteres").required("El subtítulo es obligatorio"),
+    content: Yup.string().min(20, "El contenido debe tener un mínimo de 20 caracteres").required("El contenido es obligatorio"),
+    currentCategory: Yup.string().min(1, "Elejí una categoría").required("Elejí una categoría"),
+    image: Yup.mixed().test("image", "Elejí una imagen", function (value) {
+      return value instanceof File;
+    })
+  });
+
   useEffect(() => {
     blogService.getCategories().then(({ data }) => {
       setCategories(data);
@@ -30,14 +42,20 @@ const AdminNewPostPage: FC = () => {
     });
   }, []);
 
-  const onSubmit = () => {
-    blogService.createPost({ title, subTitle, content, image, categoryId: currentCategory }).then(({ data }) => {
+  const onSubmit = async () => {
+    try {
+      await schema.validate({ title, subTitle, content, image, currentCategory });
+      const { data } = await blogService.createPost({ title, subTitle, content, image, categoryId: currentCategory });
       blogStore.addPostToList(data);
       notificationService.createNotification(NotificationType.SUCCESS, "Artículo creado");
       history.push("/admin/blog");
-    }).catch(err => {
+    } catch (err) {
+      if (err instanceof ValidationError && err.errors.length) {
+        notificationService.createNotification(NotificationType.ERROR, err.errors[0]);
+        return;
+      }
       notificationService.createNotification(NotificationType.ERROR, err.message);
-    });
+    }
   };
 
   const onFileChange = () => {
@@ -76,13 +94,13 @@ const AdminNewPostPage: FC = () => {
             placeholder="Escribí el subtítulo"
             type="text"
             className="form-control"
-            style={{flex: '4', marginRight: '10px'}}
+            style={{ flex: '4', marginRight: '10px' }}
           />
           <select
             className="form-control"
             value={currentCategory}
             onChange={(e) => { setCurrentCategory(e.target.value); }}
-            style={{flex: '2'}}
+            style={{ flex: '2' }}
           >
             <option value="">Elejí la categoría</option>
             {categories ? categories.map((category: Category) => (

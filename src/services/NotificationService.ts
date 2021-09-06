@@ -17,16 +17,16 @@ export class NotificationService implements INotificationService {
   createNotification = (type: NotificationType, message: string) => {
     switch ( type ) {
       case NotificationType.SUCCESS:
-        NotificationManager.success(message, "Ok!", 2000);
+        NotificationManager.success(message, "Ok!", 3000);
         break;
       case NotificationType.ERROR:
-        NotificationManager.error(message, "Error!", 2000);
+        NotificationManager.error(message, "Error!", 3000);
         break;
       case NotificationType.WARNING:
-        NotificationManager.warning(message, "Precaución!", 2000);
+        NotificationManager.warning(message, "Precaución!", 3000);
         break;
       default:
-        NotificationManager.info(message, "Info!", 2000);
+        NotificationManager.info(message, "Info!", 3000);
         break;
     }
   };

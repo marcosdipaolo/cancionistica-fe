@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useMercadopago } from "react-sdk-mercadopago/lib";
 import { Course } from "../models/Course";
 import { useStore } from "../stores/helpers/useStore";
-import Page from "./shared/Page";
 
 const Cart: FC = () => {
   const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
@@ -76,22 +75,20 @@ const Cart: FC = () => {
 
   if (!cartStore.cart.length) {
     return (
-      <Page>
-        <div className="container">
-          <h1>No hay cursos seleccionados para ser comprados</h1>
+        <div className="container mt-5">
+          <h3 className="text-center">No hay cursos seleccionados para ser comprados</h3>
         </div>
-      </Page>
     );
   }
 
   if (!paymentStore.preferenceId && cartStore.cart.length) {
     return (
-      <Page>
+      <>
         <div className="container d-flex" style={ { height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' } }>
           <i className="spinner d-inline-block icon-spinner9 m-auto" />
         </div>
         <div className="cho-container d-none"></div>
-      </Page>
+      </>
     );
   }
 

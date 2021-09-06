@@ -1,4 +1,4 @@
-export const snakeToCamel = (s: string) => {
+export const snakeToCamel = (s: string): string => {
     return s.replace(/([-_][a-z])/ig, ($1) => {
         return $1.toUpperCase()
             .replace('-', '')
@@ -6,8 +6,8 @@ export const snakeToCamel = (s: string) => {
     });
 };
 
-export const snakeToCamelObj = (data: { [ key: string ]: any; }) => {
-    const newObject: { [ key: string ]: any; } = {};
+export const snakeToCamelObj = <T = { [ key: string ]: any; }, R = { [ key: string ]: any; }>(data: T): R => {
+    const newObject: R = {} as R;
     for (let key in data) {
         newObject[snakeToCamel(key)] = data[key];
     }

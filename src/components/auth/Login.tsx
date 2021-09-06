@@ -4,6 +4,7 @@ import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
 const Login: FC = () => {
   const { dataStore: { userStore } } = useStore();
@@ -59,6 +60,10 @@ const Login: FC = () => {
                   { userStore.loggingIn ? (<span className="spinner-grow text-white m-0" role="status" aria-hidden="true" />) : "" }
                   { userStore.loggingIn ? "" : "Login" }
                 </button>
+                <div className="links d-flex justify-content-between">
+                  <Link to="/reset-password-request"><small>Olvidaste tu contraseña?</small></Link>
+                  <Link to="/register"><small>Registrate</small></Link>
+                </div>
               </div>
             </div>
           </div>

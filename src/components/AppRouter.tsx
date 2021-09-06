@@ -18,6 +18,8 @@ import AdminEditPost from "./admin/pages/AdminEditPost";
 import { NotificationContainer } from "react-notifications";
 import history from "../history";
 import PrePurchasePage from "./pages/PrePurchasePage";
+import ResetPasswordRequestPage from "./pages/ResetPasswordRequestPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const AppRouter: FC = () => (
   <Router history={ history }>
@@ -29,6 +31,8 @@ const AppRouter: FC = () => (
       <Route exact path="/login" component={ LoginPage } />
       <Route exact path="/logout" component={ Logout } />
       <Route exact path="/register" component={ RegisterPage } />
+      <Route exact path="/reset-password-request" component={ ResetPasswordRequestPage } />
+      <Route exact path="/reset-password/:token" component={ ResetPasswordPage } />
       <Route exact path="/courses/pre-purchase" component={ PrePurchasePage } />
       <Route exact path="/courses/:id" component={ SingleCoursePage } />
       <Route exact path="/blog/:id" component={ SinglePostPage } />
