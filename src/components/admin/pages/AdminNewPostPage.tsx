@@ -10,9 +10,12 @@ import BlogEditor from "../BlogEditor";
 import AdminPage from "../shared/AdminPage";
 import * as Yup from "yup";
 import { ValidationError } from "yup";
+import { authMessages } from "../../../messages/messages";
+import { observer } from "mobx-react-lite";
 
 const AdminNewPostPage: FC = () => {
   const inputFile = useRef<HTMLInputElement>(null);
+
   const { dataStore: { blogStore } } = useStore();
   const [ title, setTitle ] = useState("");
   const [ subTitle, setSubTitle ] = useState("");
@@ -21,8 +24,11 @@ const AdminNewPostPage: FC = () => {
   const [ content, setContent ] = useState("");
   const [ image, setImage ] = useState<File | null>(null);
   const [ thumb, setThumb ] = useState("");
+
   const blogService = useInjection<IBlogService>(TYPES.blogService);
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
+
+  const { dataStore: { userStore } } = useStore();
 
   const schema = Yup.object().shape({
     title: Yup.string().min(4, "El título debe tener un mínimo de 4 caracteres").required("El título es obligatorio"),
@@ -35,12 +41,20 @@ const AdminNewPostPage: FC = () => {
   });
 
   useEffect(() => {
+    userStore.checkIfAdmin();
     blogService.getCategories().then(({ data }) => {
       setCategories(data);
     }).catch(err => {
       notificationService.createNotification(NotificationType.ERROR, err.message);
     });
   }, []);
+
+  useEffect(() => {
+    if (!userStore.isAdmin) {
+      notificationService.createNotification(NotificationType.ERROR, authMessages.onlyAdmin);
+      history.push("/admin");
+    }
+  }, [ userStore.isAdmin ]);
 
   const onSubmit = async () => {
     try {
@@ -51,7 +65,7 @@ const AdminNewPostPage: FC = () => {
       history.push("/admin/blog");
     } catch (err) {
       if (err instanceof ValidationError && err.errors.length) {
-        notificationService.createNotification(NotificationType.ERROR, err.errors[0]);
+        notificationService.createNotification(NotificationType.ERROR, err.errors[ 0 ]);
         return;
       }
       notificationService.createNotification(NotificationType.ERROR, err.message);
@@ -80,8 +94,8 @@ const AdminNewPostPage: FC = () => {
         <br />
         <h3>Redacción</h3>
         <input
-          value={title}
-          onChange={(e: FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)}
+          value={ title }
+          onChange={ (e: FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value) }
           placeholder="Escribí el título"
           type="text"
           className="form-control"
@@ -89,34 +103,34 @@ const AdminNewPostPage: FC = () => {
         <br />
         <div className="d-flex">
           <input
-            value={subTitle}
-            onChange={(e: FormEvent<HTMLInputElement>) => setSubTitle(e.currentTarget.value)}
+            value={ subTitle }
+            onChange={ (e: FormEvent<HTMLInputElement>) => setSubTitle(e.currentTarget.value) }
             placeholder="Escribí el subtítulo"
             type="text"
             className="form-control"
-            style={{ flex: '4', marginRight: '10px' }}
+            style={ { flex: '4', marginRight: '10px' } }
           />
           <select
             className="form-control"
-            value={currentCategory}
-            onChange={(e) => { setCurrentCategory(e.target.value); }}
-            style={{ flex: '2' }}
+            value={ currentCategory }
+            onChange={ (e) => { setCurrentCategory(e.target.value); } }
+            style={ { flex: '2' } }
           >
             <option value="">Elejí la categoría</option>
-            {categories ? categories.map((category: Category) => (
-              <option value={category.id} key={category.id}>{category.name}</option>
-            )) : ''}
+            { categories ? categories.map((category: Category) => (
+              <option value={ category.id } key={ category.id }>{ category.name }</option>
+            )) : '' }
           </select>
         </div>
         <br />
-        <BlogEditor setContent={setContent} />
+        <BlogEditor setContent={ setContent } />
         <br />
         <div className="d-flex justify-content-between">
           <label htmlFor="inputFile" className="btn btn-primary">Seleccionar Foto</label>
-          <input id="inputFile" onChange={onFileChange} ref={inputFile} type="file" className="d-none" />
-          <button onClick={onSubmit} className="btn btn-danger">publicar</button>
+          <input id="inputFile" onChange={ onFileChange } ref={ inputFile } type="file" className="d-none" />
+          <button onClick={ onSubmit } className="btn btn-danger">publicar</button>
         </div>
-        <img className="thumbnail d-block m-auto position-relative" src={thumb} alt="" width="300" style={{ top: '-50px' }} />
+        <img className="thumbnail d-block m-auto position-relative" src={ thumb } alt="" width="300" style={ { top: '-50px' } } />
         <br />
         <br />
       </div>
@@ -124,4 +138,4 @@ const AdminNewPostPage: FC = () => {
   );
 };
 
-export default AdminNewPostPage;
+export default observer(AdminNewPostPage);

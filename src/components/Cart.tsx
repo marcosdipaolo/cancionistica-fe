@@ -84,7 +84,7 @@ const Cart: FC = () => {
   if (!paymentStore.preferenceId && cartStore.cart.length) {
     return (
       <>
-        <div className="container d-flex" style={ { height: 'calc(100vh - 200px)', fontSize: '50px', color: '#5D7A91' } }>
+        <div className="container d-flex" style={ { height: '200px', fontSize: '50px', color: '#5D7A91' } }>
           <i className="spinner d-inline-block icon-spinner9 m-auto" />
         </div>
         <div className="cho-container d-none"></div>

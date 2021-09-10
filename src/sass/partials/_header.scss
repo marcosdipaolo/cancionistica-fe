@@ -1,8 +1,13 @@
 header.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 3rem 0 1rem;
+  background-color: #fff;
   .user-tooltip {
     right: 50px;
     top: 50px;
-    width: 135px;
+    width: 150px;
     box-shadow: 1px 1px 4px rgb(0, 0, 0, 0.4);
     font-size: 16px;
     opacity: 0;
@@ -27,6 +32,16 @@ header.app-header {
         padding: 11px 10px;
         transition: background-color 300ms, transform 100ms;
         text-align: center;
+        &.inverted-style {
+          background-color: #444;
+          color: white;
+          font-weight: 600;
+          &:hover {
+            background-color: #444;
+            cursor: default;
+            color: white;
+          }
+        }
 
         a {
           transition: none;

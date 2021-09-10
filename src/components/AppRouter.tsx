@@ -37,9 +37,7 @@ const AppRouter: FC = () => (
       <Route exact path="/courses/:id" component={ SingleCoursePage } />
       <Route exact path="/blog/:id" component={ SinglePostPage } />
       <Route exact path="/admin" component={ AdminHomePage } />
-      <Route exact path="/admin/profile" component={ AdminProfilePage } />
       <Route exact path="/admin/purchases" component={ AdminPurchasesPage } />
-      <Route exact path="/admin/modules" component={ AdminModulesPage } />
       <Route exact path="/admin/blog" component={ AdminBlogPage } />
       <Route exact path="/admin/blog/new" component={ AdminNewPostPage } />
       <Route exact path="/admin/blog/:id/edit" component={ AdminEditPost } />

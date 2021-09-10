@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Course as CourseModel } from "../../models/Course";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
-import Course from "./Course";
+import Course from "./CourseWidget";
 
 const Courses: FC = () => {
   const { dataStore: { courseStore } } = useStore();
@@ -17,7 +17,7 @@ const Courses: FC = () => {
       <div className="container">
         <div className="row">
           { Array.isArray(courses) && courses.map(
-              course => <Course images={course.images} courseId={course.id} key={course.id} />
+              course => <Course course={course} key={course.id} />
             )
           }
         </div>

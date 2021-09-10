@@ -13,6 +13,7 @@ const Page: FC<Children> = ({ children }: Children) => (
     <Nav />
     <div id="fh5co-page">
       <Header />
+      <br />
       { children }
       <Footer />
     </div>

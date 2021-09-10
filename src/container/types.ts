@@ -6,6 +6,7 @@ export const TYPES = {
   courseService: Symbol("courseService"),
   paymentService: Symbol("paymentService"),
   userService: Symbol("userService"),
+  orderService: Symbol("orderService"),
   dataStore: Symbol("dataStore"),
   blogStore: Symbol("blogStore"),
   cartStore: Symbol("cartStore"),

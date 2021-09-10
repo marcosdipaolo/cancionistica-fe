@@ -1,13 +1,20 @@
 import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
+import history from "../../history";
 
 const Login: FC = () => {
   const { dataStore: { userStore } } = useStore();
+
+  useEffect(() => {
+    if (userStore.getLoggedUser()) {
+      history.push("/");
+    }
+  }, [userStore.getLoggedUser()]);
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +39,7 @@ const Login: FC = () => {
   return (
     <div>
       <form onSubmit={ formik.handleSubmit }>
-        <SectionTitle title="Iniciá Sesión" />
+        <h3 className="text-center">Iniciá Sesión</h3>
         <div className="container">
           <div className="row">
             <div className="col-md-4 offset-md-4">

@@ -40,7 +40,8 @@ const Header: FC = () => {
           <div>
             <div className={ "position-absolute user-tooltip" + (showTooltip ? " visible" : "") }>
               <ul>
-                { userStore.getLoggedUser() ? <Link to="/admin"><li>tu cuenta</li></Link> : "" }
+                <li className="inverted-style">{userStore.getLoggedUser()?.name}</li>
+                { userStore.getLoggedUser() && <Link to="/admin"><li>tu cuenta</li></Link> }
                 <Link to="/logout"><li>Logout</li></Link>
               </ul>
             </div>

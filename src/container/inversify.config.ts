@@ -16,6 +16,7 @@ import { CourseStore } from "../stores/data-stores/CourseStore";
 import { CourseService, ICourseService } from "../services/CourseService";
 import { IUserService, UserService } from "../services/UserService";
 import { CartStore } from "../stores/data-stores/CartStore";
+import { IOrderService, OrderService } from "../services/OrderService";
 
 const container = new Container();
 
@@ -26,6 +27,7 @@ container.bind<IBlogService>(TYPES.blogService).to(BlogService);
 container.bind<IPaymentService>(TYPES.paymentService).to(PaymentService);
 container.bind<ICourseService>(TYPES.courseService).to(CourseService);
 container.bind<IUserService>(TYPES.userService).to(UserService);
+container.bind<IOrderService>(TYPES.orderService).to(OrderService);
 
 container.bind<DataStore>(TYPES.dataStore).to(DataStore);
 container.bind<CartStore>(TYPES.cartStore).to(CartStore);

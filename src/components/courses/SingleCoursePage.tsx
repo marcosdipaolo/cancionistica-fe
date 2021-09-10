@@ -56,7 +56,7 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ history }) => {
           <br />
           <br />
           <i onClick={ addToCart } className="icon-cart" />
-          <div className={ `cart-action-icon ${cartIconActionClass}` }>{cartStore.isInCart(course) ? '-' : '+'}</div>
+          <div onClick={ addToCart } className={ `cart-action-icon cursor-pointer ${cartIconActionClass}` }>{cartStore.isInCart(course) ? '-' : '+'}</div>
         </div>
         <div dangerouslySetInnerHTML={ { __html: course.content } } />
       </div>

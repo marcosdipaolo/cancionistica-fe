@@ -9,11 +9,19 @@ import { INotificationService, NotificationType } from "./NotificationService";
 
 export interface IBlogService {
   createPost: (data: EditorNewPostData) => Promise<AxiosResponse<Post>>;
-  getPosts(): Promise<Post[]>;
+  getPosts(cursor: string | null): Promise<PaginatedPosts>;
   getPost(id: string): Promise<AxiosResponse<Post>>;
   deletePost(id: string): Promise<AxiosResponse>;
   editPost(id: string, data: EditorNewPostData): Promise<AxiosResponse<Post>>;
   getCategories(): Promise<AxiosResponse<Category[]>>;
+}
+
+export interface PaginatedPosts {
+  data: Post[];
+  path: string;
+  per_page: number;
+  next_page_url: string | null,
+  prev_page_url: string | null,
 }
 
 @injectable()
@@ -31,16 +39,22 @@ export class BlogService implements IBlogService {
     return cancionistica.post<Post>("/api/posts", _data);
   }
 
-  async getPosts(): Promise<Post[]> {
+  async getPosts(cursor: string | null): Promise<PaginatedPosts> {
     try {
-      const { data } = await cancionistica.get<Post[]>("/api/posts");
-      if (!Array.isArray(data)) {
+      let response: AxiosResponse<PaginatedPosts>;
+      if (cursor) {
+        response = await cancionistica.get<PaginatedPosts>("/api/posts", { params: { cursor } });
+
+      } else {
+        response = await cancionistica.get<PaginatedPosts>("/api/posts");
+      }
+      if (!response.data) {
         throw new Error("No nos pudimos conectar con nuestra base de datos");
       }
-      return data;
+      return response.data;
     } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, "Hubo un problema adquiriendo los artículos");
-      return [];
+      return { data: [], path: "", per_page: 0, next_page_url: null, prev_page_url: null };
     }
   }
 

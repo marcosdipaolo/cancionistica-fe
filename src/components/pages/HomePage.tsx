@@ -30,7 +30,7 @@ const HomePage: FC<RouteComponentProps> = ({ location }) => {
   const paymentService = useInjection<IPaymentService>(TYPES.paymentService);
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
   const parsed = parseQS(location.search);
-  const { dataStore: { userStore } } = useStore();
+  const { dataStore: { userStore, cartStore } } = useStore();
   useEffect(() => {
     userStore.isUserLoggedIn().then((logged: boolean) => {
       if (
@@ -48,6 +48,7 @@ const HomePage: FC<RouteComponentProps> = ({ location }) => {
         'preference_id' in parsed
       ) {
         paymentService.postMPResponse(parsed);
+        cartStore.emptyCart();
         notificationService.createNotification(NotificationType.SUCCESS, "Su pago se inició correctamente");
       }
     });

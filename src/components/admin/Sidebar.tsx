@@ -1,12 +1,18 @@
-import { FC } from "react";
+import { observer } from "mobx-react-lite";
+import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useStore } from "../../stores/helpers/useStore";
 import { sidebarConfig } from "./sidebar-config";
 
 const Sidebar: FC = () => {
-  const {uiStore} = useStore();
+  const { uiStore, dataStore: { userStore } } = useStore();
+  
+  useEffect(() => {
+    userStore.checkIfAdmin();
+  }, []);
+  
   return (
-    <aside className={uiStore.adminSidebarOpened ? "opened" : "closed"}>
+    <aside className={ uiStore.adminSidebarOpened ? "opened" : "closed" }>
       <header>
         <Link to="/">
           <h5 className="text-transform-uppercase">
@@ -17,7 +23,7 @@ const Sidebar: FC = () => {
       <main>
         <ul>
           { sidebarConfig.map(config => (
-            <li key={ config.path }>
+            <li key={ config.path } style={ { display: (!userStore.isAdmin && (config.path === "/admin/blog")) ? "none" : "block" } }>
               <i className={ `icon-${config.icon}` }></i>
               <Link to={ config.path }>{ config.label }</Link>
             </li>
@@ -32,4 +38,4 @@ const Sidebar: FC = () => {
   );
 };
 
-export default Sidebar;
+export default observer(Sidebar);

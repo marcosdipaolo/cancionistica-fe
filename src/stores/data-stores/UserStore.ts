@@ -33,6 +33,20 @@ export interface UserRegistrationResponse {
   id: string,
   updated_at: string,
   created_at: string;
+  personal_info: {
+    address_line_one: string | null
+    address_line_two: string | null
+    city: string | null
+    country: string | null
+    created_at: string
+    first_name: string
+    id: string
+    last_name: string
+    phonenumber: string
+    postcode: string | null
+    updated_at: string
+    user_id: string
+  } | null
 }
 
 export interface PersonalInfo {
@@ -55,6 +69,7 @@ export class UserStore {
   private readonly unauthorizedRouteLocalStorageKey = "unauthorizedRoute";
   loggingIn = false;
   registering = false;
+  isAdmin = false;
 
   @inject(TYPES.notificationService) private notificationService!: INotificationService;
   @inject(TYPES.authService) private authService!: IAuthService;
@@ -81,8 +96,11 @@ export class UserStore {
     try {
       this.loggingIn = true;
       const { data }: { data: UserRegistrationResponse; } = yield this.authService.login({ email: _data.email, password: _data.password });
-      const { id, name, email } = data;
+      const { id, name, email, personal_info } = data;
       this.loggedUser = { id, name, email };
+      this.personalInfo = snakeToCamelObj(personal_info);
+      console.log("login@userStore", this.personalInfo);
+      
       const unauthorizedRoute = window.localStorage.getItem(this.unauthorizedRouteLocalStorageKey);
       if (unauthorizedRoute) {
         window.localStorage.removeItem(this.unauthorizedRouteLocalStorageKey);
@@ -199,6 +217,15 @@ export class UserStore {
     } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, "Hubo un error actualizando la información");
       console.log(err);
+    }
+  });
+
+  checkIfAdmin = flow(function*(this: UserStore){
+    try {
+      const isAdmin: boolean = yield this.authService.isAdmin();
+      this.isAdmin = isAdmin;
+    } catch(err) {
+      this.isAdmin = false;
     }
   });
 }

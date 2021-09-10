@@ -18,19 +18,32 @@ const PersonalInfoForm: FC = () => {
     phonenumber: "",
   });
 
+  type PersonalInfoKey = (
+    "firstName" |
+    "lastName" |
+    "addressLineOne" |
+    "addressLineTwo" |
+    "city" |
+    "postcode" |
+    "country" |
+    "phonenumber"
+  );
+
   useEffect(() => {
-    if(userStore.personalInfo){ 
+    console.log("in useEffect @ personalInfo", userStore.personalInfo);
+
+    if (userStore.personalInfo) {
       const personalInfo = userStore.personalInfo;
-      for(let key in personalInfo) {
-        if(personalInfo[key] === null) {
-          personalInfo[key] = "";
+      for (let key in personalInfo) {
+        if (personalInfo[ key as PersonalInfoKey ] === null) {
+          personalInfo[ key as PersonalInfoKey ] = "";
         }
       }
       setInitialValues(personalInfo);
     }
-    
-  }, [userStore.personalInfo]);
-  
+
+  }, [ userStore.personalInfo ]);
+
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
@@ -46,43 +59,43 @@ const PersonalInfoForm: FC = () => {
 
   const renderError = (field: ("firstName" | "lastName" | "phonenumber")) => {
     return formik.touched[ field ] && formik.errors[ field ]
-      ? (<div className="invalid-feedback">{formik.errors[ field ]}</div>)
+      ? (<div className="invalid-feedback">{ formik.errors[ field ] }</div>)
       : null;
-  }
-  
+  };
+
 
   return (
-    <form className="needs-validation" onSubmit={formik.handleSubmit}>
+    <form className="needs-validation" onSubmit={ formik.handleSubmit }>
       <div className="container">
         <h3 className="text-center">Información Personal</h3>
         <div className="row mb-5">
           <div className="col-md-4">
-            <label htmlFor="firstName" className="form-label">Nombre<span style={{ color: 'red' }}>*</span></label>
+            <label htmlFor="firstName" className="form-label">Nombre<span style={ { color: 'red' } }>*</span></label>
             <input
               id="firstName"
               type="text"
-              className={`form-control${formik.touched.firstName && formik.errors.firstName ? ' is-invalid' : ''}`}
-              {...formik.getFieldProps('firstName')}
+              className={ `form-control${formik.touched.firstName && formik.errors.firstName ? ' is-invalid' : ''}` }
+              { ...formik.getFieldProps('firstName') }
             />
-            {renderError("firstName")}
+            { renderError("firstName") }
           </div>
           <div className="col-md-4">
-            <label htmlFor="lastName" className="form-label">Apellido<span style={{ color: 'red' }}>*</span></label>
+            <label htmlFor="lastName" className="form-label">Apellido<span style={ { color: 'red' } }>*</span></label>
             <input
               id="lastName"
               type="text"
-              className={`form-control${formik.touched.lastName && formik.errors.lastName ? ' is-invalid' : ''}`}
-              {...formik.getFieldProps("lastName")}
+              className={ `form-control${formik.touched.lastName && formik.errors.lastName ? ' is-invalid' : ''}` }
+              { ...formik.getFieldProps("lastName") }
             />
-            {renderError("lastName")}
+            { renderError("lastName") }
           </div>
           <div className="col-md-4">
-            <label className="form-label">Email<span style={{ color: 'red' }}>*</span></label>
+            <label className="form-label">Email<span style={ { color: 'red' } }>*</span></label>
             <input
-              value={userStore.getLoggedUser()?.email}
+              value={ userStore.getLoggedUser()?.email }
               name="email"
               type="email"
-              className={`form-control`}
+              className={ `form-control` }
               disabled
             />
           </div>
@@ -93,8 +106,8 @@ const PersonalInfoForm: FC = () => {
             <input
               id="addressLineOne"
               type="text"
-              className={`form-control`}
-              {...formik.getFieldProps("addressLineOne")}
+              className={ `form-control` }
+              { ...formik.getFieldProps("addressLineOne") }
             />
           </div>
           <div className="col-md-4">
@@ -102,13 +115,13 @@ const PersonalInfoForm: FC = () => {
             <input
               id="addressLineTwo"
               type="text"
-              className={`form-control`}
-              {...formik.getFieldProps("addressLineTwo")}
+              className={ `form-control` }
+              { ...formik.getFieldProps("addressLineTwo") }
             />
           </div>
           <div className="col-md-4">
             <label className="form-label">Código Postal</label>
-            <input id="postcode" type="text" className={`form-control`} {...formik.getFieldProps("postcode")} />
+            <input id="postcode" type="text" className={ `form-control` } { ...formik.getFieldProps("postcode") } />
           </div>
         </div>
         <div className="row mb-5">
@@ -117,18 +130,18 @@ const PersonalInfoForm: FC = () => {
             <input
               id="phonenumber"
               type="text"
-              className={`form-control${formik.touched.phonenumber && formik.errors.phonenumber ? ' is-invalid' : ''}`}
-              {...formik.getFieldProps("phonenumber")}
+              className={ `form-control${formik.touched.phonenumber && formik.errors.phonenumber ? ' is-invalid' : ''}` }
+              { ...formik.getFieldProps("phonenumber") }
             />
-            {renderError("phonenumber")}
+            { renderError("phonenumber") }
           </div>
           <div className="col-md-4">
             <label className="form-label">Ciudad</label>
-            <input id="city" type="text" className={`form-control`} {...formik.getFieldProps("city")} />
+            <input id="city" type="text" className={ `form-control` } { ...formik.getFieldProps("city") } />
           </div>
           <div className="col-md-4">
             <label className="form-label">País</label>
-            <input id="country" type="text" className={`form-control`} {...formik.getFieldProps("country")} />
+            <input id="country" type="text" className={ `form-control` } { ...formik.getFieldProps("country") } />
           </div>
         </div>
         <div className="text-center">

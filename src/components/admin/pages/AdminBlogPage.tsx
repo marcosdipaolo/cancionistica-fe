@@ -8,21 +8,32 @@ import { useStore } from "../../../stores/helpers/useStore";
 import AdminPage from "../shared/AdminPage";
 import Modal from 'react-modal';
 import { INotificationService, NotificationType } from "../../../services/NotificationService";
+import history from "../../../history";
 
-const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
-  const { dataStore: { blogStore } } = useStore();
-  const blogService = useInjection<IBlogService>(TYPES.blogService);
-  const imageBaseUrl = process.env.REACT_APP_BACKEND_URL;
-  const notificationService = useInjection<INotificationService>(TYPES.notificationService);
+const AdminBlogPage: FC<RouteComponentProps> = () => {
+  const { dataStore: { blogStore, userStore } } = useStore();
+
   const [ modalOpen, setModalOpen ] = useState(false);
   const [ postToDeleteId, setPostToDeleteId ] = useState("");
+
+  const blogService = useInjection<IBlogService>(TYPES.blogService);
+  const notificationService = useInjection<INotificationService>(TYPES.notificationService);
+
+
+  const imageBaseUrl = process.env.REACT_APP_BACKEND_URL;
 
   const getPosts = () => {
     blogStore.getPosts();
   };
   useEffect(() => {
+    userStore.checkIfAdmin();
     getPosts();
   }, []);
+  useEffect(() => {
+    if (!userStore.isAdmin) {
+      history.push("/admin");
+    }
+  }, [ userStore.isAdmin ]);
 
   const deletePost = (id: string) => {
     setModalOpen(false);
@@ -33,6 +44,10 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
       notificationService.createNotification(NotificationType.ERROR, err.message);
     });
   };
+
+  if (!userStore.isAdmin) {
+    return <div></div>;
+  }
 
   return (
     <AdminPage>
@@ -47,24 +62,30 @@ const AdminBlogPage: FC<RouteComponentProps> = ({ history }) => {
           </tr>
         </thead>
         <tbody>
-          { blogStore.postList.map(post => <tr key={ post.id }>
-            <td className="image">
-              <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.images.find(img => img.size === "thumbnail")?.path})` } } />
-            </td>
-            <td className="title">{ post.title }<br /><span className="sub-title">{ post.sub_title }</span></td>
-            <td className="position-relative">
-              <div className="post-content" dangerouslySetInnerHTML={ { __html: post.content.substring(0, 200) + ' ...' } } />
-              <br />
-              <div className="position-absolute bottom-0">
-                <Link to={ `/blog/${post.id}` }><i className="icon-eye"></i></Link>
-                <Link to={ `/admin/blog/${post.id}/edit` }><i className="icon-pencil"></i></Link>
-                <i onClick={ () => { setPostToDeleteId(post.id); setModalOpen(true); } } className="icon-bin"></i>
-                { post.post_category ? <span className="badge bg-primary">{ post.post_category.name }</span> : '' }
-              </div>
-            </td>
-          </tr>) }
+          { Array.isArray(blogStore.postList) && blogStore.postList.map(post => (
+            <tr key={ post.id }>
+              <td className="image">
+                <div className="post-thumb" style={ { backgroundImage: `url(${imageBaseUrl}/${post.images.find(img => img.size === "thumbnail")?.path})` } } />
+              </td>
+              <td className="title">{ post.title }<br /><span className="sub-title">{ post.sub_title }</span></td>
+              <td className="position-relative">
+                <div className="post-content" dangerouslySetInnerHTML={ { __html: post.content.substring(0, 200) + ' ...' } } />
+                <br />
+                <div className="position-absolute bottom-0">
+                  <Link to={ `/blog/${post.id}` }><i className="icon-eye"></i></Link>
+                  <Link to={ `/admin/blog/${post.id}/edit` }><i className="icon-pencil"></i></Link>
+                  <i onClick={ () => { setPostToDeleteId(post.id); setModalOpen(true); } } className="icon-bin"></i>
+                  { post.post_category ? <span className="badge bg-primary">{ post.post_category.name }</span> : '' }
+                </div>
+              </td>
+            </tr>
+          )) }
         </tbody>
       </table>
+      <div className="pagination d-flex justify-content-between color-primary" style={ { fontSize: '3rem' } }>
+        <div onClick={ () => blogStore.getPosts(blogStore.prevCursor) } className={ `cursor-pointer left${blogStore.prevCursor ? ' visibility-visible' : ' visibility-hidden'}` }>&laquo;</div>
+        <div onClick={ () => blogStore.getPosts(blogStore.nextCursor) } className={ `cursor-pointer right${blogStore.nextCursor ? ' visibility-visible' : ' visibility-hidden'}` }>&raquo;</div>
+      </div>
       <Modal
         isOpen={ modalOpen }
         style={ {

@@ -18,6 +18,7 @@ export interface IAuthService {
   resetPassword(data: ResetPasswordData): Promise<AxiosResponse>;
   changePassword(data: ChangePasswordData): Promise<AxiosResponse>;
   passwordMatches(password: string): Promise<boolean>;
+  isAdmin(): Promise<boolean>;
 }
 
 export interface ResetPasswordData {
@@ -42,7 +43,7 @@ export interface CaseFormattedChangePasswordData {
 @injectable()
 export class AuthService implements IAuthService {
 
-  @inject(TYPES.notificationService) private notificationService: INotificationService;
+  @inject(TYPES.notificationService) private notificationService!: INotificationService;
 
   register = async (data: UserRegisterRequest): Promise<AxiosResponse> => {
     const { name, email, password, password_confirmation } = camelToSnakeObj(data);
@@ -101,16 +102,11 @@ export class AuthService implements IAuthService {
     }
   }
 
-  async changePassword(data: ChangePasswordData) {
-    try {
-      const res = await cancionistica.post("/auth/change-password", camelToSnakeObj<ChangePasswordData, CaseFormattedChangePasswordData>(data));
-      if (res.status === 200) {
-        this.notificationService.createNotification(NotificationType.SUCCESS, "Tu contraseña se actualizó correctamente");
-      }
-      return res;
-    } catch (err) {
-      this.notificationService.createNotification(NotificationType.ERROR, err.message);
-    }
+  async changePassword(data: ChangePasswordData): Promise<AxiosResponse> {
+    return cancionistica.post(
+      "/auth/change-password",
+      camelToSnakeObj<ChangePasswordData, CaseFormattedChangePasswordData>(data)
+    );
   }
 
   async passwordMatches(password: string): Promise<boolean> {
@@ -119,6 +115,15 @@ export class AuthService implements IAuthService {
       return data.matches;
     }
     catch (err) {
+      return false;
+    }
+  }
+
+  async isAdmin(): Promise<boolean> {
+    try {
+      await cancionistica.get<boolean>("/auth/is-admin");
+      return true;
+    } catch (err) {
       return false;
     }
   }
