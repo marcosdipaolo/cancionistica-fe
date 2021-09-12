@@ -30,8 +30,6 @@ const PersonalInfoForm: FC = () => {
   );
 
   useEffect(() => {
-    console.log("in useEffect @ personalInfo", userStore.personalInfo);
-
     if (userStore.personalInfo) {
       const personalInfo = userStore.personalInfo;
       for (let key in personalInfo) {

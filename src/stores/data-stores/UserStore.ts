@@ -63,10 +63,14 @@ export interface PersonalInfo {
 
 @injectable()
 export class UserStore {
+
   private loggedUser: User | null = null;
+
   personalInfo: PersonalInfo | undefined = undefined;
+
   private readonly loggedUserLocalStorageKey = "loggedUser";
   private readonly unauthorizedRouteLocalStorageKey = "unauthorizedRoute";
+
   loggingIn = false;
   registering = false;
   isAdmin = false;
@@ -99,7 +103,6 @@ export class UserStore {
       const { id, name, email, personal_info } = data;
       this.loggedUser = { id, name, email };
       this.personalInfo = snakeToCamelObj(personal_info);
-      console.log("login@userStore", this.personalInfo);
       
       const unauthorizedRoute = window.localStorage.getItem(this.unauthorizedRouteLocalStorageKey);
       if (unauthorizedRoute) {

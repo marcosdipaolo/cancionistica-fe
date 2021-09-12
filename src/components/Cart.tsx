@@ -29,6 +29,8 @@ const Cart: FC = () => {
 
   useEffect(() => {
     setCartInactive(!userStore.personalInfo);
+    console.log(userStore.personalInfo);
+    
   }, [ userStore.personalInfo ]);
 
   useEffect(() => {
