@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap");
 
 #adminPanel {
+  color: #333;
   box-sizing: border-box;
   font-family: Roboto, sans-serif;
   font-weight: 400;
@@ -13,6 +14,59 @@
   * {
     font-family: inherit;
   }
+
+  strong {
+    font-weight: bold;
+  }
+
+  .table {
+    font-size: 1rem;
+    color: #222;
+    thead {
+      tr {
+        border: 1px solid #868d9d;
+        th {
+          border: none;
+        }
+      }
+    }
+    tbody {
+      background-color: #dcdee4;
+      td {
+        font-size: 14px;
+        color: #3c4b64;
+        &.order-info {
+          line-height: 20px;
+        }
+        small {
+          vertical-align: top;
+          padding-left: 5px;
+          span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: inherit;
+          }
+        }
+        .list-group-item {
+          background-color: #f0f0f0;
+          small {
+            vertical-align: top;
+            padding-left: 5px;
+            span {
+              font-size: 0.8rem;
+              font-weight: 400;
+              color: inherit;
+              &.title {
+                color: #777;
+                font-weight: 500;
+                text-transform: uppercase;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   .btn {
     font-size: 14px;
     &.btn-sm {
@@ -20,7 +74,8 @@
       padding: 1px 3px;
     }
   }
-  input, select {
+  input,
+  select {
     font-weight: 400;
   }
   aside {
@@ -80,7 +135,6 @@
   }
 }
 
-
 ///// posts table ///////
 
 table.table.posts {
@@ -89,9 +143,10 @@ table.table.posts {
   color: rgb(73, 73, 73);
   thead {
     border: 1px solid rgba(0, 0, 0, 0.1);
-    tr,th {
+    tr,
+    th {
       font-weight: bold;
-      border: 1px solid rgba(0, 0, 0, 0.1)!important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
     }
   }
   th,
@@ -136,8 +191,10 @@ table.table.posts {
 
 .delete-post-modal {
   padding: 20px 20px 0;
-  h4, p, button {
-    font-family: "Roboto", sans-serif!important;
+  h4,
+  p,
+  button {
+    font-family: "Roboto", sans-serif !important;
   }
   h4 {
     font-size: 1.2em;

@@ -3,32 +3,27 @@ import { flow, makeAutoObservable } from "mobx";
 import { TYPES } from "../../container/types";
 import { Course } from "../../models/Course";
 import { IPaymentService } from "../../services/PaymentService";
-import { CartStore } from "./CartStore";
 
 @injectable()
 export class PaymentStore {
   @inject(TYPES.paymentService) private paymentService!: IPaymentService;
-  @inject(TYPES.cartStore) private cartStore!: CartStore;
   private _preferenceId: string | null = null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  getMercadopagoPreferenceId = flow(function* (this: PaymentStore) {
-    const { data } = yield this.paymentService.getReferenceId(
-      {
-        items: this.cartStore.cart.map((course: Course) => {
-          return {
-            id: course.id,
-            price: course.price,
-            quantity: 1,
-            title: course.title
-          };
-        })
-      }
-    );
-    this.preferenceId = data.data;
+  getMercadopagoPreferenceId = flow(function* (this: PaymentStore, cart: Course[]) {    
+    const items = cart.map((course: Course) => {
+      return {
+        id: course.id,
+        price: course.price,
+        quantity: 1,
+        title: course.title
+      };
+    });    
+    const { data } = yield this.paymentService.getReferenceId({items});
+    this._preferenceId = data.data;
     window.localStorage.setItem("mercadopagoPreferenceId", data.data);
   });
 

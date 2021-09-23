@@ -51,6 +51,24 @@ const HomePage: FC<RouteComponentProps> = ({ location }) => {
         cartStore.emptyCart();
         notificationService.createNotification(NotificationType.SUCCESS, "Su pago se inició correctamente");
       }
+      if ("verifying_status" in parsed) {
+        let message: string;
+        let notificationType: NotificationType;
+        switch (parsed.verifying_status) {
+          case "error":
+            message = "Hubo problemas con la verificación del email";
+            notificationType = NotificationType.ERROR;
+            break;
+          case "already":
+            message = "Este email ya está verificado";
+            notificationType = NotificationType.WARNING;
+            break;
+          default:
+            message = "Email verificado correctamente";
+            notificationType = NotificationType.SUCCESS;
+        }
+        notificationService.createNotification(notificationType, message);
+      }
     });
   }, [ parsed ]);
 

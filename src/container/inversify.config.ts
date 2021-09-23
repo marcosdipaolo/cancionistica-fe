@@ -17,6 +17,8 @@ import { CourseService, ICourseService } from "../services/CourseService";
 import { IUserService, UserService } from "../services/UserService";
 import { CartStore } from "../stores/data-stores/CartStore";
 import { IOrderService, OrderService } from "../services/OrderService";
+import { ILocalStorageService, LocalStorageService } from "../services/LocalStorageService";
+import { EncryptionService, IEncryptionService } from "../services/EncryptionService";
 
 const container = new Container();
 
@@ -28,6 +30,8 @@ container.bind<IPaymentService>(TYPES.paymentService).to(PaymentService);
 container.bind<ICourseService>(TYPES.courseService).to(CourseService);
 container.bind<IUserService>(TYPES.userService).to(UserService);
 container.bind<IOrderService>(TYPES.orderService).to(OrderService);
+container.bind<ILocalStorageService>(TYPES.localStorageService).to(LocalStorageService);
+container.bind<IEncryptionService>(TYPES.encryptionService).to(EncryptionService);
 
 container.bind<DataStore>(TYPES.dataStore).to(DataStore);
 container.bind<CartStore>(TYPES.cartStore).to(CartStore);
@@ -37,6 +41,6 @@ container.bind<BlogStore>(TYPES.blogStore).to(BlogStore);
 container.bind<CourseStore>(TYPES.courseStore).to(CourseStore);
 container.bind<PaymentStore>(TYPES.paymentStore).to(PaymentStore);
 container.bind<UserStore>(TYPES.userStore).to(UserStore);
-container.bind<RootStore>(RootStore).to(RootStore);
+container.bind<RootStore>(TYPES.rootStore).to(RootStore);
 
 export { container };

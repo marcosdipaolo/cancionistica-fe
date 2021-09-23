@@ -1,12 +1,13 @@
 import cancionistica from "../api/cancionistica";
 import { UserLoginRequest, UserRegisterRequest, UserRegistrationResponse } from "../stores/data-stores/UserStore";
 import { inject, injectable } from "inversify";
-import "reflect-metadata";
 import { AxiosResponse } from "axios";
 import { User } from "../models/User";
 import { TYPES } from "../container/types";
 import { INotificationService, NotificationType } from "./NotificationService";
 import { camelToSnakeObj } from "../helpers/camelToSnake";
+import { authMessages, genericMessages } from "../messages/messages";
+import { Cyphered, IEncryptionService } from "./EncryptionService";
 
 export interface IAuthService {
   register: (data: UserRegisterRequest) => Promise<AxiosResponse>;
@@ -19,6 +20,9 @@ export interface IAuthService {
   changePassword(data: ChangePasswordData): Promise<AxiosResponse>;
   passwordMatches(password: string): Promise<boolean>;
   isAdmin(): Promise<boolean>;
+  resendEmailVerificationNotification(): Promise<void>;
+  emails(): Promise<string[]>;
+  password(): Promise<string>;
 }
 
 export interface ResetPasswordData {
@@ -44,6 +48,7 @@ export interface CaseFormattedChangePasswordData {
 export class AuthService implements IAuthService {
 
   @inject(TYPES.notificationService) private notificationService!: INotificationService;
+  @inject(TYPES.encryptionService) private encryptionService: IEncryptionService;
 
   register = async (data: UserRegisterRequest): Promise<AxiosResponse> => {
     const { name, email, password, password_confirmation } = camelToSnakeObj(data);
@@ -81,7 +86,7 @@ export class AuthService implements IAuthService {
       const res = await cancionistica.post("/auth/forgot-password", {
         email
       });
-      this.notificationService.createNotification(NotificationType.SUCCESS, "Se te envió un email con instrucciones");
+      this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.mailWithInstructions);
       return res;
     } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, err.response ? err.response.data : err.message);
@@ -92,13 +97,13 @@ export class AuthService implements IAuthService {
     try {
       const res = await cancionistica.post("/auth/reset-password", camelToSnakeObj<ResetPasswordData>(data));
       if (res.status === 200) {
-        this.notificationService.createNotification(NotificationType.SUCCESS, "Tu contraseña se actualizó correctamente");
+        this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.passwordReset);
       }
       return res;
     } catch (err) {
       console.log(err.response);
 
-      this.notificationService.createNotification(NotificationType.ERROR, "Ocurrió un error");
+      this.notificationService.createNotification(NotificationType.ERROR, genericMessages.errorOcurred);
     }
   }
 
@@ -125,6 +130,35 @@ export class AuthService implements IAuthService {
       return true;
     } catch (err) {
       return false;
+    }
+  }
+
+  async resendEmailVerificationNotification(): Promise<void> {
+    try {
+      await cancionistica.get("/api/email/resend");
+      this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.emailVerificationResendSucceded);
+    } catch (err) {
+      this.notificationService.createNotification(NotificationType.ERROR, err.message);
+    }
+  }
+
+  async emails(): Promise<string[]> {
+    try {
+      const { data } = await cancionistica.get<Cyphered>("/auth/emails");
+      return JSON.parse(this.encryptionService.decrypt(data));
+    } catch (err) {
+      console.log(err);
+      this.notificationService.createNotification(NotificationType.ERROR, genericMessages.errorOcurred);
+    }
+  }
+
+  async password(): Promise<string> {
+    try {
+      const { data } = await cancionistica.get<Cyphered>("/auth/password");
+      return this.encryptionService.decrypt(data);
+    } catch (err) {
+      console.log(err);
+      this.notificationService.createNotification(NotificationType.ERROR, err.message);
     }
   }
 }

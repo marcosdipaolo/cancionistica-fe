@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useStore } from "../../stores/helpers/useStore";
 import SectionTitle from "../shared/SectionTitle";
 import { observer } from "mobx-react-lite";
@@ -19,6 +19,12 @@ const Register: FC = () => {
   };
 
   const { dataStore: { userStore } } = useStore();
+  const authService = useInjection<IAuthService>(TYPES.authService);
+  const [ emails, setEmails ] = useState<string[]>([]);
+
+  useEffect(() => {
+    authService.emails();
+  }, []);
 
   useEffect(() => {
     if (userStore.getLoggedUser()) {
@@ -26,7 +32,6 @@ const Register: FC = () => {
     }
   }, [ userStore.getLoggedUser() ]);
 
-  const authService = useInjection<IAuthService>(TYPES.authService);
 
   const formik = useFormik({
     initialValues,
@@ -37,15 +42,7 @@ const Register: FC = () => {
       email: Yup.string()
         .email('La dirección de email no es valida')
         .required('El email es un campo requerido.')
-        .test('email', 'Este mail ya existe', function (value) {
-          return new Promise((resolve, reject) => {
-            authService.emailExists(value!).then((data) => {
-              resolve(!data);
-            }).catch((err) => {
-              resolve(false);
-            });
-          });
-        }),
+        .notOneOf(emails || [], "Este mail ya existe")
     }),
     onSubmit: ({ name, email, password, passwordConfirmation }) => {
       userStore.register({ name, email, password, passwordConfirmation });

@@ -10,6 +10,10 @@ const Sidebar: FC = () => {
   useEffect(() => {
     userStore.checkIfAdmin();
   }, []);
+
+  const shouldShow = (config) =>  (!userStore.isAdmin && (config.path === "/admin/blog")) ||
+                                  (userStore.isAdmin && (config.path === "/admin/purchases")) ||
+                                  (!userStore.isAdmin && (config.path === "/admin/payments"))
   
   return (
     <aside className={ uiStore.adminSidebarOpened ? "opened" : "closed" }>
@@ -23,7 +27,7 @@ const Sidebar: FC = () => {
       <main>
         <ul>
           { sidebarConfig.map(config => (
-            <li key={ config.path } style={ { display: (!userStore.isAdmin && (config.path === "/admin/blog")) ? "none" : "block" } }>
+            <li key={ config.path } style={ { display: shouldShow(config) ? "none" : "block" } }>
               <i className={ `icon-${config.icon}` }></i>
               <Link to={ config.path }>{ config.label }</Link>
             </li>

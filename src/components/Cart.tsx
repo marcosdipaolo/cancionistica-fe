@@ -1,66 +1,26 @@
 import { observer } from "mobx-react-lite";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMercadopago } from "react-sdk-mercadopago/lib";
 import { Course } from "../models/Course";
 import { useStore } from "../stores/helpers/useStore";
 
 const Cart: FC = () => {
   const backendBaseUrl = process.env.REACT_APP_BACKEND_URL;
-  const mercadopago = useMercadopago.v2(process.env.REACT_APP_MP_PUBLIC_KEY!, {
-    locale: 'es-AR'
-  });
-  const buttonContainer = useRef<HTMLDivElement>(null);
-  const { dataStore: { userStore, cartStore, paymentStore } } = useStore();
-
+  const { dataStore: { userStore, cartStore, courseStore } } = useStore();
   const [ cartInactive, setCartInactive ] = useState(true);
 
   useEffect(() => {
-    userStore.loggedOrRedirect().then((logged) => {
-      if (logged && cartStore.cart.length) {
-        paymentStore.getMercadopagoPreferenceId();
-      }
-    });
-    return () => {
-      paymentStore.clearPreferenceId();
-    };
-  }, [ cartStore.cart.length ]);
-
-
-  useEffect(() => {
-    setCartInactive(!userStore.personalInfo);
-    console.log(userStore.personalInfo);
-    
+    setCartInactive((!userStore.personalInfo) || (!userStore.getLoggedUser()?.emailVerifiedAt));
   }, [ userStore.personalInfo ]);
 
-  useEffect(() => {
-    if (
-      mercadopago
-      && paymentStore.preferenceId
-      && buttonContainer.current
-      && !buttonContainer.current.children.length
-    ) {
-      mercadopago.checkout({
-        preference: {
-          id: paymentStore.preferenceId
-        },
-        render: {
-          container: '.cho-container',
-          label: 'Pagar',
-        }
-      });
-    }
-  }, [ mercadopago, paymentStore.preferenceId, buttonContainer ]);
-
-
-  const renderCourses = () => (
+  const renderCoursesInCart = () => (
     <>
       { cartStore.cart.map((course: Course) => {
         const image = course.images.find(img => img.size === "thumbnail");
         return (
-          <div key={ course.id }>
+          <div className="cart-item" key={ course.id }>
             <hr style={ { backgroundColor: "#b2b2b2", color: "#b2b2b2" } } />
-            <div className="info-container pt-4 d-flex justify-content-between">
+            <div className="info-container d-flex justify-content-between">
               <div className="image" style={ { backgroundImage: `url(${backendBaseUrl}/${image?.path || ""})` } }>
               </div>
               <div className="content flex-fill px-4">
@@ -68,6 +28,7 @@ const Cart: FC = () => {
                 <h6>{ course.sub_title }</h6>
                 <p>Precio: $ { course.price }.-</p>
               </div>
+              <i style={ { cursor: 'pointer' } } onClick={ () => cartStore.removeFromCart(course) } className="icon-bin float-end text-danger" />
             </div>
           </div>
         );
@@ -75,30 +36,68 @@ const Cart: FC = () => {
     </>
   );
 
-  if (!cartStore.cart.length) {
-    return (
-        <div className="container mt-5">
-          <h3 className="text-center">No hay cursos seleccionados para ser comprados</h3>
-        </div>
-    );
-  }
+  const renderCourseThumb = (course: Course) => {
+    return course.images.find(image => image.size === "thumbnail");
+  };
 
-  if (!paymentStore.preferenceId && cartStore.cart.length) {
+  const message = () => {
+    const verified = !!userStore.getLoggedUser()?.emailVerifiedAt;
+    const info = !!userStore.personalInfo;
     return (
       <>
-        <div className="container d-flex" style={ { height: '200px', fontSize: '50px', color: '#5D7A91' } }>
-          <i className="spinner d-inline-block icon-spinner9 m-auto" />
-        </div>
-        <div className="cho-container d-none"></div>
+        <i className="icon-info fs-3" /><br /> Por favor {
+          !(info) && <><strong>completá la información personal</strong> en el formulario de arriba<br /></>
+        } {
+          (!verified) && (!info) && "y "
+        }{
+          !(verified) && <Link to="/admin"><strong><em><u>verificá tu dirección de correo electrónico</u></em></strong></Link>
+        } para poder comprar.
       </>
     );
-  }
+  };
 
   return (
-    <div className={ `container cart-detail mb-4${cartInactive ? ' disabled' : ''}` }>
-      { renderCourses() }
-      <br />
-      <div ref={ buttonContainer } className={ `cho-container text-center${cartInactive ? '  d-none' : ''}` }></div>
+    <div className="mt-5">
+      <div className={ `container cart-detail mb-4` }>
+        <div className="row">
+          <div className={ `cart-content col-md-8` }>
+            { !cartStore.cart.length && (
+              <>
+                <br />
+                <h3 className="text-center">No hay cursos seleccionados para ser comprados</h3>
+                <br />
+              </>
+            ) }
+            { !!cartStore.cart.length && (
+              <>{ renderCoursesInCart() }</>
+            ) }
+            <br />
+
+            <p className="text-center text-danger mt-4" style={ { display: cartInactive ? "block" : "none", fontSize: "16px" } } >
+              { message() }
+            </p>
+            {!!cartStore.cart.length && <div className="text-center">
+              { cartInactive ? 
+                <button className="btn" id="go-shopping" disabled>ir a comprar</button> : 
+                <Link to="/purchase"><button className="btn" id="go-shopping">ir a comprar</button></Link>
+              }
+            </div>}
+          </div>
+          <div className="sidebar col-md-4">
+            { courseStore.courses.filter(course => !cartStore.isInCart(course)).map(course => (
+              <article key={ course.id } className="p-2 clearfix">
+                <div className="sidebar-course-thumb" style={ {
+                  backgroundImage: `url(${backendBaseUrl}/${renderCourseThumb(course)?.path})`
+                } }></div>
+                <div className="info">{ course.title }
+                  <i onClick={ () => cartStore.addToCart(course) } className="icon-cart float-end"></i>
+                </div>
+              </article>
+            )) }
+          </div>
+        </div>
+        <br />
+      </div>
     </div>
   );
 };

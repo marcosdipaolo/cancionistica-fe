@@ -10,5 +10,13 @@ export enum authMessages  {
   loggedOutError = "Ocurrió un error cerrando sesión",
   notLoggedIn = "Necesitás iniciar sesión para acceder a ese contenido",
   unauthorized = "No encontramos un usuario con esas credenciales",
-  onlyAdmin = "Solo administradores"
+  onlyAdmin = "Solo administradores",
+  mailWithInstructions = "Se te envió un email con instrucciones",
+  passwordReset = "Tu contraseña se actualizó correctamente",
+  emailVerificationResendFailed = "Ocurrió un problemna con el reenvío de la notificación de verificación de email",
+  emailVerificationResendSucceded = "Notificación de verificación de email enviada"
 };
+
+export enum genericMessages {
+  errorOcurred = "Ocurrió un error"
+}

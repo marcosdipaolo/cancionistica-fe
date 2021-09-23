@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useInjection } from "../../container/inversify-hook";
 import { TYPES } from "../../container/types";
 import history from "../../history";
@@ -7,12 +7,26 @@ import { IAuthService } from "../../services/AuthService";
 import { useStore } from "../../stores/helpers/useStore";
 import * as Yup from "yup";
 import { INotificationService, NotificationType } from "../../services/NotificationService";
+import { IEncryptionService } from "../../services/EncryptionService";
 
 const ChangePasswordForm: FC = () => {
   const [ sending, setSending ] = useState(false);
   const authService = useInjection<IAuthService>(TYPES.authService);
+  const encryptionService = useInjection<IEncryptionService>(TYPES.encryptionService);
   const notificationService = useInjection<INotificationService>(TYPES.notificationService);
+  const [ password, setPassword ] = useState<string>("");
   const { dataStore: { userStore } } = useStore();
+
+  useEffect(() => {
+    authService.password().then((password: string) => {
+      setPassword(password);
+    });
+  }, []);
+
+  const isPasswordValid = (value: string): boolean => {
+    return encryptionService.isPasswordCorrect(value, password)
+  }
+
   const formik = useFormik({
     initialValues: {
       oldPassword: "",
@@ -37,21 +51,12 @@ const ChangePasswordForm: FC = () => {
       oldPassword: Yup
         .string()
         .required("La contraseña actual es requerida")
-        .test('oldPassword', 'Contraseña actual incorrecta', function (value) {
-          return new Promise((resolve, reject) => {
-            if (!value) { resolve(false); return; };
-            authService.passwordMatches(value).then((valid) => {
-              resolve(valid);
-            }).catch((err) => {
-              resolve(false);
-            });
-          });
-        }),
+        .test("oldPassword", "La contraseña actual es incorrecta", value => isPasswordValid(value),),
       newPassword: Yup
         .string()
         .min(6, "Mínimo 6 caracteres")
         .required("La contraseña actual es requerida")
-        .notOneOf([Yup.ref("oldPassword")], "La nueva debe ser diferente a la anterior"),
+        .notOneOf([ Yup.ref("oldPassword") ], "La nueva debe ser diferente a la anterior"),
       newPasswordConfirmation: Yup
         .string()
         .required("La confirmación es requerida")
@@ -67,6 +72,7 @@ const ChangePasswordForm: FC = () => {
 
   return (
     <div className="container">
+      <h3 className="text-center">Cambiar Contraseña</h3>
       <form onSubmit={ formik.handleSubmit }>
         <div className="row">
           <div className="col-md-3">
@@ -74,7 +80,7 @@ const ChangePasswordForm: FC = () => {
               <input
                 type="password"
                 className={ `form-control${formik.touched.oldPassword && formik.errors.oldPassword ? ' is-invalid' : ''}` }
-                placeholder="Contrseña actual..."
+                placeholder="Contraseña actual..."
                 { ...formik.getFieldProps("oldPassword") }
               />
               { renderError("oldPassword") }
@@ -85,7 +91,7 @@ const ChangePasswordForm: FC = () => {
               <input
                 type="password"
                 className={ `form-control${formik.touched.newPassword && formik.errors.newPassword ? ' is-invalid' : ''}` }
-                placeholder="Contrseña nueva..."
+                placeholder="Contraseña nueva..."
                 { ...formik.getFieldProps("newPassword") }
               />
               { renderError("newPassword") }

@@ -143,7 +143,7 @@ const PersonalInfoForm: FC = () => {
           </div>
         </div>
         <div className="text-center">
-          <button className="btn btn-primary">Guardar</button>
+          <button type="submit" className="btn btn-primary">Guardar</button>
         </div>
       </div>
     </form >

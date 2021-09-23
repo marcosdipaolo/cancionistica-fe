@@ -30,7 +30,7 @@ const AdminBlogPage: FC<RouteComponentProps> = () => {
     getPosts();
   }, []);
   useEffect(() => {
-    if (!userStore.isAdmin) {
+    if (!userStore.isAdmin) {      
       history.push("/admin");
     }
   }, [ userStore.isAdmin ]);

@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Course } from "../../models/Course";
-import { Image } from "../../models/Image";
 import { useStore } from "../../stores/helpers/useStore";
 
 export interface CourseProps {

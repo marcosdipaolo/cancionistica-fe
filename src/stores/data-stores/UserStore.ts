@@ -6,6 +6,7 @@ import history from "../../history";
 import { authMessages } from "../../messages/messages";
 import { User } from "../../models/User";
 import { IAuthService } from "../../services/AuthService";
+import { ILocalStorageService, StoredItem } from "../../services/LocalStorageService";
 import { INotificationService, NotificationType } from "../../services/NotificationService";
 import { IUserService } from "../../services/UserService";
 
@@ -21,18 +22,13 @@ export interface UserLoginRequest {
   password: string,
 }
 
-export interface UserAttributes {
-  id: string;
-  name: string;
-  email: string;
-}
-
 export interface UserRegistrationResponse {
   name: string,
   email: string,
   id: string,
   updated_at: string,
   created_at: string;
+  email_verified_at: string;
   personal_info: {
     address_line_one: string | null
     address_line_two: string | null
@@ -46,7 +42,7 @@ export interface UserRegistrationResponse {
     postcode: string | null
     updated_at: string
     user_id: string
-  } | null
+  } | null;
 }
 
 export interface PersonalInfo {
@@ -68,30 +64,27 @@ export class UserStore {
 
   personalInfo: PersonalInfo | undefined = undefined;
 
-  private readonly loggedUserLocalStorageKey = "loggedUser";
-  private readonly unauthorizedRouteLocalStorageKey = "unauthorizedRoute";
-
   loggingIn = false;
   registering = false;
   isAdmin = false;
 
   @inject(TYPES.notificationService) private notificationService!: INotificationService;
   @inject(TYPES.authService) private authService!: IAuthService;
+  @inject(TYPES.localStorageService) private localStorageService!: ILocalStorageService;
   @inject(TYPES.userService) private userService!: IUserService;
 
-  constructor(
-  ) {
+  constructor() {
     makeAutoObservable(this);
-  }
+  }  
 
   getLoggedUser(): User | null {
     if (!this.loggedUser) {
-      const storedUser = window.localStorage.getItem(this.loggedUserLocalStorageKey);
+      const storedUser = this.localStorageService.getStoredItem(StoredItem.loggedUser);
       if (!storedUser) {
         return null;
       }
-      const { id, name, email }: UserAttributes = JSON.parse(storedUser);
-      return { id, name, email } as User;
+      const { id, name, email, emailVerifiedAt }: User = JSON.parse(storedUser);
+      return { id, name, email, emailVerifiedAt } as User;
     }
     return this.loggedUser;
   }
@@ -100,19 +93,19 @@ export class UserStore {
     try {
       this.loggingIn = true;
       const { data }: { data: UserRegistrationResponse; } = yield this.authService.login({ email: _data.email, password: _data.password });
-      const { id, name, email, personal_info } = data;
-      this.loggedUser = { id, name, email };
-      this.personalInfo = snakeToCamelObj(personal_info);
+      const { id, name, email, personalInfo, emailVerifiedAt } = snakeToCamelObj(data);
+      this.loggedUser = { id, name, email, emailVerifiedAt };
+      this.personalInfo = personalInfo;
       
-      const unauthorizedRoute = window.localStorage.getItem(this.unauthorizedRouteLocalStorageKey);
+      const unauthorizedRoute = window.localStorage.getItem(StoredItem.unauthorizedRoute);
       if (unauthorizedRoute) {
-        window.localStorage.removeItem(this.unauthorizedRouteLocalStorageKey);
+        this.localStorageService.clearStoredItem(StoredItem.unauthorizedRoute);
         yield history.push(unauthorizedRoute);
       } else {
         yield history.push("/");
       }
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedInSuccess);
-      window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(data));
+      this.localStorageService.setStoredItem(StoredItem.loggedUser, JSON.stringify({ id, name, email, personalInfo, emailVerifiedAt }));
       this.loggingIn = false;
     } catch (err) {
       this.loggingIn = false;
@@ -133,9 +126,8 @@ export class UserStore {
         email: registerResponse.data.email,
         password: _data.password
       });
-      const { id, name, email } = loginResponse;
-      this.loggedUser = { id, name, email };
-      window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(loginResponse.data));
+      this.loggedUser = snakeToCamelObj(loginResponse);
+      this.localStorageService.setStoredItem(StoredItem.loggedUser, JSON.stringify(snakeToCamelObj(loginResponse)));
       this.registering = false;
       yield history.push("/");
       this.notificationService.createNotification(NotificationType.SUCCESS, authMessages.loggedInSuccess);
@@ -152,7 +144,7 @@ export class UserStore {
       }
       this.authService.logout();
       this.loggedUser = null;
-      window.localStorage.removeItem(this.loggedUserLocalStorageKey);
+      this.localStorageService.clearStoredItem(StoredItem.loggedUser);
     } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, authMessages.loggedOutError);
     }
@@ -161,13 +153,12 @@ export class UserStore {
   loggedOrRedirect = flow(function* (this: UserStore) {
     try {
       const { data }: { data: User; } = yield this.authService.getLoggedUser();
-      const { name, email, id } = data;
-      this.loggedUser = { name, email, id };
+      this.loggedUser = snakeToCamelObj(data);
       return true;
     } catch (err) {
       this.notificationService.createNotification(NotificationType.ERROR, authMessages.notLoggedIn);
       this.clearLoggedUser();
-      window.localStorage.setItem("unauthorizedRoute", history.location.pathname);
+      this.localStorageService.setStoredItem(StoredItem.unauthorizedRoute, history.location.pathname);
       history.push("/login");
       return false;
     }
@@ -176,25 +167,9 @@ export class UserStore {
   isUserLoggedIn = flow(function* (this: UserStore) {
     try {
       const { data } = yield this.authService.getLoggedUser();
-      const { name, email, id, personal_info }: {
-        name: string,
-        id: string,
-        email: string,
-        personal_info: {
-          first_name: string;
-          last_name: string;
-          phonenumber: string;
-          address_line_one: string;
-          address_line_two: string;
-          postcode: string;
-          city: string;
-          country: string;
-        };
-      } = data;
-      this.loggedUser = { name, email, id };
-
-      this.personalInfo = !personal_info ? undefined : snakeToCamelObj(personal_info) as PersonalInfo;
-      window.localStorage.setItem(this.loggedUserLocalStorageKey, JSON.stringify(data));
+      this.loggedUser = snakeToCamelObj(data);
+      this.personalInfo = !data.personal_info ? undefined : snakeToCamelObj(data.personal_info) as PersonalInfo;
+      this.localStorageService.setStoredItem(StoredItem.loggedUser, JSON.stringify(this.loggedUser));
       return true;
     } catch (err) {
       this.clearLoggedUser();
@@ -204,7 +179,7 @@ export class UserStore {
 
   private clearLoggedUser() {
     this.loggedUser = null;
-    window.localStorage.removeItem(this.loggedUserLocalStorageKey);
+    this.localStorageService.clearStoredItem(StoredItem.loggedUser);
   }
 
   setPersonalInfo = flow(function* (this: UserStore, _data: PersonalInfo) {

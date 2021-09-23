@@ -49,4 +49,8 @@ export class CartStore {
     const storedCart = window.localStorage.getItem("cart");
     return storedCart ? JSON.parse(storedCart) : [];
   }
+
+  get total(): number {
+    return this.cart.reduce((carry: number, course: Course) => { carry += course.price; return carry; }, 0);
+  }
 }

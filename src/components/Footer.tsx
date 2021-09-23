@@ -2,7 +2,7 @@ import { FC } from "react";
 
 const Footer: FC = () => (
   <footer>
-    <div id="footer">
+    <div id="footer" className="mt-4">
       <div className="container">
         <div className="row">
           <div className="col-md-4">

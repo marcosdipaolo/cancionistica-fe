@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { useStore } from "../../stores/helpers/useStore";
-import SectionTitle from "../shared/SectionTitle";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
@@ -9,6 +8,8 @@ import history from "../../history";
 
 const Login: FC = () => {
   const { dataStore: { userStore } } = useStore();
+
+  useEffect(() => () => {}, [])
 
   useEffect(() => {
     if (userStore.getLoggedUser()) {

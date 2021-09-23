@@ -59,6 +59,7 @@ const Contact: FC = () => {
             </ul>
           </div>
           <div className="col-md-7 col-md-push-1 animate-box">
+            <h3>Escribime</h3>
             <form onSubmit={formik.handleSubmit}>
               <div className="row">
                 <div className="col-md-6">
