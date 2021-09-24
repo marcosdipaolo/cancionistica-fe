@@ -148,7 +148,7 @@ export class AuthService implements IAuthService {
       return JSON.parse(this.encryptionService.decrypt(data));
     } catch (err) {
       console.log(err);
-      this.notificationService.createNotification(NotificationType.ERROR, genericMessages.errorOcurred);
+      this.notificationService.createNotification(NotificationType.ERROR, err.message);
     }
   }
 

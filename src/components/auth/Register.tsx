@@ -23,7 +23,9 @@ const Register: FC = () => {
   const [ emails, setEmails ] = useState<string[]>([]);
 
   useEffect(() => {
-    authService.emails();
+    authService.emails().then((emails: string[]) => {
+      setEmails(emails);
+    });
   }, []);
 
   useEffect(() => {
